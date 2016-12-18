@@ -82,7 +82,7 @@ end
 function OBM:load()
   self.tags = {} --objects by tag
   self.objects = {} --objects
-  self.layers = {}
+  self.layers = {} --objects by layer
   self.objects.root = {} --parent of all
 end
 
