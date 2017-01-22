@@ -9,6 +9,9 @@ function Game:new()
     self.currentScene = scene
   end
 
+  function game:tick(dt)
+  end
+
   return game
 end
 
