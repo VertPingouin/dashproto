@@ -5,10 +5,12 @@ function love.load(arg)
   renderer:load()
 
   log = log:new()
+
   game = game:new()
-  game:setScene(require('scenes/mainscene'):new(game))
+  game:setScene(require('scenes/testScene'):new('game'))
 
   gameloop:load()
+
 end
 
 function love.update(dt)

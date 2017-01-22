@@ -3,7 +3,7 @@
 Game = {}
 
 function Game:new()
-  local game = entity:new('game',1,{tags={'ticking'}})
+  local game = entity:new('game',{tags={'ticking'}})
 
   function game:setScene(scene)
     self.currentScene = scene

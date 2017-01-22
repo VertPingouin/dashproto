@@ -1,7 +1,7 @@
 Control = {}
 
 function Control:new(parent)
-  local control = entity:new('control',1,{tags={'ticking'},parent=parent})
+  local control = entity:new('control',{tags={'ticking'},parent=parent})
   control.joystick = love.joystick.getJoysticks()[1]
   control.deadzone = 0.1
 

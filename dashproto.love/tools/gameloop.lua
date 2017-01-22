@@ -5,8 +5,10 @@ end
 
 function GameLoop:tick(dt)
   --a function that will make every ticking entity tick
-  for i,ticking in ipairs(obm:getTicking()) do
-    ticking:tick(dt)
+  for i = 0,obm.maxorder do
+    for j,ticking in ipairs(obm:getTicking(i)) do
+      ticking:tick(dt)
+    end
   end
 end
 

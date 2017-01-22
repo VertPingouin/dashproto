@@ -46,10 +46,10 @@ functions
 
 - addTag(id,tag:string,itself:boolean,childrens:boolean)
 
-- getVisible()
+- getVisible(layer)
   = getByTags("visible"), to be used by renderer
 
-- getTicking()
+- getTicking(order)
   = getByTags("ticking"), to be used by game loop
 ]]
 
@@ -81,46 +81,89 @@ end
 
 function OBM:load()
   self.tags = {} --objects by tag
-  self.objects = {} --objects
-  self.layers = {} --objects by layer
+  self.tags['visible'] = {} --special tags
+  self.tags['ticking'] = {}
+
+  self.objects = {} --objects as a plain list
+
   self.objects.root = {} --parent of all
-end
-
-
-
-function OBM:tick(dt)
+  self.maxlayer = 1
+  self.maxorder = 1
 end
 
 
 
 function OBM:add(ref,id,p)
-  --TODO prevent id duplicates
+  for k,v in pairs(self.objects) do
+    if k == id then
+      log:post('ERROR','obm','id duplicate, cannot add '..id)
+    end
+  end
 
   local obj = {}
   obj.reference = ref
 
   --we set all properties to their default values
-  obj.layer = 0
+  obj.layer = 1
+  obj.order = 1
 
   --if object has a parent, we set it or we let root as parent
   if p.parent then
     obj.parent = p.parent
   else
-    obj.parent = self:get('root')
+    obj.parent = 'root'
   end
 
   --if object has a layer passed in parameters, we register it
-  if p.layer then obj.layer = p.layer end
+  if p.layer then
+    obj.layer = p.layer
+    if p.layer > self.maxlayer then self.maxlayer = p.layer end
+  end
+
+  --if object has an order passed in parameters, we register it
+  if p.order then
+    obj.order = p.order
+    if p.order > self.maxorder then self.maxorder = p.order end
+  end
 
   --for every tag in the taglist passed in parameter...
   for i,tag in ipairs(p.tags) do
-    --if tag doesn't exist, we create a new table
-    if not self.tags[tag] then  self.tags[tag] = {} end
-    --then we add it to the table
-    insert(self.tags[tag],ref)
+    --if tag is visible, do something special
+    if tag == 'visible' then
+      if p.layer then --if a layer is passed
+        if not self.tags['visible'][p.layer] then --we create table for this layer if non-existing
+          self.tags['visible'][p.layer] = {}
+        end
+        insert(self.tags['visible'][p.layer],ref) --we insert the ref in proper layer
+      else --if layer is not passed
+        if not self.tags['visible'][1] then --we insert ref in layer 1
+          self.tags['visible'][1] = {}
+          insert(self.tags['visible'][1],ref)
+        end
+      end
+    elseif tag == 'ticking' then
+      if p.order then --if an order is passed
+        if not self.tags['ticking'][p.order] then --we create table for this order if non-existing
+          self.tags['ticking'][p.order] = {}
+        end
+        insert(self.tags['ticking'][p.order],ref) --we insert the ref in proper order num
+      else --if layer is not passed
+        if not self.tags['ticking'][1] then --we insert ref at order 0
+          self.tags['ticking'][1] = {}
+          insert(self.tags['ticking'][1],ref)
+        end
+      end
+    else --if tag is not visible, we process it the normal way
+      --if tag doesn't exist, we create a new table
+      if not self.tags[tag] then  self.tags[tag] = {} end
+      --then we add it to the table
+      insert(self.tags[tag],ref)
+    end
   end
   --we insert the object in obm objects
   self.objects[id] = obj
+
+  log:post('DEBUG','obm','object '..id..' added ('..tostring(obj.reference)..')')
 end
 
 
@@ -149,6 +192,10 @@ end
 
 
 function OBM:callByTags(tag,func,args)
+  if tag == 'ticking' or tag == 'visible' then
+    log:post('ERROR','obm','Cannot call a function on special tags visible or ticking')
+  end
+
   --get all objects with a certain tag and call the given func on them
   if self.tags[tag] then
     for i,obj in ipairs(self.tags[tag]) do
@@ -163,22 +210,26 @@ end
 
 
 
-function OBM:getVisible()
-  return self:getByTags('visible')
+function OBM:getVisible(layer)
+  if self:getByTags('visible')[layer] then
+    return self:getByTags('visible')[layer]
+  else return {} end
 end
 
 
 
-function OBM:getTicking()
-  return self:getByTags('ticking')
+function OBM:getTicking(order)
+  if self:getByTags('ticking')[order] then
+    return self:getByTags('ticking')[order]
+  else return {} end
 end
 
 
 
 function OBM:getId(obj)
-  --get the id of an object
+  --get the id of an object based on its reference
   for k,v in pairs(self.objects) do
-    if obj == v then
+    if obj == v.reference then
       return k
     end
   end
@@ -206,10 +257,14 @@ function OBM:getChildrens(id)
       insert(result,v)
     end
   end
+  log:post('DEBUG','obm','getting childs from '..id..', returning '..#result..' elements')
   return result
 end
 
 function OBM:setTag(id,bool,tag)
+  if tag == 'visible' or tag == 'ticking' then
+    log:post('ERROR','obm','Cannot set special tags visible or ticking')
+  end
   --we get object reference locally
   local obj = self:get(id)
 
@@ -238,20 +293,14 @@ function OBM:setTag(id,bool,tag)
   end
 end
 
-function OBM:setVisible(id,bool)
-  self:setTag(id,bool,'visible')
-end
-
-function OBM:setTicking(id,bool)
-  self:setTag(id,bool,'ticking')
-end
+--TODO find a way to toggle visibility and update, might not be needed
 
 function OBM:remove(id)
   --recursively remove childs
   local childs = self:getChildrens(id)
 
   for i,child in ipairs(childs) do
-    self:remove(self:getId(child))
+    self:remove(self:getId(child.reference))
   end
 
   --we get reference of the object to remove
@@ -259,9 +308,27 @@ function OBM:remove(id)
 
   --we remove the object in tags
   for tag,listobjtag in pairs(self.tags) do
-    for i,obj in ipairs(listobjtag) do
-      if obj.reference == object2remove then
-        remove(listobjtag,i)
+    if tag == 'visible' then --special tags, we need to ga a level deeper to go through the layers
+      for i,layer in ipairs(listobjtag) do
+        for j,obj in ipairs(layer) do
+          if obj == object2remove then
+            remove(layer,j)
+          end
+        end
+      end
+    elseif tag == 'ticking' then --special tags, we need to ga a level deeper to go through the orders
+      for i,order in ipairs(listobjtag) do
+        for j,obj in ipairs(order) do
+          if obj == object2remove then
+            remove(order,j)
+          end
+        end
+      end
+    else --regular tags
+      for i,obj in ipairs(listobjtag) do
+        if obj == object2remove then
+          remove(listobjtag,i)
+        end
       end
     end
   end
@@ -272,7 +339,31 @@ function OBM:remove(id)
       self.objects[k] = nil
     end
   end
+  log:post('DEBUG','obm','object '..id..' ('..tostring(object2remove)..') is removed from obm')
 end
 
+function OBM:printChildren(node,indent)
+  local indent = indent or 0
+  if indent == 0 then print(node) end
+  for k,v in pairs(self:getChildrens(node)) do
+    local tab = ''
+    for i=0,indent do
+      tab = tab..' '
+    end
+    print(tab..self:getId(v.reference),v.reference)
+    self:printChildren(self:getId(v.reference), indent + 1)
+  end
+end
+
+function OBM:printVisible()
+  --displays layer and contained objects
+  for k,v in pairs(self.tags.visible) do
+    print(k)
+    for i,o in ipairs(v) do
+      print(' '..self:getId(o),o)
+    end
+
+  end
+end
 
 return OBM
