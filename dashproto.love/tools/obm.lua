@@ -148,10 +148,10 @@ function OBM:add(ref,id,p)
         end
         insert(self.tags['ticking'][p.order],ref) --we insert the ref in proper order num
       else --if layer is not passed
-        if not self.tags['ticking'][1] then --we insert ref at order 0
+        if not self.tags['ticking'][1] then --we insert ref at order 1
           self.tags['ticking'][1] = {}
-          insert(self.tags['ticking'][1],ref)
         end
+        insert(self.tags['ticking'][1],ref)
       end
     else --if tag is not visible, we process it the normal way
       --if tag doesn't exist, we create a new table
