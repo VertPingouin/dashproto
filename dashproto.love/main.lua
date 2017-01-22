@@ -7,7 +7,7 @@ function love.load(arg)
   log = log:new()
 
   game = game:new()
-  game:setScene(require('scenes/testScene'):new('game'))
+  game:setScene(require('scenes/mainScene'):new('game'))
 
   gameloop:load()
 
