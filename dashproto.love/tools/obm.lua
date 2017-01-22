@@ -362,7 +362,16 @@ function OBM:printVisible()
     for i,o in ipairs(v) do
       print(' '..self:getId(o),o)
     end
+  end
+end
 
+function OBM:printTicking()
+  --displays layer and contained objects
+  for k,v in pairs(self.tags.ticking) do
+    print(k)
+    for i,o in ipairs(v) do
+      print(' '..self:getId(o),o)
+    end
   end
 end
 
