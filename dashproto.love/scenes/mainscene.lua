@@ -8,7 +8,7 @@ function MainScene:new(parent)
 
 
   function mainScene:tick(dt)
-    --local newmove = self.control:getAxis()
+    local newmove = self.control:getAxis(1)
     self.player:setMovement(newmove.x,newmove.y)
   end
 
