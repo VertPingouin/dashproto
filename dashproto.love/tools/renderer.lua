@@ -8,7 +8,7 @@ end
 
 
 function Renderer:draw()
-  --a function that will make every ticking entity tick
+  --a function that will draw visble layers by layers
   for i = 0,obm.maxlayer do
     for j,visible in ipairs(obm:getVisible(i)) do
       visible:draw(dt)
