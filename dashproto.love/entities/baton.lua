@@ -170,7 +170,7 @@ function baton.new(name,parent,controls, joystick)
   }, {__index = Player})
 
   --act kinda like an entity
-  obm:add(player,name,{tags={'ticking'},order=1})
+  obm:add(player,name,{tags={'ticking'},parent=parent,order=1})
 
   player:changeControls(controls)
   return player
