@@ -17,7 +17,8 @@ params for addTransition
   defined will be chosen.
 ]]
 
---TODO chang statemachine to comply to this particular game
+--TODO create a way to return to previous state
+
 function newstate(p)
   local state = {
     enter = p.enter,
@@ -50,6 +51,7 @@ function StateMachine:new(parent,p)
     log:post('DEBUG',statemachine.name,m)
   end
 
+  --execute step function on owner (exectued every loop)
   function statemachine:step(dt)
     if not self.currentState then log:post('ERROR',statemachine.name,'At least one state is needed') end
     if self.states[self.currentState].step then
@@ -57,12 +59,14 @@ function StateMachine:new(parent,p)
     end
   end
 
+  --execute enter function on owner
   function statemachine:enter()
     if self.states[self.currentState].enter then
       self.owner[self.states[self.currentState].enter](self.owner)
     end
   end
 
+  --execute exit function on owner
   function statemachine:exit()
     if self.states[self.currentState].exit then
       self.owner[self.states[self.currentState].exit](self.owner)
@@ -73,6 +77,7 @@ function StateMachine:new(parent,p)
     --execute owner's step function for this state
     self:step(dt)
 
+    --check if we should autotransition to next state
     local t = statemachine:getAutoTransitionFrom(self.currentState) or nil
     if t then t.counter = t.counter - dt
       if t.counter < 0 then
@@ -85,6 +90,7 @@ function StateMachine:new(parent,p)
   function statemachine:addState(statename,params)
     local p = params or {}
     self.states[statename] = newstate({enter=p.enter,exit=p.exit,step=p.step,flag=p.flag})
+    if not self.currentState then self:setInitialState(statename) end --if no state is current, set this one as current state
   end
 
   function statemachine:addTransition(statename1,statename2,params)
