@@ -2,7 +2,7 @@ Target = {}
 
 function Target:new(parent)
   local target = entity:new('target',{tags={'ticking','visible'},parent=parent,layer=6})
-  target.position = vec2:new(0,0)
+  target.position = vec2(0,0)
   target.parent = obm:get(parent)
 
   --we get the joy1 (child of game) to be able to read the input
@@ -14,19 +14,20 @@ function Target:new(parent)
   target.fsm:addState('visible')
 
   function target:tick(dt)
-    local left_offset = self.joystick:get('tleft')*160
-    local right_offset = self.joystick:get('tright')*160
-    local up_offset = self.joystick:get('tup')*160
-    local down_offset = self.joystick:get('tdown')*160
+    local left = self.joystick:get('tleft')
+    local right = self.joystick:get('tright')
+    local up = self.joystick:get('tup')
+    local down = self.joystick:get('tdown')
 
-    if left_offset + right_offset + up_offset + down_offset ~= 0 then
+    local offset = vec2(right-left,down-up)
+
+    if offset:len() > 0 and self.fsm.currentState == 'invisible' then
       self.fsm:setState('visible')
-    else
+    elseif offset:len() == 0 and self.fsm.currentState == 'visible' then
       self.fsm:setState('invisible')
     end
 
-    self.position.x = self.parent.position.x - left_offset + right_offset
-    self.position.y = self.parent.position.y - up_offset + down_offset
+    self.position = self.parent.position + offset * 160
   end
 
   function target:draw()
@@ -36,6 +37,8 @@ function Target:new(parent)
       love.graphics.setColor(255, 255,255,255)
     end
   end
+
+  return target
 end
 
 
