@@ -1,3 +1,5 @@
+--TODO debug text onscreen
+
 function love.load(arg)
   require('requirement')
 
@@ -5,12 +7,10 @@ function love.load(arg)
   renderer:load()
 
   log = log:new()
-
   game = game:new()
   game:setScene(require('scenes/mainScene'):new('game'))
 
   gameloop:load()
-
 end
 
 function love.update(dt)
