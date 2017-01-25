@@ -166,7 +166,7 @@ function baton.new(name,parent,controls, joystick)
       _controls = {},
       _active = nil,
       joystick = joystick,
-      deadzone = .5,
+      deadzone = .3,
   }, {__index = Player})
 
   --act kinda like an entity
