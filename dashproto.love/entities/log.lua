@@ -1,8 +1,10 @@
 local Log = {}
 
 function Log:new()
-  --local log = entity:new('log',{tags={'ticking'}})
-  function log:post(level,emitter,log)
+  local log = {}
+  entity:new('log',{tags={'ticking'}})
+
+  function log:post(level,emitter,log,dest)
     if level == 'ERROR' then
       assert(1==2,level..' from '..emitter..' : '..log)
     elseif level == 'DEBUG' then
