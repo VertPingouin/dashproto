@@ -5,11 +5,8 @@ object attributes :
 - tags : a list of strings
 
 object special tags (can't be set via ):
-- invisible : object will never be set visible
 - visible : renderer will call draw function of the entity
 - ticking : gameloop will call tick function of the entity
-- persistent : entity cannot be removed during runtime
-- excludeloadsave : is not affected by load and save state
 
 functions
 - add(object:table,id:string,flags:table)
@@ -33,7 +30,7 @@ functions
 - remove(id:string)
   remove object "id" and all of its inheritance
 
-- call(id,function:string,itself:boolean,childrens:boolean)
+- callByTags(tag,function)
   call a function of object if itself is true and/or its childrens if childrens is true
 
 - get(id:string)
@@ -52,6 +49,8 @@ functions
 - getTicking(order)
   = getByTags("ticking"), to be used by game loop
 ]]
+
+--TODO make get function of obm get with id or reference
 
 local OBM = {}
 local insert = table.insert
@@ -163,7 +162,9 @@ function OBM:add(ref,id,p)
   --we insert the object in obm objects
   self.objects[id] = obj
 
-  log:post('DEBUG','obm','object '..id..' added ('..tostring(obj.reference)..')')
+  if id ~= 'log' then
+    log:post('DEBUG','obm','object '..id..' added ('..tostring(obj.reference)..')')
+  end
 end
 
 
@@ -343,8 +344,12 @@ function OBM:remove(id)
 end
 
 function OBM:printChildren(node,indent)
+  debug = false
   local indent = indent or 0
-  if indent == 0 then print(node) end
+  if indent == 0 then
+    print('---ENTITIES---')
+    print(node)
+  end
   for k,v in pairs(self:getChildrens(node)) do
     local tab = ''
     for i=0,indent do
@@ -353,9 +358,11 @@ function OBM:printChildren(node,indent)
     print(tab..self:getId(v.reference),v.reference)
     self:printChildren(self:getId(v.reference), indent + 1)
   end
+  debug = true
 end
 
 function OBM:printVisible()
+  print('---VISIBLE---')
   --displays layer and contained objects
   for k,v in pairs(self.tags.visible) do
     print(k)
@@ -366,6 +373,7 @@ function OBM:printVisible()
 end
 
 function OBM:printTicking()
+  print('---TICKING---')
   --displays layer and contained objects
   for k,v in pairs(self.tags.ticking) do
     print(k)
