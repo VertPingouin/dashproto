@@ -215,34 +215,36 @@ function StateMachine:new(parent,p)
 
   --try to transition to new state
   function statemachine:transition(state)
-    if self:canTransition(state) then
-      --if there is an exit function to execute on the owner on current state,
-      --we execute it before changing state
-      self:exit()
+    if state ~= self.currentState then
+      if self:canTransition(state) then
+        --if there is an exit function to execute on the owner on current state,
+        --we execute it before changing state
+        self:exit()
 
-      --we change the state
-      self.previousState = self.currentState
-      self.currentState = state
+        --we change the state
+        self.previousState = self.currentState
+        self.currentState = state
 
-      --we change isEnded and isInit flags, will something use it one day ?
-      if self.currentState == self.finalState then
-        self.isEnded = true
+        --we change isEnded and isInit flags, will something use it one day ?
+        if self.currentState == self.finalState then
+          self.isEnded = true
+        else
+          self.isEnded = false
+        end
+
+        if self.currentState == self.initialState then
+          self.isInit = true
+        else
+          self.isInit = false
+        end
+
+        log:post('DEBUG',statemachine.name,"Transition from "..self.previousState.." to "..self.currentState.." done")
+        --if there is an enter function to execute on the owner on new state, we execute it
+        self:enter()
       else
-        self.isEnded = false
+        log:post('DEBUG',statemachine.name,"can't transition from "..self.currentState.." to "..state)
+        return false
       end
-
-      if self.currentState == self.initialState then
-        self.isInit = true
-      else
-        self.isInit = false
-      end
-
-      log:post('DEBUG',statemachine.name,"Transition from "..self.previousState.." to "..self.currentState.." done")
-      --if there is an enter function to execute on the owner on new state, we execute it
-      self:enter()
-    else
-      log:post('DEBUG',statemachine.name,"can't transition from "..self.currentState.." to "..state)
-      return false
     end
   end
 
