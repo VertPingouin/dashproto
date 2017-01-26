@@ -162,7 +162,7 @@ function OBM:add(ref,id,p)
   --we insert the object in obm objects
   self.objects[id] = obj
 
-  if id ~= 'log' then
+  if log.post then --workaround to avoid trying to pring entity log creation before it's created !
     log:post('DEBUG','obm','object '..id..' added ('..tostring(obj.reference)..')')
   end
 end
@@ -347,38 +347,38 @@ function OBM:printChildren(node,indent)
   debug = false
   local indent = indent or 0
   if indent == 0 then
-    print('---ENTITIES---')
-    print(node)
+    log:post('RAW',nil,'---ENTITIES---')
+    log:post('RAW',nil,node)
   end
   for k,v in pairs(self:getChildrens(node)) do
     local tab = ''
     for i=0,indent do
       tab = tab..' '
     end
-    print(tab..self:getId(v.reference),v.reference)
+    log:post('RAW',nil,tab..self:getId(v.reference)..'\t'..tostring(v.reference))
     self:printChildren(self:getId(v.reference), indent + 1)
   end
   debug = true
 end
 
 function OBM:printVisible()
-  print('---VISIBLE---')
+  log:post('RAW','no','---VISIBLE---')
   --displays layer and contained objects
   for k,v in pairs(self.tags.visible) do
-    print(k)
+    log:post('RAW',nil,k)
     for i,o in ipairs(v) do
-      print(' '..self:getId(o),o)
+      log:post('RAW',nil,' '..self:getId(o),o)
     end
   end
 end
 
 function OBM:printTicking()
-  print('---TICKING---')
+  log:post('RAW',nil,'---TICKING---')
   --displays layer and contained objects
   for k,v in pairs(self.tags.ticking) do
-    print(k)
+    log:post('RAW',nil,k)
     for i,o in ipairs(v) do
-      print(' '..self:getId(o),o)
+      log:post('RAW',nil,' '..self:getId(o),o)
     end
   end
 end
