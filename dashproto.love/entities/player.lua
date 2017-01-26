@@ -24,6 +24,8 @@ function Player:new(parent)
   player.color = {r=255,g=255,b=255}
   player.cooldown = 0
 
+  --TODO make a statemachine for cooldownP
+  --TODO use step functions for statemachine
   function player:tick(dt)
     if self.cooldown > 0 then
       self.cooldown= self.cooldown - dt
@@ -56,7 +58,7 @@ function Player:new(parent)
   end
 
   function player:onEnterMoving()
-    self.color = {r=0,g=0,b=255}
+    self.color = {r=0,g=255,b=0}
   end
 
   function player:draw()
