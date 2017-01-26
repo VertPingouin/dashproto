@@ -6,7 +6,9 @@ function love.load(arg)
   obm:load()
   renderer:load()
 
-  log = log:new()
+  console = console:new('root','Debug console',vec2(16,16),30)
+  log = log:new('Debug console')
+
   game = game:new()
   game:setScene(require('scenes/mainScene'):new('game'))
 
