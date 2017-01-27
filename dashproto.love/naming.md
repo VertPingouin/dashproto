@@ -1,0 +1,9 @@
+- objects returned have every word's first letter capitalized
+- local object have camelCase
+- functions have camelCase
+- system components are returned where required and have a load function to initialize (singleton)
+- entities have a new method to create an instance
+- entities are always referenced in obm
+- parent is always the first arg if it's needed
+- visible elements have a draw method called by renderer
+- ticking elements have a tick(dt) method called by gameloop
