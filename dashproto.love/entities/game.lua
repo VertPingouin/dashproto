@@ -18,7 +18,6 @@ function Game:new()
     dash = {'button:rightshoulder'}
   }
 
-  love.joystick.loadGamepadMappings('mappings.txt')
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
 
   function game:setScene(scene)
@@ -26,7 +25,6 @@ function Game:new()
   end
 
   function game:tick(dt)
-    --TODO make debug consoles that can receive prints
     function love.keypressed(key,unicode)
       if key == 'f1' then
         obm:printChildren('root')
@@ -34,6 +32,8 @@ function Game:new()
         obm:printVisible()
       elseif key == 'f3' then
         obm:printTicking()
+      elseif key == 'escape' then
+        love.event.quit()
       end
     end
   end

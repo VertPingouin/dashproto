@@ -1,7 +1,7 @@
 Player = {}
 
 function Player:new(parent)
-  local player = entity:new('player',{tags={'ticking','visible'},parent=parent,layer=5})
+  local player = entity:new('player',{tags={'ticking','visible'},parent=parent,layer=2})
 
   player.position = vec2(500,200)
 
@@ -11,12 +11,12 @@ function Player:new(parent)
   player.joystick = obm:get('joy1')
 
   --a statemachine
-  player.fsm = statemachine:new('player')
-  player.fsm:addState('Idle',{enter='onEnterIdle'})
-  player.fsm:addState('Moving',{enter='onEnterMoving'})
-  player.fsm:addTransition('Idle','Moving')
-  player.fsm:addTransition('Moving','Idle')
-  player.fsm:setInitialState('Idle')
+  player:add(c_statemachine:new(player,'mainFSM'),'mainFSM')
+  player.components.mainFSM:addState('Idle',{enter='onEnterIdle'})
+  player.components.mainFSM:addState('Moving',{enter='onEnterMoving'})
+  player.components.mainFSM:addTransition('Idle','Moving')
+  player.components.mainFSM:addTransition('Moving','Idle')
+  player.components.mainFSM:setInitialState('Idle')
 
   --target
   player.target = target:new('player')
@@ -24,7 +24,7 @@ function Player:new(parent)
   player.color = {r=255,g=255,b=255}
   player.cooldown = 0
 
-  --TODO make a statemachine for cooldownP
+  --TODO make a statemachine for cooldown
   --TODO use step functions for statemachine
   function player:tick(dt)
     if self.cooldown > 0 then
@@ -39,12 +39,12 @@ function Player:new(parent)
     local down = self.joystick:get('down')
 
     if left+right+up+down ~= 0 then
-      self.fsm:transition('Moving')
+      player.components.mainFSM:transition('Moving')
       self.movement.x = -left+right
       self.movement.y = -up+down
       self.position = self.position + self.movement:normalizeInplace() * dt * 200
     else
-      self.fsm:transition('Idle')
+      player.components.mainFSM:transition('Idle')
     end
 
     if self.joystick:pressed('dash') and self.cooldown == 0 then

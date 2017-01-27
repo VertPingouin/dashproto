@@ -9,9 +9,9 @@ function Target:new(parent)
   target.joystick = obm:get('joy1')
 
   --target state machine
-  target.fsm = statemachine:new('target')
-  target.fsm:addState('invisible')
-  target.fsm:addState('visible')
+  target:add(c_statemachine:new(target,'mainFSM'),'mainFSM')
+  target.components.mainFSM:addState('invisible')
+  target.components.mainFSM:addState('visible')
 
   function target:tick(dt)
     local left = self.joystick:get('tleft')
@@ -21,17 +21,17 @@ function Target:new(parent)
 
     local offset = vec2(right-left,down-up)
 
-    if offset:len() > 0 and self.fsm.currentState == 'invisible' then
-      self.fsm:setState('visible')
-    elseif offset:len() == 0 and self.fsm.currentState == 'visible' then
-      self.fsm:setState('invisible')
+    if offset:len() > 0 and target.components.mainFSM.currentState == 'invisible' then
+      target.components.mainFSM:setState('visible')
+    elseif offset:len() == 0 and target.components.mainFSM.currentState == 'visible' then
+      target.components.mainFSM:setState('invisible')
     end
 
     self.position = self.parent.position + offset * 160
   end
 
   function target:draw()
-    if self.fsm.currentState == 'visible' then
+    if target.components.mainFSM.currentState == 'visible' then
       love.graphics.setColor(255, 0, 0,255)
       love.graphics.circle("line", self.position.x, self.position.y, 10)
       love.graphics.setColor(255, 255,255,255)

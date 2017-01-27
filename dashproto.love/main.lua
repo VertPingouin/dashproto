@@ -1,18 +1,25 @@
---TODO debug text onscreen
+--TODO load a tilemap with collisions
+--TODO make camera
+--TODO make ennemies
+--TODO make effects
+--TODO demo using right stick
+--TODO demo using the left stick
 
 function love.load(arg)
   require('requirement')
 
+  --intitialize components
   obm:load()
   renderer:load()
+  gameloop:load()
 
-  console = console:new('root','Debug console',vec2(16,16),30)
-  log = log:new('Debug console')
+  --debug consoles
+  local c1 = console:new('root','info console','.*',vec2(16,16),30)
+  log = log:new({c1})
 
+  --game entity with default scene
   game = game:new()
   game:setScene(require('scenes/mainScene'):new('game'))
-
-  gameloop:load()
 end
 
 function love.update(dt)

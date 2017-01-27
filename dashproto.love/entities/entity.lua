@@ -5,17 +5,32 @@ Entity = {}
 function Entity:new(name,p)
   local entity = {}
   entity.name = name or 'noname'
+  entity.components = {}
 
   --we add our entity to object manager
   obm:add(entity,entity.name,p)
 
+  function entity:oTick(dt) end
+  function entity:oDraw() end
+
+  function entity:add(component,id)
+    self.components[id] = component
+  end
 
   function entity:tick(dt)
-    --this is made to be overriden
+    for i,component in ipairs(self.components) do
+      component.tick(dt)
+    end
+
+    self:oTick(dt)
   end
 
   function entity:draw()
-    --this is made to be overriden
+    for i,component in ipairs(self.components) do
+      component.draw()
+    end
+
+    self:oDraw()
   end
 
   function entity:destroy()

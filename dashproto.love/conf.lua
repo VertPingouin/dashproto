@@ -10,4 +10,6 @@ function love.conf(t)
 	t.console = true
 
 	debug = true
+	maxlayers = 10
+	maxorders = 5
 end
