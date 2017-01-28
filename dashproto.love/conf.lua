@@ -10,6 +10,7 @@ function love.conf(t)
 	t.console = true
 
 	debug = true
+	tilesize = 32
 	maxlayers = 10
 	maxorders = 5
 end
