@@ -111,6 +111,9 @@ function OBM:add(ref,id,p)
   obj.layer = 1
   obj.order = 1
 
+  --prevent nil tags
+  obj.tags = p.tags or {}
+
   --if object has a parent, we set it or we let root as parent
   if p.parent then
     obj.parent = p.parent
@@ -129,9 +132,9 @@ function OBM:add(ref,id,p)
     obj.order = p.order
     if p.order > maxlayers then assert(false,'ERROR from obm : Order number should be less or equal than '..maxorders) end
   end
-
+  --TODO something's going on with p. and obj. check this if bug
   --for every tag in the taglist passed in parameter...
-  for i,tag in ipairs(p.tags) do
+  for i,tag in ipairs(obj.tags) do
     --if tag is visible, do something special
     if tag == 'visible' then
       if p.layer then --if a layer is passed
