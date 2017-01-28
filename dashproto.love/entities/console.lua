@@ -18,10 +18,10 @@ function Console:new(parent,name,regexpfilter,vposition,nblines)
     end
   end
 
-  function console:tick()
+  function console:oTick()
   end
 
-  function console:draw()
+  function console:oDraw()
     love.graphics.setColor(255, 0, 0, 150)
     love.graphics.print(self.name,self.position.x,self.position.y,0,2)
     love.graphics.setColor(255, 255, 255, 150)
