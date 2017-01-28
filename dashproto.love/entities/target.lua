@@ -13,7 +13,7 @@ function Target:new(parent)
   target.components.mainFSM:addState('invisible')
   target.components.mainFSM:addState('visible')
 
-  function target:tick(dt)
+  function target:oTick(dt)
     local left = self.joystick:get('tleft')
     local right = self.joystick:get('tright')
     local up = self.joystick:get('tup')
@@ -30,7 +30,7 @@ function Target:new(parent)
     self.position = self.parent.position + offset * 160
   end
 
-  function target:draw()
+  function target:oDraw()
     if target.components.mainFSM.currentState == 'visible' then
       love.graphics.setColor(255, 0, 0,255)
       love.graphics.circle("line", self.position.x, self.position.y, 10)

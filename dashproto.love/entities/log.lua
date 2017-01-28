@@ -22,7 +22,7 @@ function Log:new(dest)
       if not self.consoles then
         print(level..' from '..emitter..' : '..log)
       else
-        for i,console in ipairs(self.consoles) do console:print(level..' from '..emitter..' : '..log) end
+        for i,console in ipairs(self.consoles) do console:print(level..' '..emitter..' : '..log) end
       end
     end
   end

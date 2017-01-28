@@ -15,13 +15,13 @@ function Test_Entity:new(parent,p)
     self.movement.y = y
   end
 
-  function test_entity:tick(dt)
+  function test_entity:oTick(dt)
     self.movement = vec2:new(math.random(-100, 100),math.random(-100, 100))
     self.position.x = self.position.x + self.movement.x * dt
     self.position.y = self.position.y + self.movement.y * dt
   end
 
-  function test_entity:draw()
+  function test_entity:oDraw()
     love.graphics.setColor(self.r, self.g, self.b, 255)
     love.graphics.circle("fill", self.position.x, self.position.y, self.size)
     love.graphics.setColor(255,255,255,255)

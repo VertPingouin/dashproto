@@ -3,7 +3,7 @@ Player = {}
 function Player:new(parent)
   local player = entity:new('player',{tags={'ticking','visible'},parent=parent,layer=2})
 
-  player.position = vec2(500,200)
+  player.position = vec2(100,200)
 
   player.movement = vec2(0,0)
 
@@ -12,11 +12,13 @@ function Player:new(parent)
 
   --a statemachine
   player:add(c_statemachine:new(player,'mainFSM'),'mainFSM')
-  player.components.mainFSM:addState('Idle',{enter='onEnterIdle'})
-  player.components.mainFSM:addState('Moving',{enter='onEnterMoving'})
-  player.components.mainFSM:addTransition('Idle','Moving')
-  player.components.mainFSM:addTransition('Moving','Idle')
-  player.components.mainFSM:setInitialState('Idle')
+  player.mainFSM:addState('Idle',{enter='onEnterIdle'})
+  player.mainFSM:addState('Moving',{enter='onEnterMoving'})
+  player.mainFSM:addTransition('Idle','Moving')
+  player.mainFSM:addTransition('Moving','Idle')
+  player.mainFSM:setInitialState('Idle')
+
+  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=32,h=32}),'mainBody')
 
   --target
   player.target = target:new('player')
@@ -26,7 +28,7 @@ function Player:new(parent)
 
   --TODO make a statemachine for cooldown
   --TODO use step functions for statemachine
-  function player:tick(dt)
+  function player:oTick(dt)
     if self.cooldown > 0 then
       self.cooldown= self.cooldown - dt
     elseif self.cooldown < 0 then
@@ -39,16 +41,17 @@ function Player:new(parent)
     local down = self.joystick:get('down')
 
     if left+right+up+down ~= 0 then
-      player.components.mainFSM:transition('Moving')
+      player.mainFSM:transition('Moving')
       self.movement.x = -left+right
       self.movement.y = -up+down
-      self.position = self.position + self.movement:normalizeInplace() * dt * 200
+
+      self.mainBody:addVec(self.movement:normalizeInplace() * dt * 200)
     else
-      player.components.mainFSM:transition('Idle')
+      player.mainFSM:transition('Idle')
     end
 
     if self.joystick:pressed('dash') and self.cooldown == 0 then
-      self.position = self.target.position
+      self.mainBody.position = self.target.position
       self.cooldown = 0.3
     end
   end
@@ -61,10 +64,10 @@ function Player:new(parent)
     self.color = {r=0,g=255,b=0}
   end
 
-  function player:draw()
-    love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
-    love.graphics.circle("fill", self.position.x, self.position.y, 30)
-    love.graphics.setColor(255,255, 255, 255)
+  function player:oDraw()
+    --love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
+    --love.graphics.circle("fill", self.position.x, self.position.y, 30)
+    --love.graphics.setColor(255,255, 255, 255)
   end
 
   return player

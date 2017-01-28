@@ -24,7 +24,7 @@ function Game:new()
     self.currentScene = scene
   end
 
-  function game:tick(dt)
+  function game:oTick(dt)
     function love.keypressed(key,unicode)
       if key == 'f1' then
         obm:printChildren('root')
