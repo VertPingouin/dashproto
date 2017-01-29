@@ -97,57 +97,42 @@ end
 
 
 
-function OBM:add(ref,id,p)
+function OBM:add(ref,id,a)
   for k,v in pairs(self.objects) do
     if k == id then
       log:post('ERROR','obm','id duplicate, cannot add '..id)
     end
   end
 
+  assert(ref and id,'ERROR::obm::add::reference and id are mandatory.')
+
   local obj = {}
   obj.reference = ref
 
-  --we set all properties to their default values
-  obj.layer = 1
-  obj.order = 1
+  local check = acheck
+  check:add({
+    {'layer',1,'number'},
+    {'order',1,'number'},
+    {'tags',{},'table'},
+    {'parent','root','string'},
+  })
+  a = check:check(a)
 
-  --prevent nil tags
-  obj.tags = p.tags or {}
+  assert(a.layer <= maxlayers,'ERROR from obm : Layer number should be less or equal than '..maxlayers..'('..a.layer..')')
+  assert(a.order <= maxorders,'ERROR from obm : Order number should be less or equal than '..maxorders..'('..a.order..')')
 
-  --if object has a parent, we set it or we let root as parent
-  if p.parent then
-    obj.parent = p.parent
-  else
-    obj.parent = 'root'
-  end
+  obj.layer = a.layer
+  obj.order = a.order
+  obj.tags  = a.tags
+  obj.parent = a.parent
 
-  --if object has a layer passed in parameters, we register it
-  if p.layer then
-    obj.layer = p.layer
-    if p.layer > maxlayers then assert(false,'ERROR from obm : Layer number should be less or equal than '..maxlayers) end
-  end
-
-  --if object has an order passed in parameters, we register it
-  if p.order then
-    obj.order = p.order
-    if p.order > maxlayers then assert(false,'ERROR from obm : Order number should be less or equal than '..maxorders) end
-  end
-  --TODO something's going on with p. and obj. check this if bug
   --for every tag in the taglist passed in parameter...
   for i,tag in ipairs(obj.tags) do
     --if tag is visible, do something special
     if tag == 'visible' then
-      if p.layer then --if a layer is passed
-        insert(self.tags['visible'][p.layer],ref) --we insert the ref in proper layer
-      else --if layer is not passed
-        insert(self.tags['visible'][1],ref)
-      end
+      insert(self.tags['visible'][obj.layer],obj.reference) --we insert the ref in proper layer
     elseif tag == 'ticking' then
-      if p.order then --if an order is passed
-        insert(self.tags['ticking'][p.order],ref) --we insert the ref in proper order num
-      else --if layer is not passed
-        insert(self.tags['ticking'][1],ref)
-      end
+      insert(self.tags['ticking'][obj.order],obj.reference) --we insert the ref in proper order num
     else --if tag is not visible, we process it the normal way
       --if tag doesn't exist, we create a new table
       if not self.tags[tag] then  self.tags[tag] = {} end
