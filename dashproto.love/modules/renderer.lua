@@ -11,7 +11,7 @@ function Renderer:draw()
   --a function that will draw visble layers by layers
   for i = 0,maxlayers do
     for j,visible in ipairs(obm:getVisible(i)) do
-      visible:draw(dt)
+      visible:draw()
     end
   end
 end
