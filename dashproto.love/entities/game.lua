@@ -3,7 +3,11 @@
 Game = {}
 
 function Game:new()
-  local game = entity:new('game',{tags={'ticking'},order=2})
+  local game = entity:new({
+    name='game',
+    tags={'ticking'},
+    order=2
+  })
 
   --TODO see if one axis is possible
   local controls = {

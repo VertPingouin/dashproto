@@ -1,7 +1,13 @@
 Target = {}
 
 function Target:new(parent)
-  local target = entity:new('target',{tags={'ticking','visible'},parent=parent,layer=6})
+  local target = entity:new({
+    name='target',
+    tags={'ticking','visible'},
+    parent=parent,
+    layer=6
+  })
+  
   target.position = vec2(0,0)
   target.parent = obm:get(parent)
 

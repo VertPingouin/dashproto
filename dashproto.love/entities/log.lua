@@ -2,7 +2,10 @@ local Log = {}
 
 function Log:new(dest)
   local log = {}
-  entity:new('log',{tags={'ticking'}})
+  entity:new({
+    name='log',
+    tags={'ticking'}
+  })
 
   log.consoles = nil
   if dest then

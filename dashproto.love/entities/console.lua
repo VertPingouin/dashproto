@@ -2,12 +2,29 @@ Console = {}
 local insert = table.insert
 local remove = table.remove
 
-function Console:new(parent,name,regexpfilter,vposition,nblines)
-  local console = entity:new(name,{tags={'ticking','visible'},parent=parent,layer=maxlayers})
-  console.position = vposition
-  console.nblines = nblines
+function Console:new(a)
+
+  local check = acheck
+  check:add({
+    {'parent','root','string',true},
+    {'name','','string',true},
+    {'regexpfilter','.*','string'},
+    {'vposition',vec2(0,0),'table'},
+    {'nblines',20,'number'}
+  })
+  check:check(a)
+
+  local console = entity:new({
+    name=a.name,
+    tags={'ticking','visible'},
+    parent=a.parent,
+    layer=maxlayers
+  })
+
+  console.position = a.vposition
+  console.nblines = a.nblines
   console.lines = {}
-  console.filter = regexpfilter
+  console.filter = a.regexpfilter
 
   function console:print(text)
     if string.match(text,self.filter) then

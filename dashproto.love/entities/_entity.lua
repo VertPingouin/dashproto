@@ -1,14 +1,20 @@
 --basic game entity that ticks and draws
 Entity = {}
 
-function Entity:new(name,p)
+function Entity:new(a)
   local entity = {}
 
-  entity.name = name or 'noname'
+  local check = acheck
+  check:add({
+    {'name','noname','string'},
+  })
+  check:check(a)
+
+  entity.name = a.name
   entity.components = {}
 
   --we add our entity to object manager
-  obm:add(entity,entity.name,p)
+  obm:add(entity,entity.name,a)
 
   --adding index function so we can access component by entity.componentname instead of entity.components.componentname
   local mt = {__index = function(table,key) return table.components[key] end }

@@ -1,7 +1,12 @@
 Player = {}
 
 function Player:new(parent)
-  local player = entity:new('player',{tags={'ticking','visible'},parent=parent,layer=2})
+  local player = entity:new({
+    name='player',
+    tags={'ticking','visible'},
+    parent=parent,
+    layer=2
+  })
 
   player.position = vec2(100,200)
 
