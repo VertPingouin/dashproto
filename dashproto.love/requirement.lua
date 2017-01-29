@@ -1,5 +1,6 @@
 vec2 = require('datamodel/vec2')
 acheck = require('datamodel/acheck')
+color = require('datamodel/color')
 
 --system components
 obm = require('modules/obm')

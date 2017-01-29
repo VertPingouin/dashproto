@@ -1,10 +1,19 @@
 C_body = {}
-function C_body:new(owner,id,p)
-  local c_body = component:new(owner,id,p)
-  assert(p and p.x and p.y and p.w and p.h,"c_body::new::x, y, w and h are mandatory for a body component")
-  c_body.position = vec2(p.x,p.y)
-  c_body.w = p.w
-  c_body.h = p.h
+function C_body:new(owner,id,a)
+  local c_body = component:new(owner,id,a)
+
+  local check = acheck:new()
+  check:add({
+    {'x',0,'number',true},
+    {'y',0,'number',true},
+    {'w',0,'number',true},
+    {'h',0,'number',true},
+  })
+  check:check(a)
+
+  c_body.position = vec2(a.x,a.y)
+  c_body.w = a.w
+  c_body.h = a.h
 
   assert(obm:get('world'),'c_body::new::a world object (bump) is needed for a body to work')
   c_body.world = obm:get('world')
@@ -35,6 +44,7 @@ function C_body:new(owner,id,p)
   end
 
   function c_body:filter(other)
+    return 'slide'
     --do things here
   end
 

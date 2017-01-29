@@ -4,7 +4,7 @@ Entity = {}
 function Entity:new(a)
   local entity = {}
 
-  local check = acheck
+  local check = acheck:new()
   check:add({
     {'name','noname','string'},
   })

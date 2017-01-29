@@ -109,7 +109,7 @@ function OBM:add(ref,id,a)
   local obj = {}
   obj.reference = ref
 
-  local check = acheck
+  local check = acheck:new()
   check:add({
     {'layer',1,'number'},
     {'order',1,'number'},

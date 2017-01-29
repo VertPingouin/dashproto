@@ -4,7 +4,7 @@ local remove = table.remove
 
 function Console:new(a)
 
-  local check = acheck
+  local check = acheck:new()
   check:add({
     {'parent','root','string',true},
     {'name','','string',true},

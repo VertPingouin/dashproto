@@ -1,6 +1,6 @@
 Collider = {}
 function Collider:new(parent,a)
-  local check = acheck
+  local check = acheck:new()
   check:add({
     {'x',0,'number'},
     {'y',0,'number'},

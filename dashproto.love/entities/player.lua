@@ -28,7 +28,7 @@ function Player:new(parent)
   --target
   player.target = target:new('player')
 
-  player.color = {r=255,g=255,b=255}
+  player.color = color:new(255,255,255,255)
   player.cooldown = 0
 
   --TODO make a statemachine for cooldown
