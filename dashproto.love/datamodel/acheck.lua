@@ -3,8 +3,6 @@ local insert = table.insert
 
 ACheck = {}
 
-
-
 function ACheck:new()
 
   local acheck = {}
@@ -14,10 +12,10 @@ function ACheck:new()
     for i,arg in ipairs(argtable) do
 
       --we check mandatory values are present
-      assert(arg[1] and arg[2],'ERROR::args::Name and default value are needed.')
+      assert(arg[1],'ERROR::args::Name is needed.')
 
       --we check that default value and expected type are consistent
-      if arg[3] then
+      if arg[3] and arg[2] then
         assert(type(arg[2])==arg[3],'ERROR::args::Inconsistent default value and expected type ('..arg[1]..')')
       end
 
@@ -38,6 +36,7 @@ function ACheck:new()
       if arg.default and not a[k] then a[k] = arg.default end
 
       --if type is precised, we raised error if type is incorrect
+      --only if fefault value is not null and arg is not mandatory
       if arg.expectedType then
         local argtype = type(a[k])
         assert(argtype == arg.expectedType,'ERROR::args::Wrong type for '..k..', expecting '
