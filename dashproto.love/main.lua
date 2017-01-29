@@ -14,12 +14,20 @@ function love.load(arg)
   gameloop:load()
 
   --debug consoles
-  local c1 = console:new('root','info console','.*',vec2(16,16),30)
+  local c1 = console:new({
+    parent='root',
+    name='info console',
+    regexpfilter='.*',
+    vposition=vec2(16,16),
+    nblines=30
+  })
+
   log = log:new({c1})
 
   --game entity with default scene
   game = game:new()
   game:setScene(require('scenes/mainScene'):new('game'))
+
 end
 
 function love.update(dt)

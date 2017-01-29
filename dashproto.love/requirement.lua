@@ -1,4 +1,5 @@
 vec2 = require('datamodel/vec2')
+acheck = require('datamodel/acheck')
 
 --system components
 obm = require('modules/obm')
@@ -11,7 +12,6 @@ log = require('entities/log')
 game = require('entities/game')
 player = require('entities/player')
 target = require('entities/target')
-test_entity = require('entities/test_entity')
 console = require('entities/console')
 collider = require('entities/collider')
 --components
