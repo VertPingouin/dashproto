@@ -2,12 +2,12 @@ Collider = {}
 function Collider:new(parent,a)
   local check = acheck:new()
   check:add({
-    {'x',0,'number'},
-    {'y',0,'number'},
-    {'w',0,'number'},
-    {'h',0,'number'}
+    {'x','defaultValue','number',10},
+    {'y','defaultValue','number',10},
+    {'w','defaultValue','number',16},
+    {'h','defaultValue','number',16},
   })
-  check:check(a)
+  a = check:check(a)
 
   --we use table identifier of lua to name collider with unique name
   local collider = {}

@@ -6,9 +6,9 @@ function Entity:new(a)
 
   local check = acheck:new()
   check:add({
-    {'name','noname','string'},
+    {'name','defaultValue','string','noname'},
   })
-  check:check(a)
+  a = check:check(a)
 
   entity.name = a.name
   entity.components = {}

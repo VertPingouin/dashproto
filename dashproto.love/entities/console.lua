@@ -6,13 +6,13 @@ function Console:new(a)
 
   local check = acheck:new()
   check:add({
-    {'parent','root','string',true},
-    {'name','','string',true},
-    {'regexpfilter','.*','string'},
-    {'vposition',vec2(0,0),'table'},
-    {'nblines',20,'number'}
+    {'parent','defaultValue','string','root'},
+    {'name','defaultValue','string','console'},
+    {'regexpfilter','defaultValue','string','.*'},
+    {'vposition','defaultValue','table',vec2(10,10)},
+    {'nblines','defaultValue','number',20}
   })
-  check:check(a)
+  a = check:check(a)
 
   local console = entity:new({
     name=a.name,

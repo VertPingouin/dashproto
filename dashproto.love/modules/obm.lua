@@ -111,10 +111,10 @@ function OBM:add(ref,id,a)
 
   local check = acheck:new()
   check:add({
-    {'layer',1,'number'},
-    {'order',1,'number'},
-    {'tags',{},'table'},
-    {'parent','root','string'},
+    {'layer','defaultValue','number',1},
+    {'order','defaultValue','number',1},
+    {'tags','defaultValue','table',{}},
+    {'parent','defaultValue','string','root'},
   })
   a = check:check(a)
 

@@ -4,12 +4,12 @@ function C_body:new(owner,id,a)
 
   local check = acheck:new()
   check:add({
-    {'x',0,'number',true},
-    {'y',0,'number',true},
-    {'w',0,'number',true},
-    {'h',0,'number',true},
+    {'x','defaultValue','number',10},
+    {'y','defaultValue','number',10},
+    {'w','defaultValue','number',16},
+    {'h','defaultValue','number',16},
   })
-  check:check(a)
+  a = check:check(a)
 
   c_body.position = vec2(a.x,a.y)
   c_body.w = a.w

@@ -1,4 +1,11 @@
 --normalized way to check args, raise errors and clean arguments table
+--[[
+'mandatory' : if mandatory then raise error if omitted
+'defaultValue' : if value is passed, ok, if nil, default value is used
+'nullable' : if value is nil, let it be
+]]--
+
+
 local insert = table.insert
 
 ACheck = {}
@@ -11,16 +18,23 @@ function ACheck:new()
   function acheck:add(argtable)
     for i,arg in ipairs(argtable) do
 
-      --we check mandatory values are present
-      assert(arg[1],'ERROR::args::Name is needed.')
 
-      --we check that default value and expected type are consistent
-      if arg[3] and arg[2] then
-        assert(type(arg[2])==arg[3],'ERROR::args::Inconsistent default value and expected type ('..arg[1]..')')
+      --we check mandatory values are present
+      --check if name, argtype and type are present
+      assert(arg[1] and arg[2] and arg[3],'ERROR::args::Name, arg type and type are required.')
+      --check argtype is valid
+      assert(arg[2]=='mandatory' or arg[2]=='defaultValue' or arg[2]=='nullable'
+        ,'ERROR::acheck::add::arg Type must be mandatory,defaultValue or nullable')
+      --check type is valid
+      assert(arg[3]=='string' or arg[3]=='number' or arg[3]=='table'
+        or arg[3]=='boolean','ERROR::acheck::add::Type must be a lua type')
+      --check if argtype is default value that a default value is present
+      if arg[2] == 'defaultValue' then
+        assert(arg[4],'ERROR::acheck::add::Default value is needed.')
       end
 
-      --we add it to checklist
-      acheck.arglist[arg[1]]= {default=arg[2],expectedType=arg[3],mandatory=arg[4] or false}
+      acheck.arglist[arg[1]] = {argtype = arg[2],type = arg[3],default=arg[4]}
+
     end
   end
 
@@ -28,20 +42,18 @@ function ACheck:new()
     a = a or {}
 
     for k,arg in pairs(self.arglist) do
-      if arg.mandatory and not a[k] then
-        assert(false,'ERROR::args::Argument '..k..' is mandatory.')
+      if arg.argtype == 'mandatory' then
+        assert(a[k],'ERRROR::args::check::'..k..'is mandatory')
+        assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
+      elseif arg.argtype == 'defaultValue' then
+        if not a[k] then
+          a[k] = arg.default
+        end
+        print(k,a[k])
+        assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
       end
 
-      --if no value, we set default value
-      if arg.default and not a[k] then a[k] = arg.default end
 
-      --if type is precised, we raised error if type is incorrect
-      --only if fefault value is not null and arg is not mandatory
-      if arg.expectedType then
-        local argtype = type(a[k])
-        assert(argtype == arg.expectedType,'ERROR::args::Wrong type for '..k..', expecting '
-          ..arg.expectedType..', '..argtype..' received.')
-      end
     end
     return a
   end

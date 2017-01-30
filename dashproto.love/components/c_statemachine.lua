@@ -19,23 +19,40 @@ params for addTransition
 
 --TODO create a way to return to previous state
 
-function newstate(p)
+function newstate(a)
+  local check = acheck:new()
+  check:add({
+    {'enter','nullable','string'},
+    {'exit','nullable','string'},
+    {'step','nullable','string'},
+    {'name','nullable','string'},
+    {'flag','nullable','string'}
+  })
+
+  a = check:check(a)
+
   local state = {
-    enter = p.enter,
-    exit = p.exit,
-    step = p.step,
-    name = p.name,
-    flag = p.flag
+    enter = a.enter,
+    exit = a.exit,
+    step = a.step,
+    name = a.name,
+    flag = a.flag
   }
   return state
 end
 
 C_statemachine = {}
 
-function C_statemachine:new(owner,id,p)
-  local c_statemachine = component:new(owner,id,p)
-  p = p or {}
-  c_statemachine.noSaveLoad = p.noSaveLoad or false
+function C_statemachine:new(owner,id,a)
+  local c_statemachine = component:new(owner,id,a)
+
+  local check = acheck:new()
+  check:add({
+      {'noSaveLoad','nullable','boolean'}
+  })
+  a= check:check(a)
+
+  c_statemachine.noSaveLoad = a.noSaveLoad
   c_statemachine.states = {}
   c_statemachine.transitions = {}
   c_statemachine.initialState = nil
