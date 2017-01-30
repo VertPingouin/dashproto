@@ -28,7 +28,7 @@ function Console:new(a)
 
   function console:print(text)
     if string.match(text,self.filter) then
-      if #self.lines == nblines then
+      if #self.lines == self.nblines then
         remove(self.lines,1) --remove firstline
       end
       insert(self.lines,text) --insert new line
