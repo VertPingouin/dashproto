@@ -49,7 +49,6 @@ function ACheck:new()
         if not a[k] then
           a[k] = arg.default
         end
-        print(k,a[k])
         assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
       end
 
