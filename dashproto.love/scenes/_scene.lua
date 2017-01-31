@@ -1,3 +1,4 @@
+--TODO implement scene boundaries
 Scene = {}
 function Scene:new(parent,name)
   local scene = entity:new({
