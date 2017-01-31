@@ -20,14 +20,23 @@ function Map:new(parent,name,a)
   map.spawn = {}
   map.position = a.position
 
+
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
-    if layer.type == 'objectgroup' and layer.name == 'colliders' then --colliders layer
+    --colliders layer
+    if layer.type == 'objectgroup' and layer.name == 'colliders' then
       for j,object in ipairs(layer.objects) do
         assert(object.shape == 'rectangle','ERROR::map::new::layer colliders should only have rectangles in it')
-        map:add(c_body:new(map,'collider'..j,{x=object.x,y=object.y, w=object.width,h=object.height}),'collider'..j)
+        map:add(c_body:new(map,'collider'..j,{
+          x=object.x+map.position.x,
+          y=object.y+map.position.y,
+          w=object.width,
+          h=object.height,
+          color=color:new(0,255,0,255)
+        }),'collider'..j)
       end
-    elseif layer.type == 'objectgroup' and layer.name == 'spawn' then --spawn points layer
+    --spawn points layer
+    elseif layer.type == 'objectgroup' and layer.name == 'spawn' then
       for j,object in ipairs(layer.objects) do
         assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
         assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
@@ -36,6 +45,8 @@ function Map:new(parent,name,a)
     end
   end
 
+
+  --gets a spawn point
   function map:getSpawn(name)
     assert(self.spawn[name],'ERROR::map::getSpawn::No spawn point for '..name)
     return self.spawn[name]
