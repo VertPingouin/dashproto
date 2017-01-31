@@ -742,7 +742,7 @@ bump.newWorld = function(cellSize, parent)
   }, World_mt)
 
   --act kinda like an entity
-  obm:add(world,'world',{parent=parent})
+  obm:add(world,'bumpWorld',{parent=parent})
 
   world:addResponse('touch', touch)
   world:addResponse('cross', cross)

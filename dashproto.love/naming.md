@@ -13,3 +13,8 @@
   log
   player
   target
+
+
+tilemap
+  layer colliders with rectangle in it
+  layer spawn point with rectangles in it and name

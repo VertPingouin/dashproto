@@ -9,7 +9,7 @@ function Console:new(a)
     {'parent','defaultValue','string','root'},
     {'name','defaultValue','string','console'},
     {'regexpfilter','defaultValue','string','.*'},
-    {'vposition','defaultValue','table',vec2(10,10)},
+    {'position','defaultValue','table',vec2(10,10)},
     {'nblines','defaultValue','number',20}
   })
   a = check:check(a)
@@ -21,7 +21,7 @@ function Console:new(a)
     layer=maxlayers
   })
 
-  console.position = a.vposition
+  console.position = a.position
   console.nblines = a.nblines
   console.lines = {}
   console.filter = a.regexpfilter

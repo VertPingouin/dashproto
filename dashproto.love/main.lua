@@ -19,7 +19,8 @@ function love.load(arg)
     name='info console',
     regexpfilter='.*',
     vposition=vec2(16,16),
-    nblines=30
+    nblines=15,
+    position=vec2(10,480)
   })
 
   log = log:new({c1})

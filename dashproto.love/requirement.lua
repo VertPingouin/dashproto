@@ -15,6 +15,8 @@ player = require('entities/player')
 target = require('entities/target')
 console = require('entities/console')
 collider = require('entities/collider')
+map = require('entities/map')
+
 --components
 component = require('components/_component')
 c_statemachine = require('components/c_statemachine')

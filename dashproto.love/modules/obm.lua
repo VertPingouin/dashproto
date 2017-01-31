@@ -326,7 +326,6 @@ function OBM:remove(id)
 end
 
 function OBM:printChildren(node,indent)
-  debug = false
   local indent = indent or 0
   if indent == 0 then
     log:post('INFO','obm','---ENTITIES---')
@@ -340,7 +339,6 @@ function OBM:printChildren(node,indent)
     log:post('INFO','obm',tab..self:getId(v.reference)..'\t'..tostring(v.reference))
     self:printChildren(self:getId(v.reference), indent + 1)
   end
-  debug = true
 end
 
 function OBM:printVisible()

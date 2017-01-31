@@ -17,8 +17,9 @@ function C_body:new(owner,id,a)
   c_body.h = a.h
   c_body.color = a.color
 
-  assert(obm:get('world'),'c_body::new::a world object (bump) is needed for a body to work')
-  c_body.world = obm:get('world')
+
+  assert(obm:get('bumpWorld'),'c_body::new::a world object (bump) is needed for a body to work')
+  c_body.world = obm:get('bumpWorld')
   c_body.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
 
 --TODO handle different body types
@@ -36,8 +37,10 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:tick(dt)
-    self.owner.position.x = self.position.x
-    self.owner.position.y = self.position.y
+    if self.owner.position then
+      self.owner.position.x = self.position.x
+      self.owner.position.y = self.position.y
+    end
   end
 
   function c_body:draw()

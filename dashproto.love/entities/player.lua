@@ -1,6 +1,13 @@
 Player = {}
 
-function Player:new(parent)
+function Player:new(parent,a)
+  local check = acheck:new()
+  check:add({
+    {'position','mandatory','table'}
+  })
+  a=check:check(a)
+
+
   local player = entity:new({
     name='player',
     tags={'ticking','visible'},
@@ -8,7 +15,7 @@ function Player:new(parent)
     layer=2
   })
 
-  player.position = vec2(100,200)
+  player.position = a.position
 
   player.movement = vec2(0,0)
 
@@ -70,9 +77,9 @@ function Player:new(parent)
   end
 
   function player:oDraw()
-    --love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
-    --love.graphics.circle("fill", self.position.x, self.position.y, 30)
-    --love.graphics.setColor(255,255, 255, 255)
+    love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
+    love.graphics.circle("fill", self.position.x+16, self.position.y+16, 16)
+    love.graphics.setColor(255,255, 255, 255)
   end
 
   return player
