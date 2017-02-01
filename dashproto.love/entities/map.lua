@@ -32,7 +32,8 @@ function Map:new(parent,name,a)
           y=object.y+map.position.y,
           w=object.width,
           h=object.height,
-          color=color:new(0,255,0,255)
+          color=color:new(200,100,200,100),
+          family='collider'
         }),'collider'..j)
       end
     --spawn points layer
@@ -41,6 +42,19 @@ function Map:new(parent,name,a)
         assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
         assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
         map.spawn[object.name] = vec2(object.x,object.y)
+      end
+    elseif layer.type == 'objectgroup' and layer.name == 'trigger' then
+      for j,object in ipairs(layer.objects) do
+        assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
+        assert(object.name,'ERROR::map::new::all rectangles must be named in layer trigger')
+        map:add(c_body:new(map,object.name,{
+          x=object.x+map.position.x,
+          y=object.y+map.position.y,
+          w=object.width,
+          h=object.height,
+          color=color:new(200,0,0,100),
+          family='trigger'
+        }),object.name)
       end
     end
   end
