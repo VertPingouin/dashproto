@@ -8,7 +8,7 @@ return {
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 16,
+  nextobjectid = 26,
   properties = {},
   tilesets = {},
   layers = {
@@ -31,6 +31,44 @@ return {
           y = 64,
           width = 32,
           height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "trigger",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 23,
+          name = "room1",
+          type = "",
+          shape = "rectangle",
+          x = 0,
+          y = 0,
+          width = 864,
+          height = 544,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 25,
+          name = "trigger1",
+          type = "",
+          shape = "rectangle",
+          x = 448,
+          y = 288,
+          width = 64,
+          height = 96,
           rotation = 0,
           visible = true,
           properties = {}
@@ -107,7 +145,7 @@ return {
           x = 128,
           y = 128,
           width = 64,
-          height = 64,
+          height = 256,
           rotation = 0,
           visible = true,
           properties = {}
@@ -147,6 +185,19 @@ return {
           y = 32,
           width = 32,
           height = 352,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 16,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 128,
+          width = 128,
+          height = 64,
           rotation = 0,
           visible = true,
           properties = {}
