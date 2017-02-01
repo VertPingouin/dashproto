@@ -12,6 +12,10 @@ function love.load(arg)
   obm:load()
   renderer:load()
   gameloop:load()
+  colm:load()
+
+  colm:add({obf1='player',obf2='collider',coltype='slide'})
+  colm:add({obf1='player',obf2='trigger',coltype='cross'})
 
   --debug consoles
   local c1 = console:new({
