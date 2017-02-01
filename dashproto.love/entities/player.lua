@@ -30,12 +30,12 @@ function Player:new(parent,a)
   player.mainFSM:addTransition('Moving','Idle')
   player.mainFSM:setInitialState('Idle')
 
-  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=32,h=32,color=color:new(0,255,0,255)}),'mainBody')
+  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=32,h=32,color=color:new(0,255,0,100),family='player'}),'mainBody')
 
   --target
   player.target = target:new('player')
 
-  player.color = color:new(255,255,255,255)
+  player.color = color:new(255,255,255,100)
   player.cooldown = 0
 
   --TODO make a statemachine for cooldown
