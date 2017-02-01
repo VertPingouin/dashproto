@@ -8,7 +8,8 @@ function C_body:new(owner,id,a)
     {'y','defaultValue','number',10},
     {'w','defaultValue','number',16},
     {'h','defaultValue','number',16},
-    {'color','defaultValue','table',color:new(255,255,255,255)}
+    {'color','defaultValue','table',color:new(255,255,255,255)},
+    {'family','mandatory','string'}
   })
   a = check:check(a)
 
@@ -16,18 +17,14 @@ function C_body:new(owner,id,a)
   c_body.w = a.w
   c_body.h = a.h
   c_body.color = a.color
-
+  c_body.family = a.family
 
   assert(obm:get('bumpWorld'),'c_body::new::a world object (bump) is needed for a body to work')
   c_body.world = obm:get('bumpWorld')
   c_body.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
 
---TODO handle different body types
   function c_body:addVec(vector)
     local actualX, actualY, cols, len = self.world:move(self,c_body.position.x+vector.x,c_body.position.y+vector.y,self.filter)
-    if self.position.x+vector.x ~= actualX or self.position.y+vector.y ~= actualY then
-       log:post('DEBUG','c_body','collision of '..obm:getId(self.owner))
-    end
 
     self.position.x = actualX
     self.position.y = actualY
@@ -51,7 +48,7 @@ function C_body:new(owner,id,a)
         c_body.color.b,
         c_body.color.a
       )
-      love.graphics.rectangle('line', self.position.x, self.position.y, self.w, self.h)
+      love.graphics.rectangle('fill', self.position.x, self.position.y, self.w, self.h)
       love.graphics.setColor(255,255,255,255)
     end
   end
@@ -62,10 +59,8 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:filter(other)
-    coltype = 'slide'
-    log:post('DEBUG','c_body','check collision "'..coltype..'" of '..obm:getId(self.owner)..' against '..obm:getId(other.owner))
+    coltype = colm:getColType(self.family,other.family)
     return coltype
-    --do things here
   end
 
   return c_body
