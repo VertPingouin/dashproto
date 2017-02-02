@@ -182,12 +182,13 @@ function OBM:callByTags(tag,func,args)
   if self.tags[tag] then
     for i,obj in ipairs(self.tags[tag]) do
       if obj[func] then
-        obj[func](unpack(args))
+        obj[func](obj,unpack(args))
       end
     end
+  else
+    log:post('WARNING','obm','No objects with tag '..tostring(tag))
+    return {}
   end
-  log:post('WARNING','obm','No objects with tag '..tostring(tag))
-  return {}
 end
 
 
