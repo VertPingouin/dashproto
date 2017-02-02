@@ -7,6 +7,7 @@ obm = require('modules/obm')
 renderer = require('modules/renderer')
 gameloop = require('modules/gameloop')
 colm = require('modules/colm')
+evm = require('modules/evm')
 
 --entities
 entity = require('entities/_entity')
