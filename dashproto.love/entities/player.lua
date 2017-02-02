@@ -10,7 +10,7 @@ function Player:new(parent,a)
 
   local player = entity:new({
     name='player',
-    tags={'ticking','visible'},
+    tags={'ticking','visible','player'},
     parent=parent,
     layer=2
   })
@@ -82,6 +82,9 @@ function Player:new(parent,a)
     love.graphics.setColor(255,255, 255, 255)
   end
 
+  function player:testCol()
+    self.color = color:new(255,0,0,255)
+  end
   return player
 end
 
