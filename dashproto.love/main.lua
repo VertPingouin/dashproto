@@ -8,14 +8,8 @@
 function love.load(arg)
   require('requirement')
 
-  --intitialize components
+  --intitialize obm
   obm:load()
-  renderer:load()
-  gameloop:load()
-  colm:load()
-
-  colm:add({obf1='player',obf2='collider',coltype='slide'})
-  colm:add({obf1='player',obf2='trigger',coltype='cross'})
 
   --debug consoles
   local c1 = console:new({
@@ -29,6 +23,17 @@ function love.load(arg)
 
   log = log:new({c1})
 
+  --intitialize other modules
+  renderer:load()
+  gameloop:load()
+  colm:load()
+  evm:load()
+
+  colm:add({obf1='player',obf2='collider',coltype='slide'})
+  colm:add({obf1='player',obf2='trigger',coltype='cross'})
+
+  evm:add({eventstring='test',tag='player',callback='testCol'})
+
   --game entity with default scene
   game = game:new()
   game:setScene(require('scenes/mainScene'):new('game'))
@@ -36,6 +41,7 @@ function love.load(arg)
 end
 
 function love.update(dt)
+  evm:tick(dt)
   gameloop:tick(dt)
 end
 
