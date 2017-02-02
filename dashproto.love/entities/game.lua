@@ -36,6 +36,8 @@ function Game:new()
         obm:printVisible()
       elseif key == 'f3' then
         obm:printTicking()
+      elseif key == 'f4' then
+        evm:post('test')
       elseif key == 'escape' then
         love.event.quit()
       end
