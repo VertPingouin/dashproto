@@ -11,7 +11,7 @@ function EVM:load()
   self.queue = {}
 end
 
-function EVM:add(a)
+function EVM:addTagEvent(a)
   --adding an event definition
   --a name, a tag on which to call callback function
   local check = acheck:new()
@@ -21,10 +21,24 @@ function EVM:add(a)
     {'callback','mandatory','string'}
   })
   a = check:check(a)
-
-  self.events[a.eventstring] = {tag=a.tag,callback=a.callback}
-  log:post('DEBUG','evm','event '..a.eventstring..' added, will call '..a.callback..' on '..a.tag)
+  self.events[a.eventstring] = {type='t',tag=a.tag,callback=a.callback}
+  log:post('DEBUG','evm','event '..a.eventstring..' added, will call '..a.callback..' on tag '..a.tag)
 end
+
+function EVM:addEntityEvent(a)
+  --adding an event definition
+  --a name, a tag on which to call callback function
+  local check = acheck:new()
+  check:add({
+    {'eventstring','mandatory','string'},
+    {'entity','mandatory','string'},
+    {'callback','mandatory','string'}
+  })
+  a = check:check(a)
+  self.events[a.eventstring] = {type='e',target=a.entity,callback=a.callback}
+  log:post('DEBUG','evm','event '..a.eventstring..' added, will call '..a.callback..' on entity '..a.entity)
+end
+
 
 function EVM:post(eventstring,a)
   --add an event to queue
@@ -39,9 +53,13 @@ end
 function EVM:tick(dt)
   --empty the queue and call callback function
   for i,evt in ipairs(self.queue) do
-    obm:callByTags(evt[1].tag,evt[1].callback,evt[2])
+    if evt[1].type == 't' then
+      obm:callByTags(evt[1].target,evt[1].callback,evt[2])
+    else
+      obm:callById(evt[1].target,evt[1].callback,evt[2])
+    end
     remove(self.queue,i)
-    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].tag)
+    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target)
   end
 end
 
