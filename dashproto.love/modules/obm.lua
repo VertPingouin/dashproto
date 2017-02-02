@@ -191,6 +191,14 @@ function OBM:callByTags(tag,func,args)
   end
 end
 
+function OBM:callById(id,func,args)
+  --TODO handle non existing obj, tag,functions
+  local obj = obm:get(id)
+  if obj then
+    obj[func](obj,unpack(args))
+  end
+end
+
 
 
 function OBM:getVisible(layer)
