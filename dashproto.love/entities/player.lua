@@ -57,15 +57,19 @@ function Player:new(parent,a)
       self.movement.x = -left+right
       self.movement.y = -up+down
 
-      self.mainBody:addVec(self.movement:normalizeInplace() * dt * 200)
+      self:moveCollide(self.movement:normalizeInplace() * 200 * dt,self.mainBody)
     else
       player.mainFSM:transition('Idle')
     end
 
     if self.joystick:pressed('dash') and self.cooldown == 0 then
-      self.mainBody.position = self.target.position
       self.cooldown = 0.3
     end
+  end
+
+  function player:moveCollide(vector,body)
+    --moves the player according to a c_body collisions
+    self.position = body:moveCollide(vector)
   end
 
   function player:onEnterIdle()
