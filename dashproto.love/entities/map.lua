@@ -20,7 +20,7 @@ function Map:new(parent,name,a)
   map.spawn = {}
   map.position = a.position
 
-
+  --TODO put colliders and triggerzones out of the map object... maybe...
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
     --colliders layer
@@ -43,6 +43,7 @@ function Map:new(parent,name,a)
         assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
         map.spawn[object.name] = vec2(object.x,object.y)
       end
+    --triggerzone layer
     elseif layer.type == 'objectgroup' and layer.name == 'trigger' then
       for j,object in ipairs(layer.objects) do
         assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
