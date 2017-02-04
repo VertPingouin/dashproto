@@ -29,9 +29,11 @@ function love.load(arg)
   colm:load()
   evm:load()
 
-  colm:add({obf1='player',obf2='collider',coltype='slide'})
-  colm:add({obf1='player',obf2='trigger',coltype='cross'})
+  --collision responses definition
+  colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})
+  colm:addCollisionResponse({obf1='player',obf2='trigger',coltype='cross'})
 
+  --events definition
   evm:addEntityEvent({eventstring='test',entity='player',callback='testCol'})
 
   --game entity with default scene
