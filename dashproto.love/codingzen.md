@@ -4,6 +4,12 @@ More time != more code.
 If you're stuck, quit for one day.
 If after one day, you're still stuck, refactor.
 
+Avoid being stuck on details that don't matter
+Write a little TODO and do it later.
+
+If you're reluctant to achieve big things,
+try to solve some little TODOs
+
 Don't get too fond of your code.
 Don't be afraid to trash.
 
