@@ -30,7 +30,7 @@ function ACheck:new()
         or arg[3]=='boolean','ERROR::acheck::add::Type must be a lua type')
       --check if argtype is default value that a default value is present
       if arg[2] == 'defaultValue' then
-        assert(arg[4],'ERROR::acheck::add::Default value is needed.')
+        assert(arg[4] ~= nil,'ERROR::acheck::add::Default value is needed.')
       end
 
       acheck.arglist[arg[1]] = {argtype = arg[2],type = arg[3],default=arg[4]}
