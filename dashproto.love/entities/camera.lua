@@ -2,8 +2,8 @@ Camera = {}
 
 function Camera:new(parent)
   local camera = entity({
-    name='player',
-    tags={'ticking','camera'},
+    name='camera',
+    tags={'ticking'},
     parent=parent
   })
 
