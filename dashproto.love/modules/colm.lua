@@ -4,7 +4,7 @@ function COLM:load()
   self.collisions = {}
 end
 
-function COLM:add(a)
+function COLM:addCollisionResponse(a)
   local check = acheck:new()
   check:add({
     {'obf1','mandatory','string'},
@@ -21,7 +21,7 @@ function COLM:add(a)
   colm.collisions[a.obf1][a.obf2] = a.coltype
 end
 
-function COLM:getColType(obf1,obf2)
+function COLM:getCollisionResponse(obf1,obf2)
   if colm.collisions[obf1] then
     if colm.collisions[obf1][obf2] then
       return colm.collisions[obf1][obf2]
