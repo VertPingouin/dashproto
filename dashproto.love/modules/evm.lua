@@ -43,11 +43,14 @@ end
 function EVM:post(eventstring,a)
   --add an event to queue
   --on the next tick, callback function will be called with args on tag
-  assert(self.events[eventstring],'ERROR:EVM:post::Unknown event '..eventstring)
-  a = a or {}
 
-  local event2send = self.events[eventstring]
-  insert(self.queue,{event2send,a})
+  --if event is not handled, we don't add it to the queue
+  --so we can post a shit ton of event without impacting too much the perfs
+  if self.events[eventstring] then
+    a = a or {}
+    local event2send = self.events[eventstring]
+    insert(self.queue,{event2send,a})
+  end
 end
 
 function EVM:tick(dt)
