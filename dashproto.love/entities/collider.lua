@@ -1,4 +1,3 @@
---TODO maybe collider is not useful ?
 Collider = {}
 function Collider:new(parent,a)
   local check = acheck:new()
