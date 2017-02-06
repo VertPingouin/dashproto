@@ -82,11 +82,11 @@ function OBM:load()
   self.tags.visible = {}
   self.tags.ticking = {}
 
-  for i=1,maxlayers do
+  for i=minlayer,maxlayer do
     self.tags['visible'][i] = {} --special tags
   end
 
-  for i=1,maxorders do
+  for i=minorders,maxorders do
     self.tags['ticking'][i] = {}
   end
 
@@ -118,7 +118,7 @@ function OBM:add(ref,id,a)
   })
   a = check:check(a)
 
-  assert(a.layer <= maxlayers,'ERROR from obm : Layer number should be less or equal than '..maxlayers..'('..a.layer..')')
+  assert(a.layer <= maxlayer,'ERROR from obm : Layer number should be less or equal than '..maxlayer..'('..a.layer..')')
   assert(a.order <= maxorders,'ERROR from obm : Order number should be less or equal than '..maxorders..'('..a.order..')')
 
   obj.layer = a.layer
@@ -303,7 +303,6 @@ function OBM:remove(id)
       for i,layer in ipairs(listobjtag) do
         for j,obj in ipairs(layer) do
           if obj == object2remove then
-            --print(obm:getId(object2remove),obj,object2remove)
             remove(layer,j)
           end
         end
