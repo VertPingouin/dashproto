@@ -30,7 +30,7 @@ function Player:new(parent,a)
   player.mainFSM:addTransition('Moving','Idle')
   player.mainFSM:setInitialState('Idle')
 
-  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=32,h=32,color=color:new(0,255,0,100),family='player'}),'mainBody')
+  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=16,h=16,color=color:new(0,255,0,100),family='player'}),'mainBody')
 
   --target
   player.target = target:new('player')
@@ -82,7 +82,7 @@ function Player:new(parent,a)
 
   function player:oDraw()
     love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
-    love.graphics.circle("fill", self.position.x+16, self.position.y+16, 16)
+    love.graphics.circle("fill", self.position.x+8, self.position.y+8, 8)
     love.graphics.setColor(255,255, 255, 255)
   end
 
