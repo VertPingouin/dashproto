@@ -1,3 +1,4 @@
+--copy a table (not deep copy)
 function tcopy(orig)
     local orig_type = type(orig)
     local copy
@@ -12,6 +13,7 @@ function tcopy(orig)
     return copy
 end
 
+--compare two tables
 function comparetables(t1, t2)
   if #t1 ~= #t2 then return false end
   for i=1,#t1 do
