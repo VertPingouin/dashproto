@@ -27,6 +27,7 @@ function C_body:new(owner,id,a)
   c_body.world = obm:get('bumpWorld')
   c_body.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
 
+  --metamethods for accessing center, left, top right etc...
   local mt = {__index =
   function(table,index)
     if index == 'center' then
