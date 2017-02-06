@@ -10,10 +10,11 @@ function C_body:new(owner,id,a)
     {'h','defaultValue','number',16},
     {'color','defaultValue','table',color:new(255,255,255,255)},
     {'family','mandatory','string'},
+    {'offset','defaultValue','table',vec2(0,0)}
   })
   a = check:check(a)
 
-  c_body.position = vec2(a.x,a.y)
+  c_body.position = vec2(a.x,a.y) + a.offset
   c_body.w = a.w
   c_body.h = a.h
   c_body.color = a.color
@@ -21,6 +22,7 @@ function C_body:new(owner,id,a)
   c_body.name = obm:getId(owner)..'.'..id --used to detect particular collision
   c_body.contactsBody = {} --collision list
   c_body.contactsFamily = {}
+  c_body.offset = a.offset
 
 
   assert(obm:get('bumpWorld'),'c_body::new::a world object (bump) is needed for a body to work')
@@ -80,31 +82,32 @@ function C_body:new(owner,id,a)
 }
   setmetatable(c_body,mt)
 
-  function c_body:getCenter()
-    return vec2(self.position.x + self.w / 2,self.position.y + self.h/2)
-  end
-
-  function c_body:setCenter(vector)
-    self:tpCollide(vector.x - self.w / 2,vector.y - self.h)
-  end
-
   --TODO add offset
   function c_body:moveCollide(vector)
     --we try to move the body and return new coordinates
-    local actualX, actualY, cols, len = self.world:move(self,self.position.x+vector.x,self.position.y+vector.y,self.filter)
+    local actualX, actualY, cols, len = self.world:move(
+    self,
+    self.position.x+vector.x,
+    self.position.y+vector.y,
+    self.filter)
     --we update body position
     self.position = vec2(actualX,actualY)
     --we return body position
-    return(vec2(actualX,actualY))
+    return vec2(actualX,actualY) - self.offset
   end
 
   function c_body:tpCollide(vector)
     --we try to move the body and return new coordinates
-    local actualX, actualY, cols, len = self.world:move(self,vector.x,vector.y,self.filter)
+    local actualX, actualY, cols, len = self.world:move(
+      self,
+      vector.x,
+      vector.y,
+      self.filter
+    )
     --we update body position
     self.position = vec2(actualX,actualY)
     --we return body position
-    return(vec2(actualX,actualY))
+    return vec2(actualX,actualY) - self.offset
   end
 
   function c_body:tick(dt)
