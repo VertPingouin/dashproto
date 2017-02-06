@@ -2,7 +2,7 @@ Code when you are willing to code.
 More time != more code.
 
 If you're stuck, quit for one day.
-If after one day, you're still stuck, refactor.
+If after one day, you're still stuck,  refactor.
 
 Avoid being stuck on details that don't matter
 Write a little TODO and do it later.
