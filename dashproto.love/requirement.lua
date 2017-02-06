@@ -1,3 +1,4 @@
+require('functions')
 vec2 = require('datamodel/vec2')
 acheck = require('datamodel/acheck')
 color = require('datamodel/color')
@@ -17,7 +18,9 @@ player = require('entities/player')
 target = require('entities/target')
 console = require('entities/console')
 collider = require('entities/collider')
+triggerzone = require('entities/triggerzone')
 map = require('entities/map')
+camera = require('entities/camera')
 
 --components
 component = require('components/_component')
