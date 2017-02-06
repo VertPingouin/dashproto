@@ -1,9 +1,6 @@
 --TODO load a tilemap with collisions
---TODO make camera
 --TODO make ennemies
 --TODO make effects
---TODO demo using right stick
---TODO demo using the left stick
 
 function love.load(arg)
   require('requirement')
