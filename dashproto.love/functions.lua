@@ -19,3 +19,23 @@ function comparetables(t1, t2)
   end
   return true
 end
+
+--return wether or not element is in list
+function isin(element, list)
+  for k,v in pairs(list) do
+    if v == element then return true end
+  end
+  return false
+end
+
+--return a table containing bits of a strig cut by a certain char
+function split(str)
+  local result = {} ; i = 1
+  for chunk in str:gmatch("([^\\.]+)") do
+    if chunk~=sep then
+      result[i]=chunk
+      i = i+1
+    end
+  end
+  return result
+end
