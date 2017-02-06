@@ -14,52 +14,61 @@ function Map:new(parent,name,a)
   local map = entity:new({
     name=name,
     parent=parent,
-    tags={'ticking','visible'}
+    tags={'ticking','visible'},
+    layer=2
   })
 
   map.spawn = {}
   map.position = a.position
 
-  --TODO put colliders and triggerzones out of the map object... maybe...
+  --a rectangle representing map boundaries
+  map.boundaries = {position=vec2(map.position.x,map.position.y),
+  w=a.luamap.tilewidth * a.luamap.width,
+  h=a.luamap.tileheight * a.luamap.height}
+
+  --TODO make this more flexible with one layer by family
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
-    --colliders layer
-    if layer.type == 'objectgroup' and layer.name == 'colliders' then
-      for j,object in ipairs(layer.objects) do
-        assert(object.shape == 'rectangle','ERROR::map::new::layer colliders should only have rectangles in it')
-        map:add(c_body:new(map,'collider'..j,{
-          x=object.x+map.position.x,
-          y=object.y+map.position.y,
-          w=object.width,
-          h=object.height,
-          color=color:new(200,100,200,100),
-          family='collider'
-        }),'collider'..j)
-      end
-    --spawn points layer
-    elseif layer.type == 'objectgroup' and layer.name == 'spawn' then
-      for j,object in ipairs(layer.objects) do
-        assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
-        assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
-        map.spawn[object.name] = vec2(object.x,object.y)
-      end
-    --triggerzone layer
-    elseif layer.type == 'objectgroup' and layer.name == 'trigger' then
-      for j,object in ipairs(layer.objects) do
-        assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
-        assert(object.name,'ERROR::map::new::all rectangles must be named in layer trigger')
-        map:add(c_body:new(map,object.name,{
-          x=object.x+map.position.x,
-          y=object.y+map.position.y,
-          w=object.width,
-          h=object.height,
-          color=color:new(200,0,0,100),
-          family='trigger'
-        }),object.name)
+    if layer.type == 'objectgroup' then
+      if string.sub(layer.name,1,2) == 's_' then
+        if layer.name == 's_colliders' then
+          for j,object in ipairs(layer.objects) do
+            assert(object.shape == 'rectangle','ERROR::map::new::layer colliders should only have rectangles in it')
+            map:add(c_body:new(map,'collider'..j,{
+              x=object.x+map.position.x,
+              y=object.y+map.position.y,
+              w=object.width,
+              h=object.height,
+              color=color:new(200,100,200,100),
+              family='collider'
+            }),'collider'..j)
+          end
+        elseif layer.name == 's_spawn' then
+          for j,object in ipairs(layer.objects) do
+            assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
+            assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
+            assert(not map.spawn[object.name],'ERROR::map::new::all rectangles names must be unique in layer spawn')
+            map.spawn[object.name] = vec2(object.x,object.y)
+          end
+        end
+      elseif string.sub(layer.name,1,2) == 't_' then
+        local family = string.sub(layer.name,3)
+        for j,object in ipairs(layer.objects) do
+          assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
+          assert(object.name,'ERROR::map::new::all rectangles must be named in layer trigger')
+          --TODO check trigger layer name unicity
+          map:add(c_body:new(map,object.name,{
+            x=object.x+map.position.x,
+            y=object.y+map.position.y,
+            w=object.width,
+            h=object.height,
+            color=color:new(200,0,0,100),
+            family=family
+          }),object.name)
+        end
       end
     end
   end
-
 
   --gets a spawn point
   function map:getSpawn(name)
