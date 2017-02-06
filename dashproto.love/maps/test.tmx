@@ -47,6 +47,6 @@
   <object id="14" x="256" y="16" width="16" height="48"/>
  </objectgroup>
  <objectgroup color="#00ff00" name="s_spawn">
-  <object id="18" name="player" x="160" y="48" width="16" height="16"/>
+  <object id="18" name="player" x="80" y="16" width="16" height="16"/>
  </objectgroup>
 </map>
