@@ -35,7 +35,7 @@ function Map:new(parent,name,a)
               y=object.y+map.position.y,
               w=object.width,
               h=object.height,
-              color=color:new(200,100,200,100),
+              color=color:new(200,100,200,150),
               family='collider'
             }),'collider'..j)
           end
@@ -58,7 +58,7 @@ function Map:new(parent,name,a)
             y=object.y+map.position.y,
             w=object.width,
             h=object.height,
-            color=color:new(200,0,0,100),
+            color=color:new(200,0,0,150),
             family=family
           }),object.name)
         end
