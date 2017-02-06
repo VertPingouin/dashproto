@@ -30,7 +30,15 @@ function Player:new(parent,a)
   player.mainFSM:addTransition('Moving','Idle')
   player.mainFSM:setInitialState('Idle')
 
-  player:add(c_body:new(player,'mainBody',{x=player.position.x,y=player.position.y,w=16,h=16,color=color:new(0,255,0,100),family='player'}),'mainBody')
+  player:add(c_body:new(player,'mainBody',{
+    x=player.position.x,
+    y=player.position.y,
+    w=16,
+    h=16,
+    color=color:new(0,255,0,100),
+    family='player',
+    offset=vec2(0,8)
+  }),'mainBody')
 
   --target
   player.target = target:new('player')
