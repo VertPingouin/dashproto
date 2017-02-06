@@ -8,13 +8,13 @@ return {
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextobjectid = 26,
+  nextobjectid = 28,
   properties = {},
   tilesets = {},
   layers = {
     {
       type = "objectgroup",
-      name = "spawn",
+      name = "s_spawn",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -39,45 +39,7 @@ return {
     },
     {
       type = "objectgroup",
-      name = "trigger",
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      draworder = "topdown",
-      properties = {},
-      objects = {
-        {
-          id = 23,
-          name = "room1",
-          type = "",
-          shape = "rectangle",
-          x = 0,
-          y = 0,
-          width = 864,
-          height = 544,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 25,
-          name = "trigger1",
-          type = "",
-          shape = "rectangle",
-          x = 448,
-          y = 288,
-          width = 64,
-          height = 96,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        }
-      }
-    },
-    {
-      type = "objectgroup",
-      name = "colliders",
+      name = "s_colliders",
       visible = true,
       opacity = 1,
       offsetx = 0,
@@ -198,6 +160,44 @@ return {
           y = 128,
           width = 128,
           height = 64,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "t_lava",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 25,
+          name = "lava1",
+          type = "",
+          shape = "rectangle",
+          x = 480,
+          y = 288,
+          width = 64,
+          height = 96,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 27,
+          name = "lava2",
+          type = "",
+          shape = "rectangle",
+          x = 192,
+          y = 288,
+          width = 64,
+          height = 96,
           rotation = 0,
           visible = true,
           properties = {}
