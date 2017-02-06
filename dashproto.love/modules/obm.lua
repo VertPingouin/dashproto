@@ -54,28 +54,6 @@ local OBM = {}
 local insert = table.insert
 local remove = table.remove
 
---return wether or not element is in list
-local function isin(element, list)
-  for k,v in pairs(list) do
-    if v == element then return true end
-  end
-  return false
-end
-
---return a table containing bits of a strig cut by a certain char
-local function split(str)
-  local result = {} ; i = 1
-  for chunk in str:gmatch("([^\\.]+)") do
-    if chunk~=sep then
-      result[i]=chunk
-      i = i+1
-    end
-  end
-  return result
-end
-
-
-
 function OBM:load()
   self.tags = {} --objects by tag
 
