@@ -1,4 +1,3 @@
---TODO give simple attributes center, left, right, top, bottm, topleft, topright,bottomleft,bottomright
 C_body = {}
 function C_body:new(owner,id,a)
   local c_body = component:new(owner,id,a)
@@ -28,8 +27,57 @@ function C_body:new(owner,id,a)
   c_body.world = obm:get('bumpWorld')
   c_body.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
 
-  local mt = {__index = function(table,key) return table.components[key] end }
-  setmetatable(entity,mt)
+  local mt = {__index =
+  function(table,index)
+    if index == 'center' then
+      return vec2(table.position.x + table.w / 2,table.position.y + table.h/2)
+    elseif index == 'left' then
+      return table.position.x
+    elseif index == 'right' then
+      return table.position.x + table.w
+    elseif index == 'top' then
+      return table.position.y
+    elseif index == 'bottom' then
+      return table.position.y + table.h
+    elseif index == 'topleft' then
+      return vec2(table.left,table.top)
+    elseif index == 'topright' then
+      return vec2(table.right,table.top)
+    elseif index == 'bottomleft' then
+      return vec2(table.left,table.bottom)
+    elseif index == 'bottomright' then
+      return vec2(table.right,table.bottom)
+    else return rawget(table,index) end
+  end,
+  __newindex =
+  function(table,index,value)
+    if index == 'center' then
+      table.position.x = value.x - table.w / 2
+      table.position.y = value.y - table.h / 2
+    elseif index == 'left' then
+      table.position.x = value
+    elseif index == 'right' then
+      table.position.x = value - table.w
+    elseif index == 'top' then
+      table.position.y = value
+    elseif index == 'bottom' then
+      table.position.y = value - table.h
+    elseif index == 'topleft' then
+      table.left = value.x
+      table.top = value.y
+    elseif index == 'topright' then
+      table.right = value.x
+      table.top = value.y
+    elseif index == 'bottomleft' then
+      table.left = value.x
+      table.bottom = value.y
+    elseif index == 'bottomright' then
+      table.right = value.x
+      table.bottom = value.y
+    else return rawset(table,index,value) end
+  end
+}
+  setmetatable(c_body,mt)
 
   function c_body:getCenter()
     return vec2(self.position.x + self.w / 2,self.position.y + self.h/2)
@@ -38,6 +86,8 @@ function C_body:new(owner,id,a)
   function c_body:setCenter(vector)
     self:tpCollide(vector.x - self.w / 2,vector.y - self.h)
   end
+
+  --TODO add offset
   function c_body:moveCollide(vector)
     --we try to move the body and return new coordinates
     local actualX, actualY, cols, len = self.world:move(self,self.position.x+vector.x,self.position.y+vector.y,self.filter)
