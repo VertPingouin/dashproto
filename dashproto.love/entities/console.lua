@@ -18,7 +18,7 @@ function Console:new(a)
     name=a.name,
     tags={'ticking','visible'},
     parent=a.parent,
-    layer=maxlayers
+    layer=maxlayer
   })
 
   console.position = a.position
