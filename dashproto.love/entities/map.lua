@@ -22,11 +22,7 @@ function Map:new(parent,name,a)
   map.position = a.position
 
   --a rectangle representing map boundaries
-  map.boundaries = {position=vec2(map.position.x,map.position.y),
-  w=a.luamap.tilewidth * a.luamap.width,
-  h=a.luamap.tileheight * a.luamap.height}
-
-  --TODO make this more flexible with one layer by family
+  map:add(c_body:new(map,'boundaries',{x=map.position.x,y=map.position.y,w=a.luamap.tilewidth * a.luamap.width,h=a.luamap.tileheight * a.luamap.height,color=color:new(0,255,0,0),family='boundaries'}),'boundaries')
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
     if layer.type == 'objectgroup' then
