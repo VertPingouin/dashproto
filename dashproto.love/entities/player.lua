@@ -57,7 +57,7 @@ function Player:new(parent,a)
       self.movement.x = -left+right
       self.movement.y = -up+down
 
-      self:moveCollide(self.movement:normalizeInplace() * 200 * dt,self.mainBody)
+      self:moveCollide(self.movement:normalizeInplace() * 150 * dt,self.mainBody)
     else
       player.mainFSM:transition('Idle')
     end
@@ -86,8 +86,8 @@ function Player:new(parent,a)
     love.graphics.setColor(255,255, 255, 255)
   end
 
-  function player:testCol()
-    self.color = color:new(255,0,0,255)
+  function player:testCol(r,g,b)
+    self.color = color:new(r,g,b,255)
   end
   return player
 end
