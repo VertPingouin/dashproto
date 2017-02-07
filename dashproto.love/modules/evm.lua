@@ -52,6 +52,7 @@ function EVM:post(eventstring,a)
     a = a or {}
     local event2send = self.events[eventstring]
     insert(self.queue,{event2send,a})
+    log:post('DEBUG','evm','received handled event "'..eventstring..'"')
   end
 end
 
@@ -64,7 +65,7 @@ function EVM:tick(dt)
       obm:callById(evt[1].target,evt[1].callback,evt[1].args)
     end
     remove(self.queue,i)
-    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target)
+    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target..' with params '..strTable(evt[1].args))
   end
 end
 
