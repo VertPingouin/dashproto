@@ -13,9 +13,8 @@ function love.load(arg)
     parent='root',
     name='info console',
     regexpfilter='.*',
-    vposition=vec2(16,16),
     nblines=15,
-    position=vec2(10,480)
+    position=vec2(10,400)
   })
 
   log = log:new({c1})
@@ -25,6 +24,9 @@ function love.load(arg)
   gameloop:load()
   colm:load()
   evm:load()
+  asm:load()
+
+  require('ressources')
 
   --collision responses definition
   colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})

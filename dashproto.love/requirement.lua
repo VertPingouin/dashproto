@@ -2,6 +2,7 @@ require('functions')
 vec2 = require('datamodel/vec2')
 acheck = require('datamodel/acheck')
 color = require('datamodel/color')
+asset = require('datamodel/asset')
 
 --system components
 obm = require('modules/obm')
@@ -9,6 +10,7 @@ renderer = require('modules/renderer')
 gameloop = require('modules/gameloop')
 colm = require('modules/colm')
 evm = require('modules/evm')
+asm = require('modules/asm')
 
 --entities
 entity = require('entities/_entity')
