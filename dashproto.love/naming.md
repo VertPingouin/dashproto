@@ -13,6 +13,8 @@
   log
   player
   target
+  collider
+  triggerzone
 
 
 tilemap
