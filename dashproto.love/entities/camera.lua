@@ -19,7 +19,7 @@ function Camera:new(parent,a)
   camera.target = a.target
   camera.boundaries = a.boundaries
   camera.position = vec2(0,0)
-  camera:add(c_body:new(camera,'viewport',{x=0,y=0,w=a.w,h=a.h,color=color:new(0,0,255,0),family='viewport',layer=minlayer}),'viewport')
+  camera:add(c_body:new(camera,'viewport',{x=0,y=0,w=a.w,h=a.h,color=color:new(0,0,255,0),family='viewport',layer=params.minlayer}),'viewport')
 
   function camera:setTarget(target)
   end

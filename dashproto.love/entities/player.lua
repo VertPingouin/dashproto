@@ -65,7 +65,7 @@ function Player:new(parent,a)
       self.movement.x = -left+right
       self.movement.y = -up+down
 
-      self:moveCollide(self.movement:normalizeInplace() * 150 * dt,self.mainBody)
+      self:moveCollide(self.movement:normalizeInplace() * 75 * dt,self.mainBody)
     else
       player.mainFSM:transition('Idle')
     end

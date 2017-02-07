@@ -60,11 +60,11 @@ function OBM:load()
   self.tags.visible = {}
   self.tags.ticking = {}
 
-  for i=minlayer,maxlayer do
+  for i=params.minlayer,params.maxlayer do
     self.tags['visible'][i] = {} --special tags
   end
 
-  for i=minorders,maxorders do
+  for i=params.minorder,params.maxorder do
     self.tags['ticking'][i] = {}
   end
 
@@ -96,8 +96,8 @@ function OBM:add(ref,id,a)
   })
   a = check:check(a)
 
-  assert(a.layer <= maxlayer,'ERROR from obm : Layer number should be less or equal than '..maxlayer..'('..a.layer..')')
-  assert(a.order <= maxorders,'ERROR from obm : Order number should be less or equal than '..maxorders..'('..a.order..')')
+  assert(a.layer <= params.maxlayer,'ERROR from obm : Layer number should be less or equal than '..params.maxlayer..'('..a.layer..')')
+  assert(a.order <= params.maxorder,'ERROR from obm : Order number should be less or equal than '..params.maxorder..'('..a.order..')')
 
   obj.layer = a.layer
   obj.order = a.order

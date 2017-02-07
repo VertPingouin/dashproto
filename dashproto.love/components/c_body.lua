@@ -161,7 +161,7 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:draw()
-    if debug.boxes then
+    if params.debug.boxes then
       love.graphics.setColor(
         c_body.color.r,
         c_body.color.g,
