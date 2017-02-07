@@ -82,7 +82,6 @@ function C_body:new(owner,id,a)
 }
   setmetatable(c_body,mt)
 
-  --TODO add offset
   function c_body:moveCollide(vector)
     --we try to move the body and return new coordinates
     local actualX, actualY, cols, len = self.world:move(
