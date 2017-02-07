@@ -50,6 +50,8 @@ functions
   = getByTags("ticking"), to be used by game loop
 ]]
 
+--TODO implement metamethods to access objects by Id
+
 local OBM = {}
 local insert = table.insert
 local remove = table.remove
