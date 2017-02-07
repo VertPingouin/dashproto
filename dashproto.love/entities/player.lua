@@ -35,7 +35,7 @@ function Player:new(parent,a)
     y=player.position.y,
     w=16,
     h=16,
-    color=color:new(0,255,0,100),
+    color=color:new(0,255,0,0),
     family='player',
     offset=vec2(0,8)
   }),'mainBody')
@@ -89,9 +89,11 @@ function Player:new(parent,a)
   end
 
   function player:oDraw()
-    love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
-    love.graphics.circle("fill", self.position.x+8, self.position.y+8, 8)
-    love.graphics.setColor(255,255, 255, 255)
+    --love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
+    local d = asm:getSprite('player_walk','down2')
+    love.graphics.draw(d.pic,d.quad,self.position.x, self.position.y)
+    --love.graphics.setColor(255,255, 255, 255)
+
   end
 
   function player:testCol(r,g,b)
