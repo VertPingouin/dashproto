@@ -41,3 +41,12 @@ function split(str)
   end
   return result
 end
+
+--print args
+function strTable(table)
+  result = ''
+  for k,v in pairs(table) do
+    result = result..k..'='..v..', '
+  end
+  return result
+end
