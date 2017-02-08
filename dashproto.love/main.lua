@@ -1,6 +1,7 @@
 --TODO load a tilemap with collisions
 --TODO make ennemies
 --TODO make effects
+--TODO wrap ext libs in entity or components without altering them
 
 function love.load(arg)
   require('requirement')
@@ -61,4 +62,8 @@ end
 
 function love.draw()
   renderer:draw()
+  if params.debug.fps then
+    love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+    love.graphics.print("Current update rate: "..tostring(math.floor(1/love.timer.getAverageDelta())), 10, 20)
+  end
 end
