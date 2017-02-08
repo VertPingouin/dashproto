@@ -26,7 +26,7 @@ function ACheck:new()
       assert(arg[2]=='mandatory' or arg[2]=='defaultValue' or arg[2]=='nullable'
         ,'ERROR::acheck::add::arg Type must be mandatory,defaultValue or nullable')
       --check type is valid
-      assert(arg[3]=='string' or arg[3]=='number' or arg[3]=='table'  or arg[3]=='userdata'
+      assert(arg[3]=='string' or arg[3]=='number' or arg[3]=='table'  or arg[3]=='userdata' or arg[3]=='various'
         or arg[3]=='boolean','ERROR::acheck::add::Type must be a lua type')
       --check if argtype is default value that a default value is present
       if arg[2] == 'defaultValue' then
@@ -44,12 +44,16 @@ function ACheck:new()
     for k,arg in pairs(self.arglist) do
       if arg.argtype == 'mandatory' then
         assert(a[k],'ERRROR::args::check::'..k..' is mandatory')
-        assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
+        if arg.type ~= 'various' then
+          assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
+        end
       elseif arg.argtype == 'defaultValue' then
         if not a[k] then
           a[k] = arg.default
         end
-        assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
+        if arg.type ~= 'various' then
+          assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
+        end
       end
 
 
