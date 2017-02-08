@@ -6,7 +6,7 @@ function love.conf(t)
 	multx = 3,
 	multy = 3,
 	resx = 768,
-	resx = 720,
+	resy = 720,
 	tilesize = 16,
 	maxlayer = 10,
 	minlayer = 1,
@@ -14,12 +14,14 @@ function love.conf(t)
 	minorder = 1,
 	debug = {
 		boxes = true,
+		fps = true,
 		loglevel = 'DEBUG' --TODO make debug level work
+
 		}
 	}
 
 	t.title = "Dash proto" -- The title of the window the game is in (string)
-	t.version = "0.10.0"         -- The LÖVE version this game was made for (string)
+	t.version = "0.10.0"         -- The Lï¿½VE version this game was made for (string)
 	t.window.borderless = true
 	t.window.width = 768
 	t.window.height = 720
