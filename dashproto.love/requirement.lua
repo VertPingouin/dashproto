@@ -28,6 +28,7 @@ camera = require('entities/camera')
 component = require('components/_component')
 c_statemachine = require('components/c_statemachine')
 c_body = require('components/c_body')
+c_sprite = require('components/c_sprite')
 
 --scenes
 scene = require('scenes/_scene')
@@ -36,3 +37,4 @@ scene = require('scenes/_scene')
 --pseudo-entities, can't have components
 bump = require('libs/bump')
 baton = require('libs/baton')
+anim8 = require('libs/anim8')
