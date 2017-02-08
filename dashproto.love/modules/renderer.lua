@@ -4,6 +4,7 @@ local remove = table.remove
 
 function Renderer:load()
   love.graphics.setDefaultFilter("nearest", "nearest")
+  love.window.setMode(params.resx,params.resy,{vsync=true})
   Renderer.canvas = love.graphics.newCanvas(params.nativeresx,params.nativeresy)
 end
 
