@@ -33,12 +33,48 @@ function Player:new(parent,a)
   player:add(c_body:new(player,'mainBody',{
     x=player.position.x,
     y=player.position.y,
-    w=16,
-    h=16,
+    w=10,
+    h=14,
     color=color:new(0,255,0,0),
     family='player',
-    offset=vec2(0,8)
+    offset=vec2(2,10)
   }),'mainBody')
+
+  player:add(c_sprite:new(player,'mainSprite'))
+  player.mainSprite:add({
+    name = 'player_walk_down',
+    pic = asm:get('player_walk'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {'2-3',1,'2-1',1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_walk_up',
+    pic = asm:get('player_walk'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {'5-6',1,'5-4',1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_walk_right',
+    pic = asm:get('player_walk'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {'8-9',1,'8-7',1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_walk_left',
+    pic = asm:get('player_walk'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {'11-12',1,'11-10',1},
+    durations = .1
+  })
+
+  player.mainSprite:setAnimation('player_walk_down')
 
   --target
   player.target = target:new('player')
@@ -64,6 +100,19 @@ function Player:new(parent,a)
       player.mainFSM:transition('Moving')
       self.movement.x = -left+right
       self.movement.y = -up+down
+      if self.movement.x == 0 then
+        if self.movement.y > 0 then
+          self.mainSprite:setAnimation('player_walk_down')
+        else
+          self.mainSprite:setAnimation('player_walk_up')
+        end
+      else
+        if self.movement.x > 0 then
+          self.mainSprite:setAnimation('player_walk_right')
+        else
+          self.mainSprite:setAnimation('player_walk_left')
+        end
+      end
 
       self:moveCollide(self.movement:normalizeInplace() * 75 * dt,self.mainBody)
     else
@@ -81,24 +130,22 @@ function Player:new(parent,a)
   end
 
   function player:onEnterIdle()
-    self.color = {r=255,g=255,b=255}
+    self.mainSprite:gotoFrame(1)
+    self.mainSprite:pause()
   end
 
   function player:onEnterMoving()
-    self.color = {r=0,g=255,b=0}
+    self.mainSprite:resume()
   end
 
   function player:oDraw()
-    --love.graphics.setColor(self.color.r, self.color.g, self.color.b, 255)
-    local d = asm:getSprite('player_walk','down2')
-    love.graphics.draw(d.pic,d.quad,self.position.x, self.position.y)
-    --love.graphics.setColor(255,255, 255, 255)
-
   end
 
   function player:testCol(r,g,b)
     self.color = color:new(r,g,b,255)
   end
+
+  player.mainFSM:initialize('Idle')
   return player
 end
 

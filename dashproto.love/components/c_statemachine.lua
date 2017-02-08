@@ -163,9 +163,7 @@ function C_statemachine:new(owner,id,a)
   function c_statemachine:initialize()
     self:exit()
     self.currentState = self.initialState
-    self:log("initialized")
     self:enter()
-
   end
 
   --terminate Sarah Connor
@@ -173,7 +171,6 @@ function C_statemachine:new(owner,id,a)
     self:exit()
     self.currentState = self.finalState
     self.isEnded = true
-    self:log("terminated")
     self:enter()
   end
 
