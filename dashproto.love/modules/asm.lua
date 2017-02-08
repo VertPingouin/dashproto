@@ -22,6 +22,10 @@ function ASM:getSprite(id,cell,celly)
   return {pic=pic,quad=quad}
 end
 
+function ASM:get(id)
+  assert(self.assets[id],'ASM::get::no sprite with id'..id)
+  return self.assets[id].pic
+end
 --get all quads at one time, useful for icons with three layers
 function ASM:quads(id)
   return self.assets[id].quads
