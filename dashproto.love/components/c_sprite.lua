@@ -1,8 +1,18 @@
+--a wrapper for anim8 animation, an array of animations
+
 C_sprite = {}
 function C_sprite:new(owner,id,a)
   local c_sprite = component:new(owner,id,a)
   c_sprite.animations = {}
   c_sprite.currentAnimation = nil
+
+  local check = acheck:new()
+  check:add({
+    {'offset','defaultValue','table',vec2(0,0)}
+  })
+  a = check:check(a)
+
+  c_sprite.offset = a.offset
 
   function c_sprite:add(a)
     local check = acheck:new()
@@ -12,7 +22,7 @@ function C_sprite:new(owner,id,a)
       {'cellsizex','mandatory','number'},
       {'cellsizey','mandatory','number'},
       {'frames','mandatory','table'},
-      {'durations','mandatory','various'}
+      {'durations','mandatory','various'},
     })
     a = check:check(a)
 
@@ -21,16 +31,14 @@ function C_sprite:new(owner,id,a)
     self.animations[a.name] = anim8.newAnimation(g(unpack(a.frames)), a.durations, a.onLoop)
   end
 
+  --set current animation
   function c_sprite:setAnimation(animation)
     assert(self.animations[animation],'c_sprite::play::unknown animation '..animation)
     self.currentAnimation = self.animations[animation]
     self.currentAnimation:resume()
   end
 
-  function c_sprite:resume()
-    self.currentAnimation:resume()
-  end
-
+  --function from anim8
   function c_sprite:gotoFrame(frame)
     self.currentAnimation:gotoFrame(frame)
   end
@@ -39,21 +47,20 @@ function C_sprite:new(owner,id,a)
     self.currentAnimation:pause()
   end
 
-  function c_sprite:pauseAtStart()
-    self.currentAnimation:pauseAtStart()
+  function c_sprite:resume()
+    self.currentAnimation:resume()
   end
 
-  function c_sprite:pauseAtEnd()
-    self.currentAnimation:pauseAtEnd()
-  end
-
-
+  --components functions
   function c_sprite:tick(dt)
     self.currentAnimation:update(dt)
   end
 
   function c_sprite:draw()
-    self.currentAnimation:draw(self.image,self.owner.position.x,self.owner.position.y)
+    self.currentAnimation:draw(
+      self.image,self.owner.position.x +
+      self.offset.x,self.owner.position.y + self.offset.y
+    )
   end
 
   return c_sprite
