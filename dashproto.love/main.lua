@@ -10,15 +10,19 @@ function love.load(arg)
   obm:load()
 
   --debug consoles
-  local c1 = console:new({
-    parent='root',
-    name='info console',
-    regexpfilter='.*',
-    nblines=15,
-    position=vec2(10,400)
-  })
+  if params.debug.console then
+    local c1 = console:new({
+      parent='root',
+      name='info console',
+      regexpfilter='.*',
+      nblines=15,
+      position=vec2(10,400)
+    })
 
-  log = log:new({c1})
+    log = log:new({c1})
+  else
+    log = log:new()
+  end
 
   --intitialize other modules
   renderer:load()
@@ -31,23 +35,7 @@ function love.load(arg)
 
   --collision responses definition
   colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})
-  colm:addCollisionResponse({obf1='player',obf2='lava',coltype='cross'})
---colm:addCollisionResponse({obf1='viewport',obf2='boundaries',coltype='slide'})
-
-  --events definition
-  evm:addEntityEvent({
-    eventstring='player.mainBody startCollision lava',
-    entity='player',
-    callback='testCol',
-    args={255,0,0}
-  })
-
-  evm:addEntityEvent({
-    eventstring='player.mainBody endCollision lava',
-    entity='player',
-    callback='testCol',
-    args={255,0,255}
-  })
+  colm:addCollisionResponse({obf1='player',obf2='doors',coltype='cross'})
 
   --game entity with default scene
   game = game:new()
