@@ -54,6 +54,7 @@ function EVM:post(eventstring,a)
     insert(self.queue,{event2send,a})
     log:post('DEBUG','evm','received handled event "'..eventstring..'"')
   end
+  --log:post('DEBUG','evm','received non-handled event "'..eventstring..'"')
 end
 
 function EVM:tick(dt)
