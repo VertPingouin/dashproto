@@ -116,6 +116,11 @@ function Player:new(parent,a)
     self.position = body:moveCollide(vector)
   end
 
+  function player:tpCollide(vector,body)
+    --moves the player according to a c_body collisions
+    self.position = body:tpCollide(vector)
+  end
+
   function player:onEnterIdle()
     self.mainSprite:gotoFrame(1)
     self.mainSprite:pause()
@@ -126,10 +131,6 @@ function Player:new(parent,a)
   end
 
   function player:oDraw()
-  end
-
-  function player:testCol(r,g,b)
-    self.color = color:new(r,g,b,255)
   end
 
   player.mainFSM:initialize('Idle')
