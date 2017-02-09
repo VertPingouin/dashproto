@@ -1,3 +1,4 @@
+--TODO use anim8 for grid
 local Asset = {}
 
 function Asset:newSpritesheet(a)
@@ -40,11 +41,9 @@ function Asset:newSpritesheet(a)
     end
   else
     for y=1,a.nbcelly do
-      if not asset.quads[y] then
-        asset.quads[y] = {}
-      end
       for x=1,a.nbcellx do
-        asset.quads[y][x] = love.graphics.newQuad(
+        i = x+(y-1)*a.nbcellx --index
+        asset.quads[i] = love.graphics.newQuad(
           (x-1)*a.cellsizex,
           (y-1)*a.cellsizey,
           a.cellsizex,
