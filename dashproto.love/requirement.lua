@@ -22,6 +22,7 @@ console = require('entities/console')
 collider = require('entities/collider')
 triggerzone = require('entities/triggerzone')
 map = require('entities/map')
+tilemap = require('entities/tilemap')
 camera = require('entities/camera')
 
 --components
