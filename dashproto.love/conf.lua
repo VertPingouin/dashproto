@@ -13,8 +13,9 @@ function love.conf(t)
 	maxorder = 5,
 	minorder = 1,
 	debug = {
-		boxes = true,
-		fps = true,
+		boxes = false,
+		fps = false,
+		console = false,
 		loglevel = 'DEBUG' --TODO make debug level work
 
 		}
