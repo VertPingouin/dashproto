@@ -37,7 +37,7 @@ function Player:new(parent,a)
     h=14,
     color=color:new(0,255,0,0),
     family='player',
-    offset=vec2(2,10)
+    offset=vec2(3,10)
   }),'mainBody')
 
   player:add(c_sprite:new(player,'mainSprite'))
@@ -76,21 +76,12 @@ function Player:new(parent,a)
 
   player.mainSprite:setAnimation('player_walk_down')
 
-  --target
-  player.target = target:new('player')
-
   player.color = color:new(255,255,255,100)
   player.cooldown = 0
 
   --TODO make a statemachine for cooldown
   --TODO use step functions for statemachine
   function player:oTick(dt)
-    if self.cooldown > 0 then
-      self.cooldown= self.cooldown - dt
-    elseif self.cooldown < 0 then
-      self.cooldown = 0
-    end
-
     local left = self.joystick:get('left')
     local right = self.joystick:get('right')
     local up = self.joystick:get('up')
@@ -117,10 +108,6 @@ function Player:new(parent,a)
       self:moveCollide(self.movement:normalizeInplace() * 75 * dt,self.mainBody)
     else
       player.mainFSM:transition('Idle')
-    end
-
-    if self.joystick:pressed('dash') and self.cooldown == 0 then
-      self.cooldown = 0.3
     end
   end
 
