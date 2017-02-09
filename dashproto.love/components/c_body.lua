@@ -109,6 +109,11 @@ function C_body:new(owner,id,a)
     return vec2(actualX,actualY) - self.offset
   end
 
+  function c_body:tp(vector)
+    self.world:update(self,vector.x,vector.y)
+    self.position = vector
+  end
+
   function c_body:tick(dt)
     --TODO This is really dirty, might be done quicker
     --check entering or leaving collsion
