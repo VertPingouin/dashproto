@@ -1,4 +1,3 @@
---TODO write tilemap load and display
 local insert = table.insert
 
 Map = {}
@@ -7,7 +6,7 @@ function Map:new(parent,name,a)
   local check = acheck:new()
   check:add({
     {'luamap','mandatory','table'},
-    {'position','defaultValue','table',vec2(0,0)}
+    {'position','defaultValue','table',vec2(0,0)},
   })
   a=check:check(a)
 
@@ -15,7 +14,7 @@ function Map:new(parent,name,a)
     name=name,
     parent=parent,
     tags={'ticking','visible'},
-    layer=2
+    layer = params.maxlayer-2
   })
 
   map.spawn = {}
