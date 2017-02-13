@@ -1,3 +1,4 @@
+--TODO add a function to return fi an object is blocking look
 COLM = {}
 
 function COLM:load()
