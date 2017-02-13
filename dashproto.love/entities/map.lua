@@ -42,8 +42,8 @@ function Map:new(parent,name,a)
           for j,object in ipairs(layer.objects) do
             assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
             assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
-            assert(not map.spawn[object.name],'ERROR::map::new::all rectangles names must be unique in layer spawn')
-            map.spawn[object.name] = vec2(object.x,object.y)
+            if not map.spawn[object.name] then map.spawn[object.name] = {} end
+            table.insert(map.spawn[object.name],vec2(object.x,object.y))
           end
         end
       elseif string.sub(layer.name,1,2) == 't_' then
