@@ -9,7 +9,13 @@ function MainScene:new(parent)
 
   mainScene.map2 = map:new('mainScene','mainSceneMap2',{luamap=require('maps/test'),position=vec2(32*16,0)})
 
-  mainScene.player = player:new('mainScene',{position=mainScene.map:getSpawn('player')})
+  mainScene.player = player:new('mainScene',{position=mainScene.map:getSpawn('player')[1]})
+  local skellyspawn = mainScene.map:getSpawn('skeleton')
+  for i,pos in ipairs(skellyspawn) do
+    local name = 'skeleton'..i
+    mainScene[name] = skeleton:new('mainScene',{position=pos,name=name})
+  end
+
   mainScene.camera = camera:new('mainScene',{w=params.nativeresx,h=params.nativeresy,target=mainScene.player.mainBody,boundaries=mainScene.map.boundaries})
   function mainScene:tick(dt)
   end
