@@ -84,7 +84,7 @@ function C_body:new(owner,id,a)
 
   function c_body:moveCollide(vector)
     --we try to move the body and return new coordinates
-    local actualX, actualY, cols, len = self.world:move(
+    actualX, actualY, cols, len = self.world:move(
     self,
     self.position.x+vector.x,
     self.position.y+vector.y,
@@ -92,7 +92,8 @@ function C_body:new(owner,id,a)
     --we update body position
     self.position = vec2(actualX,actualY)
     --we return body position
-    return vec2(actualX,actualY) - self.offset
+    local vec = vec2(actualX,actualY) - self.offset
+    return vec,len
   end
 
   function c_body:tpCollide(vector)
@@ -106,7 +107,8 @@ function C_body:new(owner,id,a)
     --we update body position
     self.position = vec2(actualX,actualY)
     --we return body position
-    return vec2(actualX,actualY) - self.offset
+    local vec = vec2(actualX,actualY) - self.offset
+    return vec,len
   end
 
   function c_body:tp(vector)
@@ -117,19 +119,19 @@ function C_body:new(owner,id,a)
   function c_body:tick(dt)
     --TODO This is really dirty, might be done quicker
     --check entering or leaving collsion
-    local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
-
+    --local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
+    local items, len = self.world:queryRect(self.left,self.top,self.w,self.h)
     --initializing new body and family table
     --we check with what body name and family self is in contact with
     local colbodytable = {}
     local colfamilytable = {}
 
-    for i,col in ipairs(cols) do
-      colbodytable[col.other.name] = true
+    for i,item in ipairs(items) do
+      colbodytable[item.name] = true
     end
 
-    for i,col in ipairs(cols) do
-      colfamilytable[col.other.family] = true
+    for i,item in ipairs(items) do
+      colfamilytable[item.family] = true
     end
 
     --we check what body and family are new in table
@@ -186,6 +188,10 @@ function C_body:new(owner,id,a)
     --interrogate colm to know the collision type
     coltype = colm:getCollisionResponse(self.family,other.family)
     return coltype
+  end
+
+  function c_body:filterLook()
+    --TODO write function
   end
 
   return c_body
