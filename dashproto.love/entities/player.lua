@@ -43,7 +43,7 @@ function Player:new(parent,a)
   player:add(c_sprite:new(player,'mainSprite'))
   player.mainSprite:add({
     name = 'player_walk_down',
-    pic = asm:get('player_walk'),
+    pic = asm:get('player'),
     cellsizex = 16,
     cellsizey = 24,
     frames = {'2-3',1,'2-1',1},
@@ -51,7 +51,7 @@ function Player:new(parent,a)
   })
   player.mainSprite:add({
     name = 'player_walk_up',
-    pic = asm:get('player_walk'),
+    pic = asm:get('player'),
     cellsizex = 16,
     cellsizey = 24,
     frames = {'5-6',1,'5-4',1},
@@ -59,7 +59,7 @@ function Player:new(parent,a)
   })
   player.mainSprite:add({
     name = 'player_walk_right',
-    pic = asm:get('player_walk'),
+    pic = asm:get('player'),
     cellsizex = 16,
     cellsizey = 24,
     frames = {'8-9',1,'8-7',1},
@@ -67,7 +67,7 @@ function Player:new(parent,a)
   })
   player.mainSprite:add({
     name = 'player_walk_left',
-    pic = asm:get('player_walk'),
+    pic = asm:get('player'),
     cellsizex = 16,
     cellsizey = 24,
     frames = {'11-12',1,'11-10',1},
