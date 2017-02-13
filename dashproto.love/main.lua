@@ -35,6 +35,8 @@ function love.load(arg)
 
   --collision responses definition
   colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})
+  colm:addCollisionResponse({obf1='ennemy',obf2='collider',coltype='slide'})
+  colm:addCollisionResponse({obf1='ennemy',obf2='ennemy',coltype='slide'})
   colm:addCollisionResponse({obf1='player',obf2='doors',coltype='cross'})
 
   --game entity with default scene
