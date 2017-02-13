@@ -19,7 +19,7 @@ function ASM:getSprite(id,cell)
 end
 
 function ASM:get(id)
-  assert(self.assets[id],'ASM::get::no sprite with id'..id)
+  assert(self.assets[id],'ASM::get::no sprite with id '..id)
   return self.assets[id].pic
 end
 
