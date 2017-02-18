@@ -1,6 +1,7 @@
 -- Configuration
 function love.conf(t)
 	params = {
+	maxfps = 120,
 	nativeresx = 256,
 	nativeresy = 240,
 	multx = 3,
@@ -16,6 +17,7 @@ function love.conf(t)
 		boxes = false,
 		fps = true,
 		console = false,
+		look = false,
 		loglevel = 'DEBUG' --TODO make debug level work
 
 		}
