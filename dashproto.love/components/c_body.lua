@@ -116,50 +116,59 @@ function C_body:new(owner,id,a)
     self.position = vector
   end
 
+  function c_body:collideName(name)
+    return self.contactsBody[name]
+  end
+
+  function c_body:collideFamily(family)
+    return self.contactsFamily[family]
+  end
+
   function c_body:tick(dt)
-    --TODO This is really dirty, might be done quicker
     --check entering or leaving collsion
     --local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
     local items, len = self.world:queryRect(self.left,self.top,self.w,self.h)
     --initializing new body and family table
     --we check with what body name and family self is in contact with
-    local colbodytable = {}
-    local colfamilytable = {}
+    local colBodyTable = {}
+    local colFamilyTable = {}
 
     for i,item in ipairs(items) do
-      colbodytable[item.name] = true
+      colBodyTable[item.name] = item.position - self.position
+      --evm:post(self.name..' isColliding '..item.family)
+      --evm:post(self.name..' isColliding '..item.name)
     end
 
     for i,item in ipairs(items) do
-      colfamilytable[item.family] = true
+      colFamilyTable[item.family] = item.position - self.position
     end
 
     --we check what body and family are new in table
     --and what body and family are not anymore
     --we send events accordingly
-    for k,v in pairs(colbodytable) do
+    for k,v in pairs(colBodyTable) do
       if not self.contactsBody[k] then
-        self.contactsBody[k] = true
+        self.contactsBody[k] = v
         evm:post(self.name..' startCollision '..k)
       end
     end
 
-    for k,v in pairs(colfamilytable) do
+    for k,v in pairs(colFamilyTable) do
       if not self.contactsFamily[k] then
-        self.contactsFamily[k] = true
+        self.contactsFamily[k] = v
         evm:post(self.name..' startCollision '..k)
       end
     end
 
     for k,v in pairs(self.contactsBody) do
-      if not colbodytable[k] then
+      if not colBodyTable[k] then
         self.contactsBody[k] = nil
         evm:post(self.name..' endCollision '..k)
       end
     end
 
     for k,v in pairs(self.contactsFamily) do
-      if not colfamilytable[k] then
+      if not colFamilyTable[k] then
         self.contactsFamily[k] = nil
         evm:post(self.name..' endCollision '..k)
       end
@@ -190,8 +199,8 @@ function C_body:new(owner,id,a)
     return coltype
   end
 
-  function c_body:filterLook()
-    --TODO write function
+  function c_body:blockView()
+    print('call')
   end
 
   return c_body
