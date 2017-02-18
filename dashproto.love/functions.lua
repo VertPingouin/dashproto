@@ -75,3 +75,20 @@ function spairs(t, order)
         end
     end
 end
+
+--TODO This need to be elsewhere
+function blockView(item)
+  if item.family == 'collider' then
+    return true
+  end
+  return
+end
+
+--oracle nvl
+function nvl(object, value)
+  if not object then
+    return value
+  else
+    return object
+  end
+end
