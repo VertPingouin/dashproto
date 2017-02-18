@@ -43,7 +43,7 @@ function ACheck:new()
 
     for k,arg in pairs(self.arglist) do
       if arg.argtype == 'mandatory' then
-        assert(a[k],'ERRROR::args::check::'..k..' is mandatory')
+        assert(a[k],'ERROR::args::check::'..k..' is mandatory')
         if arg.type ~= 'various' then
           assert(type(a[k]) == arg.type,'ERROR::args::check::Invalid type for '..k..', '..arg.type..' expected, got '..type(a[k]))
         end
