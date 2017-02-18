@@ -5,6 +5,7 @@ local remove = table.remove
 function Renderer:load()
   love.graphics.setDefaultFilter("nearest", "nearest")
   love.window.setMode(params.resx,params.resy,{vsync=true})
+  love.graphics.setLineStyle('rough')
   Renderer.canvas = love.graphics.newCanvas(params.nativeresx,params.nativeresy)
 end
 
@@ -40,7 +41,7 @@ function Renderer:draw()
         vss:draw()
       end
     end
-    
+
     if i == params.maxlayer-1 then --all layer but the last are scaled on canvas
       love.graphics.setCanvas()
       love.graphics.draw(Renderer.canvas,0,0,0,params.multx,params.multy)
