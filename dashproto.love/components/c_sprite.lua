@@ -5,6 +5,7 @@ function C_sprite:new(owner,id,a)
   local c_sprite = component:new(owner,id,a)
   c_sprite.animations = {}
   c_sprite.currentAnimation = nil
+  c_sprite.visible = true
 
   local check = acheck:new()
   check:add({
@@ -57,10 +58,12 @@ function C_sprite:new(owner,id,a)
   end
 
   function c_sprite:draw()
-    self.currentAnimation:draw(
-      self.image,self.owner.position.x +
-      self.offset.x,self.owner.position.y + self.offset.y
-    )
+    if self.visible then
+      self.currentAnimation:draw(
+        self.image,self.owner.position.x +
+        self.offset.x,self.owner.position.y + self.offset.y
+      )
+    end
   end
 
   return c_sprite
