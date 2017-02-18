@@ -58,6 +58,7 @@ function C_sprite:new(owner,id,a)
   end
 
   function c_sprite:draw()
+    --TODO visible setters and getters
     if self.visible then
       self.currentAnimation:draw(
         self.image,self.owner.position.x +
