@@ -1,3 +1,4 @@
+local pi =math.pi
 Skeleton = {}
 
 function Skeleton:new(parent,a)
@@ -17,16 +18,19 @@ function Skeleton:new(parent,a)
   })
 
   skeleton.position = a.position
-
-  skeleton.movement = vec2(0,0)
+  skeleton.speed = 20
+  skeleton.movement = vec2(1,1)
 
   --a statemachine
-  skeleton:add(c_statemachine:new(skeleton,'mainFSM'),'mainFSM')
-  skeleton.mainFSM:addState('Idle',{enter='onEnterIdle'})
-  skeleton.mainFSM:addState('Moving',{enter='onEnterMoving'})
-  skeleton.mainFSM:addTransition('Idle','Moving')
-  skeleton.mainFSM:addTransition('Moving','Idle')
-  skeleton.mainFSM:setInitialState('Idle')
+  skeleton:add(c_statemachine:new(skeleton,'behavior'),'behavior')
+  skeleton.behavior:addState('Agressive',{enter='onEnterAgressive',step='whileAgressive'})
+  skeleton.behavior:addState('Wandering',{enter='onEnterWandering',step='whileWandering'})
+  skeleton.behavior:addState('Retreating',{enter='onEnterRetreating',step='whileRetreating'})
+  skeleton.behavior:addTransition('Agressive','Wandering')
+  skeleton.behavior:addTransition('Wandering','Agressive')
+  skeleton.behavior:addTransition('Agressive','Retreating')
+  skeleton.behavior:addTransition('Retreating','Wandering',{preferred=true,ttl=.5})
+  skeleton.behavior:setInitialState('Wandering')
 
   skeleton:add(c_body:new(skeleton,'mainBody',{
     x=skeleton.position.x,
@@ -37,6 +41,13 @@ function Skeleton:new(parent,a)
     family='ennemy',
     offset=vec2(3,10)
   }),'mainBody')
+
+  skeleton:add(c_look:new(skeleton,'evilLook',{
+    target=obm:get('player'),
+    offset = vec2(8,24),
+    targetOffset = vec2(8,24),
+    distance = 100}
+  ))
 
   skeleton:add(c_sprite:new(skeleton,'mainSprite'))
   skeleton.mainSprite:add({
@@ -74,38 +85,70 @@ function Skeleton:new(parent,a)
 
   skeleton.mainSprite:setAnimation('skeleton_walk_down')
 
-  function skeleton:oTick(dt)
-    local dice = math.random(50)
-    if dice == 1 then
-      self:rerollDirection()
-    end
+  function skeleton:onEnterWandering()
+    self.speed = 20
+  end
 
-    if self.movement.x ~= 0 or self.movement.y ~= 0 then
-      skeleton.mainFSM:transition('Moving')
-      if self.movement.x == 0 then
-        if self.movement.y > 0 then
-          self.mainSprite:setAnimation('skeleton_walk_down')
-        else
-          self.mainSprite:setAnimation('skeleton_walk_up')
-        end
-      else
-        if self.movement.x > 0 then
-          self.mainSprite:setAnimation('skeleton_walk_right')
-        else
-          self.mainSprite:setAnimation('skeleton_walk_left')
-        end
+  function skeleton:onEnterAgressive()
+    self.speed = 60
+  end
+
+  function skeleton:whileWandering()
+    local dice = math.random(0, 50)
+    if dice == 1 then self:rerollDirection() end
+    if self.evilLook:see() then self.behavior:transition('Agressive') end
+  end
+
+  function skeleton:whileAgressive()
+    local look = self.evilLook:see()
+    if look then
+      self.movement = look:normalizeInplace()
+      if self.mainBody:collideName('player.mainBody') then
+        self.behavior:transition('Retreating')
       end
-
-      local vec,col = self:moveCollide(self.movement:normalizeInplace() * 20 * dt,self.mainBody)
-      if col>0 then self:rerollDirection() end
     else
-      skeleton.mainFSM:transition('Idle')
+      self.behavior:transition('Wandering')
     end
   end
 
+  function skeleton:onEnterRetreating()
+    self.speed = 30
+  end
+  function skeleton:whileRetreating()
+    local look = self.evilLook:see()
+    if look then
+      self.movement = -look:normalizeInplace()
+    else
+      self.behavior:transition('Wandering')
+    end
+  end
+
+  function skeleton:oTick(dt)
+    local angle = 0
+    if self.behavior.currentState == 'Retreating' then
+      angle = self.movement:normalizeInplace():angleTo(vec2(0,1))
+    else
+      angle = self.movement:normalizeInplace():angleTo(vec2(0,-1))
+    end
+
+    if (angle < 0) then angle = angle + 2 * pi end
+
+    if angle > 7*pi/4 or angle <= pi/4 then
+      self.mainSprite:setAnimation('skeleton_walk_up')
+    elseif pi/4 < angle and angle <= 3*pi/4 then
+      self.mainSprite:setAnimation('skeleton_walk_right')
+    elseif 3*pi/4 < angle and angle <= 5*pi/4 then
+      self.mainSprite:setAnimation('skeleton_walk_down')
+    elseif 5*pi/4 < angle and angle <= 7*pi/4 then
+      self.mainSprite:setAnimation('skeleton_walk_left')
+    end
+
+    local vec,col = self:moveCollide(self.movement:normalizeInplace() * self.speed * dt,self.mainBody)
+    if col>0 then self.movement = self.movement:perpendicular() end
+  end
+
   function skeleton:rerollDirection()
-    self.movement.x = math.random(-1,1)
-    self.movement.y = math.random(-1,1)
+    self.movement:rotateInplace(math.random(0,2*pi))
   end
 
   function skeleton:moveCollide(vector,body)
@@ -122,18 +165,10 @@ function Skeleton:new(parent,a)
     return vec,col
   end
 
-  function skeleton:onEnterIdle()
-    self.mainSprite:gotoFrame(1)
-    self.mainSprite:pause()
-  end
-
-  function skeleton:onEnterMoving()
-    self.mainSprite:resume()
-  end
-
   function skeleton:oDraw()
   end
 
+  skeleton:rerollDirection()
   return skeleton
 end
 
