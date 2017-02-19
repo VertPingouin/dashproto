@@ -79,9 +79,7 @@ end
 
 function OBM:add(ref,id,a)
   for k,v in pairs(self.objects) do
-    if k == id then
-      log:post('ERROR','obm','id duplicate, cannot add '..id)
-    end
+    assert(k ~= id, 'ERROR::obm::add::id duplicate, cannot add '..id)
   end
 
   assert(ref and id,'ERROR::obm::add::reference and id are mandatory.')
@@ -153,10 +151,9 @@ end
 
 
 
-function OBM:callByTags(tag,func,args)
-  if tag == 'ticking' or tag == 'visible' then
-    log:post('ERROR','obm','Cannot call a function on special tags visible or ticking')
-  end
+function OBM:callByTag(tag,func,args)
+  assert(tag ~= 'ticking' and tag ~= 'visible',
+    'ERROR::obm::callByTag::cannot call a function on special tags visible or ticking')
 
   --get all objects with a certain tag and call the given func on them
   if self.tags[tag] then
@@ -171,14 +168,23 @@ function OBM:callByTags(tag,func,args)
   end
 end
 
-function OBM:callById(id,func,args)
+function OBM:callById(id,func,heritance,args)
   --TODO handle non existing obj, tag,functions
   local obj = obm:get(id)
+
   if obj then
     obj[func](obj,unpack(args))
   end
-end
 
+  if heritance then
+    local children = obm:getChildrens(id)
+    for i,child in ipairs(children) do
+      if type(child.reference[func]) == 'function' then
+        child.reference[func](child.reference,unpack(args))
+      end
+    end
+  end
+end
 
 
 function OBM:getVisible(layer)
@@ -233,9 +239,9 @@ function OBM:getChildrens(id)
 end
 
 function OBM:setTag(id,bool,tag)
-  if tag == 'visible' or tag == 'ticking' then
-    log:post('ERROR','obm','Cannot set special tags visible or ticking')
-  end
+  assert(tag ~= 'ticking' and tag ~= 'visible',
+    'ERROR::obm::callByTag::Cannot set special tags visible or ticking')
+
   --we get object reference locally
   local obj = self:get(id)
 
