@@ -29,7 +29,7 @@ function Skeleton:new(parent,a)
   skeleton.behavior:addTransition('Agressive','Wandering')
   skeleton.behavior:addTransition('Wandering','Agressive')
   skeleton.behavior:addTransition('Agressive','Retreating')
-  skeleton.behavior:addTransition('Retreating','Wandering',{preferred=true,ttl=.5})
+  skeleton.behavior:addTransition('Retreating','Wandering',{preferred=true,ttl=.8})
   skeleton.behavior:setInitialState('Wandering')
 
   skeleton:add(c_body:new(skeleton,'mainBody',{
@@ -143,7 +143,8 @@ function Skeleton:new(parent,a)
       self.mainSprite:setAnimation('skeleton_walk_left')
     end
 
-    local vec,col = self:moveCollide(self.movement:normalizeInplace() * self.speed * dt,self.mainBody)
+    local vec,col = self:moveCollide(self.movement:normalizeInplace() * self.speed * dt,
+      self.mainBody)
     if col>0 then self.movement = self.movement:perpendicular() end
   end
 
