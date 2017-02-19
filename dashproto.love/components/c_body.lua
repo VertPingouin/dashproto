@@ -14,6 +14,7 @@ function C_body:new(owner,id,a)
   })
   a = check:check(a)
 
+  c_body.type = 'c_body'
   c_body.position = vec2(a.x,a.y) + a.offset
   c_body.w = a.w
   c_body.h = a.h
@@ -125,6 +126,7 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:tick(dt)
+    --TODO This is really dirty, might be done quicker
     --check entering or leaving collsion
     --local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
     local items, len = self.world:queryRect(self.left,self.top,self.w,self.h)

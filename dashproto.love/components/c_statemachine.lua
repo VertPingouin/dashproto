@@ -52,6 +52,7 @@ function C_statemachine:new(owner,id,a)
   })
   a= check:check(a)
 
+  c_statemachine.type = 'c_statemachine'
   c_statemachine.noSaveLoad = a.noSaveLoad
   c_statemachine.states = {}
   c_statemachine.transitions = {}
@@ -65,7 +66,7 @@ function C_statemachine:new(owner,id,a)
 
   --execute step function on owner (exectued every loop)
   function c_statemachine:step(dt)
-    if not self.currentState then log:post('ERROR',self.ownername..'/'..self.id,'At least one state is needed') end
+    assert(self.currentState,'c_statemachine::step::At least one state is needed !')
     if self.states[self.currentState].step then
       self.owner[self.states[self.currentState].step](self.owner,dt)
     end

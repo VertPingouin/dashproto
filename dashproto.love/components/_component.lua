@@ -3,6 +3,7 @@ Component = {}
 
 function Component:new(owner,id,p)
   local component = {owner=owner,id=id}
+  Component.type = 'undefined'
 
   function component:tick(dt)
   end

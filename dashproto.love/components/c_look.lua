@@ -11,6 +11,7 @@ function C_look:new(owner,id,a)
   })
   a = check:check(a)
 
+  c_look.type = 'c_look'
   c_look.target = a.target
   c_look.offset = a.offset
   c_look.targetOffset = a.targetOffset
