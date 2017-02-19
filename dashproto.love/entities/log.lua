@@ -13,19 +13,19 @@ function Log:new(dest)
   end
 
   function log:post(level,emitter,log)
-    if level == 'ERROR' then
-      assert(1==2,level..' from '..emitter..' : '..log)
-    elseif level == 'RAW' then
-      if not self.consoles then
-        print(log)
+    if params.debug.log then
+      if level == 'RAW' then
+        if not self.consoles then
+          print(log)
+        else
+          for i,console in ipairs(self.consoles) do console:print(log) end
+        end
       else
-        for i,console in ipairs(self.consoles) do console:print(log) end
-      end
-    else
-      if not self.consoles then
-        print(level..' from '..emitter..' : '..log)
-      else
-        for i,console in ipairs(self.consoles) do console:print(level..' '..emitter..' : '..log) end
+        if not self.consoles then
+          print(level..' from '..emitter..' : '..log)
+        else
+          for i,console in ipairs(self.consoles) do console:print(level..' '..emitter..' : '..log) end
+        end
       end
     end
   end
