@@ -16,10 +16,11 @@ function Player:new(parent,a)
   })
 
   player.position = a.position
-
   player.movement = vec2(0,0)
   player.hurtdir = vec2(1,1)
   player.flicker = true
+
+
 
   --we get the joy1 (child of game) to be able to read the input
   player.joystick = obm:get('joy1')
@@ -48,7 +49,7 @@ function Player:new(parent,a)
     y=player.position.y,
     w=10,
     h=14,
-    color=color:new(0,255,0,0),
+    color=color:new(255,0,0,100),
     family='player',
     offset=vec2(3,10)
   }),'mainBody')
@@ -86,6 +87,40 @@ function Player:new(parent,a)
     frames = {'11-12',1,'11-10',1},
     durations = .1
   })
+  player.mainSprite:add({
+    name = 'player_hurt_down',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {13,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hurt_uo',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {14,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hurt_right',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {15,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hurt_left',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {16,1},
+    durations = .1
+  })
+
+
 
   player.mainSprite:setAnimation('player_walk_down')
 
@@ -134,7 +169,6 @@ function Player:new(parent,a)
           self.mainSprite:setAnimation('player_walk_left')
         end
       end
-
       self:moveCollide(self.movement:normalizeInplace() * 100 * dt,self.mainBody)
     else
       player.mainFSM:transition('Idle')
@@ -160,6 +194,7 @@ function Player:new(parent,a)
     --moves the player according to a c_body collisions
     self.position = body:moveCollide(vector)
     --TODO make all the body move with owner
+
   end
 
   function player:tpCollide(vector,body)
@@ -179,9 +214,9 @@ function Player:new(parent,a)
   function player:oDraw()
     if self.stateFSM.currentState == 'Invulnerable' then
       self.flicker=not self.flicker
-      self.mainSprite.visible = self.flicker
+      self.visible = self.flicker
     else
-      self.mainSprite.visible = true
+      self.visible = true
     end
   end
 
