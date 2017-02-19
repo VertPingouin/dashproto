@@ -11,6 +11,8 @@ function Entity:new(a)
   a = check:check(a)
 
   entity.name = a.name
+  entity.pause = false
+  entity.visible = true
   entity.components = {}
 
   --we add our entity to object manager
@@ -22,6 +24,8 @@ function Entity:new(a)
 
   --overrideable methodes
   function entity:oTick(dt) end
+  --overrideable function shouldn't be user to draw things but to control what happen when drawing
+  --use components to draw instead
   function entity:oDraw() end
 
   --add a component
@@ -29,20 +33,31 @@ function Entity:new(a)
     self.components[component.id] = component
   end
 
+  function entity:setPause(isPaused)
+    self.pause = isPaused
+  end
+
+  function entity:setVisible(isVisible)
+    self.visible = isVisible
+  end
+
   --the entity ticking method, make every component tick
   function entity:tick(dt)
-    self:oTick(dt)
-    for i,component in pairs(self.components) do
-      component:tick(dt)
+    if not self.pause then
+      for i,component in pairs(self.components) do
+        component:tick(dt)
+      end
+      self:oTick(dt)
     end
   end
 
   --the entity drawing method, make every component draw
   function entity:draw()
     self:oDraw()
-
-    for i,component in pairs(self.components) do
-      component:draw()
+    if self.visible then
+      for i,component in pairs(self.components) do
+        component:draw()
+      end
     end
   end
 
