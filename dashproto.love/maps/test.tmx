@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="16" tileheight="16" nextobjectid="154">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="16" tileheight="16" nextobjectid="156">
  <tileset firstgid="1" name="graveyard" tilewidth="16" tileheight="16" tilecount="25" columns="5">
   <image source="../assets/pics/graveyard.png" trans="f4bdb0" width="80" height="80"/>
  </tileset>
@@ -50,8 +50,8 @@
 4,4,4,4,4,4,4,4,4,13,20,4,4,4,4,4,4,4,4,4,12,20,4,4,4,4,4,4,4,4,4,13,
 12,20,4,4,4,4,4,4,4,13,5,15,15,15,15,15,15,15,15,15,12,20,4,4,4,4,4,4,4,4,4,13,
 13,20,4,4,4,4,4,4,4,12,12,12,12,12,13,12,12,13,12,13,12,25,4,4,4,4,4,4,4,4,4,13,
-13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,13,
-13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,12,
+13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
 13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,12,
 13,20,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,13,
 13,5,15,15,15,10,4,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,10,4,4,4,4,4,4,4,4,13,
@@ -110,7 +110,6 @@
    <property name="layer" type="int" value="1"/>
   </properties>
   <object id="52" x="144" y="32" width="368" height="16"/>
-  <object id="53" x="496" y="48" width="16" height="336"/>
   <object id="54" x="0" y="368" width="496" height="16"/>
   <object id="55" x="0" y="256" width="16" height="112"/>
   <object id="56" x="16" y="256" width="64" height="16"/>
@@ -149,6 +148,8 @@
   <object id="94" x="144" y="176" width="192" height="16"/>
   <object id="96" x="272" y="192" width="32" height="16"/>
   <object id="97" x="192" y="192" width="32" height="16"/>
+  <object id="154" x="496" y="208" width="16" height="176"/>
+  <object id="155" x="496" y="48" width="16" height="128"/>
  </objectgroup>
  <objectgroup color="#00ff00" name="s_spawn">
   <properties>
