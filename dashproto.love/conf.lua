@@ -1,7 +1,7 @@
 -- Configuration
 function love.conf(t)
 	params = {
-	maxfps = 40,
+	maxfps = 60,
 	nativeresx = 256,
 	nativeresy = 240,
 	multx = 3,
