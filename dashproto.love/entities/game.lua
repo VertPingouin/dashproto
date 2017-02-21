@@ -15,11 +15,7 @@ function Game:new()
     right = {'axis:leftx+', 'button:dpright','key:right'},
     up = {'axis:lefty-', 'button:dpup','key:up'},
     down = {'axis:lefty+', 'button:dpdown','key:down'},
-    tleft = {'axis:rightx-','key:q'},
-    tright = {'axis:rightx+','key:d'},
-    tup = {'axis:righty-','key:z'},
-    tdown = {'axis:righty+','key:s'},
-    dash = {'button:rightshoulder'}
+    hit = {'button:rightshoulder','key:space'}
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
