@@ -15,6 +15,10 @@ function Entity:new(a)
   entity.visible = true
   entity.components = {}
 
+  --needed to preserve component order
+  entity.componentsSorted = {}
+  entity.componentCount = 0
+
   --we add our entity to object manager
   obm:add(entity,entity.name,a)
 
@@ -31,6 +35,8 @@ function Entity:new(a)
   --add a component
   function entity:add(component)
     self.components[component.id] = component
+    self.componentsSorted[self.componentCount] = component
+    self.componentCount = self.componentCount + 1
   end
 
   function entity:setPause(isPaused)
@@ -44,7 +50,7 @@ function Entity:new(a)
   --the entity ticking method, make every component tick
   function entity:tick(dt)
     if not self.pause then
-      for i,component in pairs(self.components) do
+      for k,component in pairs(self.componentsSorted) do
         component:tick(dt)
       end
       self:oTick(dt)
@@ -55,15 +61,16 @@ function Entity:new(a)
   function entity:draw()
     self:oDraw()
     if self.visible then
-      for i,component in pairs(self.components) do
+      for k,component in pairs(self.componentsSorted) do
         component:draw()
       end
     end
+    love.graphics.setShader()
   end
 
   --when entity is destroyed, we destroy its component and we remove if from obm (will remove children too)
   function entity:destroy()
-    for i,component in pairs(self.components) do
+    for k,component in pairs(self.componentsSorted) do
       component:destroy()
     end
     obm:remove(self.name)
