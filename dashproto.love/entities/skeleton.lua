@@ -42,12 +42,37 @@ function Skeleton:new(parent,a)
     offset=vec2(3,10)
   }),'mainBody')
 
+  skeleton:add(c_body:new(skeleton,'hurtBody',{
+    x=skeleton.position.x,
+    y=skeleton.position.y,
+    w=12,
+    h=20,
+    color=color:new(255,0,0,50),
+    family='hurt',
+    offset=vec2(2,4)
+  }),'hurtBody')
+
   skeleton:add(c_look:new(skeleton,'evilLook',{
     target=obm:get('player'),
     offset = vec2(8,24),
     targetOffset = vec2(8,24),
     distance = 100}
   ))
+
+  skeleton:add(c_effect:new(skeleton,'whiteflash',{
+  duration = .1,
+  fadein = 0,
+  fadeout = .2,
+  shader=[[
+  extern number amount;
+  vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+    vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+    pixel.r = pixel.r + amount;
+    pixel.g = pixel.g+ amount;
+    pixel.b = pixel.b+ amount;
+    return pixel;
+  }
+  ]]}))
 
   skeleton:add(c_sprite:new(skeleton,'mainSprite'))
   skeleton.mainSprite:add({
@@ -90,7 +115,7 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:onEnterAgressive()
-    self.speed = 60
+    self.speed = 30
   end
 
   function skeleton:whileWandering()
@@ -104,6 +129,11 @@ function Skeleton:new(parent,a)
     if look then
       self.movement = look:normalizeInplace()
       if self.mainBody:collideName('player.mainBody') then
+        self.speed = 20
+        self.behavior:transition('Retreating')
+      elseif self.mainBody:collideName('player.hitBox') then
+        self.whiteflash:play()
+        self.speed = 40
         self.behavior:transition('Retreating')
       end
     else
@@ -112,8 +142,8 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:onEnterRetreating()
-    self.speed = 30
   end
+
   function skeleton:whileRetreating()
     local look = self.evilLook:see()
     if look then
@@ -155,6 +185,7 @@ function Skeleton:new(parent,a)
   function skeleton:moveCollide(vector,body)
     --moves the skeleton according to a c_body collisions
     local vec,col = body:moveCollide(vector)
+    self.hurtBody.position = vec + self.hurtBody.offset
     self.position = vec
     return vec,col
   end
@@ -162,6 +193,7 @@ function Skeleton:new(parent,a)
   function skeleton:tpCollide(vector,body)
     --moves the skeleton according to a c_body collisions
     local vec,col = body:tpCollide(vector)
+    self.hurtBody.position = vec
     self.position = vec
     return vec,col
   end
