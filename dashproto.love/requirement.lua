@@ -32,6 +32,7 @@ c_statemachine = require('components/c_statemachine')
 c_body = require('components/c_body')
 c_sprite = require('components/c_sprite')
 c_look = require('components/c_look')
+c_effect = require('components/c_effect')
 
 --scenes
 scene = require('scenes/_scene')
