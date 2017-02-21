@@ -1,3 +1,4 @@
+local pi =math.pi
 Player = {}
 
 function Player:new(parent,a)
@@ -16,43 +17,117 @@ function Player:new(parent,a)
   })
 
   player.position = a.position
-  player.movement = vec2(0,0)
-  player.hurtdir = vec2(1,1)
+  player.direction = vec2(0,1)
+  player.move = false
+  player.speed = 1
   player.flicker = true
-
-
 
   --we get the joy1 (child of game) to be able to read the input
   player.joystick = obm:get('joy1')
 
   --a statemachine
-  player:add(c_statemachine:new(player,'mainFSM'),'mainFSM')
-  player.mainFSM:addState('Idle',{enter='onEnterIdle',step='whileIdle'})
-  player.mainFSM:addState('Moving',{enter='onEnterMoving',step='whileMoving'})
-  player.mainFSM:addState('Hurt',{step='whileHurt',enter='onHurt'})
-  player.mainFSM:addTransition('Idle','Moving')
-  player.mainFSM:addTransition('Moving','Idle')
-  player.mainFSM:addTransition('Moving','Hurt')
-  player.mainFSM:addTransition('Idle','Hurt')
-  player.mainFSM:addTransition('Hurt','Idle',{preferred=true})
-  player.mainFSM:setInitialState('Idle')
+  player:add(c_statemachine:new(player,'action'),'action')
 
+  player.action:addState('Idle',{enter='onEnterIdle',step='whileIdle'})
+  player.action:addState('Moving',{enter='onEnterMoving',step='whileMoving'})
+  player.action:addState('Hurting',{enter='onEnterHurting',step='whileHurting'})
+  player.action:addState('Hitting',{enter='onEnterHitting',step='whileHitting',exit='onExitHitting'})
 
-  player:add(c_statemachine:new(player,'stateFSM'),'stateFSM')
-  player.stateFSM:addState('Vulnerable')
-  player.stateFSM:addState('Invulnerable')
-  player.stateFSM:addTransition('Vulnerable','Invulnerable',{preferred=true})
-  player.stateFSM:addTransition('Invulnerable','Vulnerable',{preferred=true,ttl=1})
+  player.action:addTransition('Idle','Moving')
+  player.action:addTransition('Idle','Hitting')
+  player.action:addTransition('Idle','Hurting')
+
+  player.action:addTransition('Moving','Idle')
+  player.action:addTransition('Hitting','Idle',{preferred=true,ttl=.2})
+  player.action:addTransition('Hurting','Idle',{preferred=true,ttl=.3})
+
+  player.action:addTransition('Moving','Hitting')
+  player.action:addTransition('Hitting','Hurting')
+  player.action:addTransition('Moving','Hurting')
+
+  player.action:setInitialState('Idle')
+
+  player:add(c_statemachine:new(player,'state'),'state')
+  player.state:addState('Vulnerable')
+  player.state:addState('Invulnerable')
+  player.state:addTransition('Vulnerable','Invulnerable',{preferred=true})
+  player.state:addTransition('Invulnerable','Vulnerable',{preferred=true,ttl=1})
 
   player:add(c_body:new(player,'mainBody',{
     x=player.position.x,
     y=player.position.y,
     w=10,
     h=14,
-    color=color:new(255,0,0,100),
+    color=color:new(0,255,0,100),
     family='player',
     offset=vec2(3,10)
   }),'mainBody')
+
+  player:add(c_body:new(player,'hitBox',{
+    x=player.position.x,
+    y=player.position.y,
+    w=16,
+    h=16,
+    color=color:new(255,0,0,100),
+    family='hitBox',
+    offset=vec2(0,0)
+  }),'hitBox')
+
+  player.hitBox:setActive(false)
+
+  player:add(c_effect:new(player,'redflash',{
+  duration = 0,
+  fadein = 0,
+  fadeout = .1,
+  shader=[[
+  extern number amount;
+  vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+    vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+    pixel.r = pixel.r + amount;
+    pixel.g = pixel.g;
+    pixel.b = pixel.b;
+    return pixel;
+  }
+  ]]}))
+
+  player:add(c_sprite:new(player,'whip'))
+  player.whip:add({
+    name = 'whip_down',
+    pic = asm:get('whip'),
+    cellsizex = 16,
+    cellsizey = 16,
+    frames = {'1-2',1},
+    durations = .1
+  })
+
+  player.whip.visible = false
+
+  player.whip:add({
+    name = 'whip_up',
+    pic = asm:get('whip'),
+    cellsizex = 16,
+    cellsizey = 16,
+    frames = {'3-4',1},
+    durations = .1
+  })
+
+  player.whip:add({
+    name = 'whip_right',
+    pic = asm:get('whip'),
+    cellsizex = 16,
+    cellsizey = 16,
+    frames = {'5-6',1},
+    durations = .1
+  })
+
+  player.whip:add({
+    name = 'whip_left',
+    pic = asm:get('whip'),
+    cellsizex = 16,
+    cellsizey = 16,
+    frames = {'7-8',1},
+    durations = .1
+  })
 
   player:add(c_sprite:new(player,'mainSprite'))
   player.mainSprite:add({
@@ -63,6 +138,7 @@ function Player:new(parent,a)
     frames = {'2-3',1,'2-1',1},
     durations = .1
   })
+
   player.mainSprite:add({
     name = 'player_walk_up',
     pic = asm:get('player'),
@@ -96,7 +172,7 @@ function Player:new(parent,a)
     durations = .1
   })
   player.mainSprite:add({
-    name = 'player_hurt_uo',
+    name = 'player_hurt_up',
     pic = asm:get('player'),
     cellsizex = 16,
     cellsizey = 24,
@@ -119,82 +195,149 @@ function Player:new(parent,a)
     frames = {16,1},
     durations = .1
   })
-
-
+  player.mainSprite:add({
+    name = 'player_hit_down',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {17,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hit_up',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {18,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hit_right',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {19,1},
+    durations = .1
+  })
+  player.mainSprite:add({
+    name = 'player_hit_left',
+    pic = asm:get('player'),
+    cellsizex = 16,
+    cellsizey = 24,
+    frames = {20,1},
+    durations = .1
+  })
 
   player.mainSprite:setAnimation('player_walk_down')
+  player.whip:setAnimation('whip_down')
 
-  player.color = color:new(255,255,255,100)
-  player.cooldown = 0
-
-  --TODO make a statemachine for cooldown
-  --TODO use step functions for statemachine
   function player:oTick(dt)
   end
 
+  function player:setDirection()
+    local r = self.joystick:get('right')
+    local l =self.joystick:get('left')
+    local d = self.joystick:get('down')
+    local u = self.joystick:get('up')
+
+    if u+d+l+r ~= 0 then
+      self.direction.x = self.joystick:get('right')-self.joystick:get('left')
+      self.direction.y = self.joystick:get('down')-self.joystick:get('up')
+      self.move = true
+    else
+      self.move = false
+    end
+  end
+
+  --idle state
   function player:whileIdle(dt)
-    if self.mainBody:collideFamily('ennemy') and self.stateFSM.currentState == 'Vulnerable' then
+    self:setDirection()
+    if self.mainBody:collideFamily('ennemy') and self.state.currentState == 'Vulnerable' then
       self.hurtdir = self.mainBody:collideFamily('ennemy')
-      self.mainFSM:transition('Hurt')
-     end
+      self.action:transition('Hurting')
+    end
+    self.hurtdir = self.mainBody:collideFamily('ennemy')
+    if self.move then self.action:transition('Moving') end
+    if self.joystick:pressed('hit') then self.action:transition('Hitting') end
+  end
 
-    local left = self.joystick:get('left')
-    local right = self.joystick:get('right')
-    local up = self.joystick:get('up')
-    local down = self.joystick:get('down')
+  function player:onEnterIdle()
+    self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction))
+    self.mainSprite:gotoFrame(1)
+    self.mainSprite:pause()
+    self.speed = 0
+  end
 
-    if left+right+up+down ~= 0 then self.mainFSM:transition('Moving') end
-
+  --moving state
+  function player:onEnterMoving()
+    self.speed = 100
   end
 
   function player:whileMoving(dt)
-    local left = self.joystick:get('left')
-    local right = self.joystick:get('right')
-    local up = self.joystick:get('up')
-    local down = self.joystick:get('down')
-
-    if left+right+up+down ~= 0 then
-      self.movement.x = -left+right
-      self.movement.y = -up+down
-      if self.movement.x == 0 then
-        if self.movement.y > 0 then
-          self.mainSprite:setAnimation('player_walk_down')
-        else
-          self.mainSprite:setAnimation('player_walk_up')
-        end
-      else
-        if self.movement.x > 0 then
-          self.mainSprite:setAnimation('player_walk_right')
-        else
-          self.mainSprite:setAnimation('player_walk_left')
-        end
-      end
-      self:moveCollide(self.movement:normalizeInplace() * 100 * dt,self.mainBody)
-    else
-      player.mainFSM:transition('Idle')
-    end
-    if self.mainBody:collideFamily('ennemy') and self.stateFSM.currentState == 'Vulnerable' then
+    self:setDirection()
+    self:moveCollide(self.direction:normalizeInplace() * self.speed * dt,self.mainBody)
+    if self.mainBody:collideFamily('ennemy') and self.state.currentState == 'Vulnerable' then
       self.hurtdir = self.mainBody:collideFamily('ennemy')
-      self.mainFSM:transition('Hurt')
+      self.action:transition('Hurting')
+    end
+    if self.joystick:pressed('hit') then self.action:transition('Hitting') end
+    if not self.move then self.action:transition('Idle')
+    else self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction)) end
+  end
+
+  --hitting state
+  function player:onEnterHitting()
+    self.hitBox.position = self.position + self.hitBox.offset
+    self.whip:gotoFrame(1)
+    self.hitBox:setActive(true)
+    self.hitBox.active = true
+    self.whip.visible = true
+
+    local direction = cardinalDirSimple(self.direction)
+    self.whip:setAnimation('whip_'..direction)
+    if direction == 'down' then
+      self.whip.offset = vec2(0,24)
+      self.hitBox:tpCollide(self.position + vec2(0,24))
+    elseif direction == 'up' then
+      self.whip.offset = vec2(0,-16)
+      self.hitBox:tpCollide(self.position + vec2(0,-16))
+    elseif direction == 'right' then
+      self.whip.offset = vec2(16,8)
+      self.hitBox:tpCollide(self.position + vec2(16,8))
+    elseif direction == 'left' then
+      self.whip.offset = vec2(-16,8)
+      self.hitBox:tpCollide(self.position + vec2(-16,8))
     end
   end
 
-  function player:onHurt()
-    self.stateFSM:transition('Invulnerable')
+  function player:whileHitting(dt)
+    self.mainSprite:setAnimation('player_hit_'..cardinalDirSimple(self.direction))
   end
 
-  function player:whileHurt(dt)
-    self:moveCollide(-self.hurtdir:normalizeInplace() * 150 * dt,self.mainBody)
+  function player:onExitHitting()
+    self.whip.visible = false
+    self.hitBox:setActive(false)
+    self.whip.offset = vec2(0,24)
+  end
+
+  --hurting state
+  function player:onEnterHurting()
+    self.redflash:play()
+    self.state:transition('Invulnerable')
+  end
+
+  function player:whileHurting(dt)
+    self.mainSprite:setAnimation('player_hurt_'..cardinalDirSimple(self.direction))
+    self:moveCollide(-self.hurtdir:normalizeInplace() *30* dt,self.mainBody)
     if not self.mainBody:collideFamily('ennemy') then
-      self.mainFSM:transition('Idle')
+      self.action:transition('Idle')
     end
   end
+  -------------
 
   function player:moveCollide(vector,body)
     --moves the player according to a c_body collisions
     self.position = body:moveCollide(vector)
-    --TODO make all the body move with owner
-
   end
 
   function player:tpCollide(vector,body)
@@ -202,26 +345,17 @@ function Player:new(parent,a)
     self.position = body:tpCollide(vector)
   end
 
-  function player:onEnterIdle()
-    self.mainSprite:gotoFrame(1)
-    self.mainSprite:pause()
-  end
-
-  function player:onEnterMoving()
-    self.mainSprite:resume()
-  end
-
   function player:oDraw()
-    if self.stateFSM.currentState == 'Invulnerable' then
-      self.flicker=not self.flicker
+    if self.state.currentState == 'Invulnerable' then
+      self.flicker = not self.flicker
       self.visible = self.flicker
     else
       self.visible = true
     end
   end
 
-  player.mainFSM:initialize('Idle')
-  player.stateFSM:initialize('Vulnerable')
+  player.action:initialize('Idle')
+  player.state:initialize('Vulnerable')
   return player
 end
 
