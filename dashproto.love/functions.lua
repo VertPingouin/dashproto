@@ -1,3 +1,5 @@
+local pi = math.pi
+
 --copy a table (not deep copy)
 function tcopy(orig)
     local orig_type = type(orig)
@@ -84,11 +86,45 @@ function blockView(item)
   return
 end
 
---oracle nvl
+--oracle like nvl
 function nvl(object, value)
   if not object then
     return value
   else
     return object
+  end
+end
+
+--return 4 directions based on one angle
+function cardinalDir(vec)
+  local angle = 0
+  angle = vec:normalizeInplace():angleTo(vec2(0,-1))
+  if (angle < 0) then angle = angle + 2 * pi end
+
+  if angle >= 7*pi/4 or angle < pi/4 then
+    return 'up'
+  elseif pi/4 <= angle and angle < 3*pi/4 then
+    return 'right'
+  elseif 3*pi/4 <= angle and angle < 5*pi/4 then
+    return 'down'
+  elseif 5*pi/4 <= angle and angle < 7*pi/4 then
+    return 'left'
+  end
+end
+
+--return 4 directions based on one vector
+function cardinalDirSimple(vec)
+  if vec.x == 0 then
+    if vec.y > 0 then
+      return 'down'
+    else
+      return 'up'
+    end
+  else
+    if vec.x > 0 then
+      return 'right'
+    else
+      return 'left'
+    end
   end
 end
