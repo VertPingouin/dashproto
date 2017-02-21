@@ -2,7 +2,7 @@ return {
   pic =love.graphics.newImage('assets/pics/player.png'),
   cellsizex = 16,
   cellsizey = 24,
-  nbcellx = 16,
+  nbcellx = 20,
   nbcelly = 1,
   cellnames = {
     'down1',
@@ -20,6 +20,10 @@ return {
     'hurtdown',
     'hurtup',
     'hurtright',
-    'hurtleft'
+    'hurtleft',
+    'hitdown',
+    'hitup',
+    'hitright',
+    'hitleft',
   }
 }
