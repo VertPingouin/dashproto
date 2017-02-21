@@ -24,11 +24,10 @@ function C_body:new(owner,id,a)
   c_body.contactsBody = {} --collision list
   c_body.contactsFamily = {}
   c_body.offset = a.offset
-
+  c_body.active = true
 
   assert(obm:get('bumpWorld'),'c_body::new::a world object (bump) is needed for a body to work')
   c_body.world = obm:get('bumpWorld')
-  c_body.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
 
   --metamethods for accessing center, left, top right etc...
   local mt = {__index =
@@ -82,6 +81,15 @@ function C_body:new(owner,id,a)
   end
 }
   setmetatable(c_body,mt)
+
+  function c_body:setActive(active)
+    if active then
+      self.world:add(c_body,c_body.position.x,c_body.position.y,c_body.w,c_body.h)
+    else
+      self.world:remove(c_body)
+    end
+    self.active = active
+  end
 
   function c_body:moveCollide(vector)
     --we try to move the body and return new coordinates
@@ -178,7 +186,7 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:draw()
-    if params.debug.boxes then
+    if params.debug.boxes and self.active then
       love.graphics.setColor(
         c_body.color.r,
         c_body.color.g,
@@ -205,6 +213,7 @@ function C_body:new(owner,id,a)
     print('call')
   end
 
+  c_body:setActive(true)
   return c_body
 end
 return C_body
