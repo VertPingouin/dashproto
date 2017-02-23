@@ -8,7 +8,6 @@ function Player:new(parent,a)
   })
   a=check:check(a)
 
-
   local player = entity:new({
     name='player',
     tags={'ticking','visible','player'},
@@ -21,6 +20,7 @@ function Player:new(parent,a)
   player.move = false
   player.speed = 1
   player.flicker = true
+  player.hp = 3
 
   --we get the joy1 (child of game) to be able to read the input
   player.joystick = obm:get('joy1')
@@ -47,12 +47,14 @@ function Player:new(parent,a)
 
   player.action:setInitialState('Idle')
 
+  --another state machine for invulnerability when hit
   player:add(c_statemachine:new(player,'state'),'state')
   player.state:addState('Vulnerable')
   player.state:addState('Invulnerable')
   player.state:addTransition('Vulnerable','Invulnerable',{preferred=true})
   player.state:addTransition('Invulnerable','Vulnerable',{preferred=true,ttl=1})
 
+  --adding a body for colliding with scene
   player:add(c_body:new(player,'mainBody',{
     x=player.position.x,
     y=player.position.y,
@@ -63,6 +65,7 @@ function Player:new(parent,a)
     offset=vec2(3,10)
   }),'mainBody')
 
+  --adding a body to detect collisions between whip and ennemies
   player:add(c_body:new(player,'hitBox',{
     x=player.position.x,
     y=player.position.y,
@@ -73,8 +76,10 @@ function Player:new(parent,a)
     offset=vec2(0,0)
   }),'hitBox')
 
+  --don't activate whip hitbox now
   player.hitBox:setActive(false)
 
+  --create a redflash effect when player is hurt
   player:add(c_effect:new(player,'redflash',{
   duration = 0,
   fadein = 0,
@@ -90,7 +95,12 @@ function Player:new(parent,a)
   }
   ]]}))
 
+  --create a sprite for the whip
+  --whip is not visible now
   player:add(c_sprite:new(player,'whip'))
+  player.whip.visible = false
+
+  --add animations for the whip
   player.whip:add({
     name = 'whip_down',
     pic = asm:get('whip'),
@@ -99,8 +109,6 @@ function Player:new(parent,a)
     frames = {'1-2',1},
     durations = .1
   })
-
-  player.whip.visible = false
 
   player.whip:add({
     name = 'whip_up',
@@ -129,7 +137,10 @@ function Player:new(parent,a)
     durations = .1
   })
 
+  --create sprite for the player
   player:add(c_sprite:new(player,'mainSprite'))
+
+  --create animations for main sprite
   player.mainSprite:add({
     name = 'player_walk_down',
     pic = asm:get('player'),
@@ -228,12 +239,11 @@ function Player:new(parent,a)
     durations = .1
   })
 
+  --initialize animations
   player.mainSprite:setAnimation('player_walk_down')
   player.whip:setAnimation('whip_down')
 
-  function player:oTick(dt)
-  end
-
+  --get direction from controls, direction set is never 0,0 to get the last direction faced
   function player:setDirection()
     local r = self.joystick:get('right')
     local l =self.joystick:get('left')
@@ -249,37 +259,55 @@ function Player:new(parent,a)
     end
   end
 
-  --idle state
-  function player:whileIdle(dt)
-    self:setDirection()
+  function player:checkEnnemyCollision()
+    --if we collide an ennemy
     if self.mainBody:collideFamily('ennemy') and self.state.currentState == 'Vulnerable' then
+      --we compute get the vector between the two collideables
       self.hurtdir = self.mainBody:collideFamily('ennemy')
+      --we transition to proper status
       self.action:transition('Hurting')
     end
-    self.hurtdir = self.mainBody:collideFamily('ennemy')
-    if self.move then self.action:transition('Moving') end
-    if self.joystick:pressed('hit') then self.action:transition('Hitting') end
   end
 
+  --idle state
   function player:onEnterIdle()
+    --set fixed sprite
     self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction))
     self.mainSprite:gotoFrame(1)
     self.mainSprite:pause()
-    self.speed = 0
+  end
+
+  function player:whileIdle(dt)
+    --deccelerate
+    self.speed = self.speed *.8
+    self:moveCollide(self.direction:normalizeInplace() * self.speed * dt,self.mainBody)
+
+    --set direction from controls
+    self:setDirection()
+    self:checkEnnemyCollision()
+
+    --if we have a movement vector, we enter moving state
+    if self.move then self.action:transition('Moving') end
+
+    --if attack is pressed we enter the hitting state
+    if self.joystick:pressed('hit') then self.action:transition('Hitting') end
   end
 
   --moving state
   function player:onEnterMoving()
-    self.speed = 100
+    --define moving speed
+    self.speed = 110
   end
 
   function player:whileMoving(dt)
+    --set direction from controls
     self:setDirection()
+
+    --move the player
     self:moveCollide(self.direction:normalizeInplace() * self.speed * dt,self.mainBody)
-    if self.mainBody:collideFamily('ennemy') and self.state.currentState == 'Vulnerable' then
-      self.hurtdir = self.mainBody:collideFamily('ennemy')
-      self.action:transition('Hurting')
-    end
+
+    --if we collide an ennemy while moving
+    self:checkEnnemyCollision()
     if self.joystick:pressed('hit') then self.action:transition('Hitting') end
     if not self.move then self.action:transition('Idle')
     else self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction)) end
@@ -287,12 +315,14 @@ function Player:new(parent,a)
 
   --hitting state
   function player:onEnterHitting()
+    --move and active the hitbox and whip sprite
     self.hitBox.position = self.position + self.hitBox.offset
     self.whip:gotoFrame(1)
     self.hitBox:setActive(true)
     self.hitBox.active = true
     self.whip.visible = true
 
+    --set whip animation and whip hitbox offset related to player's direction
     local direction = cardinalDirSimple(self.direction)
     self.whip:setAnimation('whip_'..direction)
     if direction == 'down' then
@@ -311,10 +341,12 @@ function Player:new(parent,a)
   end
 
   function player:whileHitting(dt)
+    --animate player
     self.mainSprite:setAnimation('player_hit_'..cardinalDirSimple(self.direction))
   end
 
   function player:onExitHitting()
+    --deactivate whip
     self.whip.visible = false
     self.hitBox:setActive(false)
     self.whip.offset = vec2(0,24)
@@ -322,12 +354,18 @@ function Player:new(parent,a)
 
   --hurting state
   function player:onEnterHurting()
+    --effect red flash
     self.redflash:play()
+    --shake camera
+    obm:get('camera'):shake(.2,1)
+    --make player Invulnerable for a while
     self.state:transition('Invulnerable')
   end
 
   function player:whileHurting(dt)
+    --whange animation
     self.mainSprite:setAnimation('player_hurt_'..cardinalDirSimple(self.direction))
+    --eject player until it doesn't collide with ennemy anymore
     self:moveCollide(-self.hurtdir:normalizeInplace() *30* dt,self.mainBody)
     if not self.mainBody:collideFamily('ennemy') then
       self.action:transition('Idle')
@@ -346,6 +384,7 @@ function Player:new(parent,a)
   end
 
   function player:oDraw()
+    --make player licker when invulnerable
     if self.state.currentState == 'Invulnerable' then
       self.flicker = not self.flicker
       self.visible = self.flicker
@@ -354,6 +393,7 @@ function Player:new(parent,a)
     end
   end
 
+  --initialize statemachines
   player.action:initialize('Idle')
   player.state:initialize('Vulnerable')
   return player
