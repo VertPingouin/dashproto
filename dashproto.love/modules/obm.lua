@@ -270,8 +270,6 @@ function OBM:setTag(id,bool,tag)
   end
 end
 
---TODO find a way to toggle visibility and update, might not be needed
-
 function OBM:remove(id)
   --recursively remove childs
   local childs = self:getChildrens(id)
