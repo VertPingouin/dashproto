@@ -2,7 +2,7 @@ return {
   pic =love.graphics.newImage('assets/pics/skeleton.png'),
   cellsizex = 16,
   cellsizey = 24,
-  nbcellx = 12,
+  nbcellx = 14,
   nbcelly = 1,
   cellnames = {
     'down1',
@@ -16,6 +16,8 @@ return {
     'right3',
     'left1',
     'left2',
-    'left3'
+    'left3',
+    'collapse1',
+    'collapse2'
   }
 }
