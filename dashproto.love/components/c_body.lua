@@ -134,7 +134,6 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:tick(dt)
-    --TODO This is really dirty, might be done quicker
     --check entering or leaving collsion
     --local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
     local items, len = self.world:queryRect(self.left,self.top,self.w,self.h)
@@ -199,18 +198,16 @@ function C_body:new(owner,id,a)
   end
 
   function c_body:destroy()
-    --we remove body from bump
-    c_body.world:remove(self)
+    --we remove body from bump if present
+    if self.world.rects[self] then
+      self.world:remove(self)
+    end
   end
 
   function c_body:filter(other)
     --interrogate colm to know the collision type
     coltype = colm:getCollisionResponse(self.family,other.family)
     return coltype
-  end
-
-  function c_body:blockView()
-    print('call')
   end
 
   c_body:setActive(true)
