@@ -1,9 +1,21 @@
---TODO load a tilemap with collisions
---TODO make ennemies
---TODO make effects
 --TODO wrap ext libs in entity or components without altering them
+--TODO make transition between maps
+--TODO make lifebar
+--TODO make spawning skeletons with trigger zone
+--TODO make red skeletons that throw bones
 
 function love.load(arg)
+  if love.joystick.getJoysticks()[1] then
+    local joyguid = love.joystick.getJoysticks()[1]:getGUID()
+    love.joystick.setGamepadMapping(joyguid,'b','button',5)
+    love.joystick.setGamepadMapping(joyguid,'dpleft','hat',1,'l')
+    love.joystick.setGamepadMapping(joyguid,'dpdown','hat',1,'d')
+    love.joystick.setGamepadMapping(joyguid,'dpright','hat',1,'r')
+    love.joystick.setGamepadMapping(joyguid,'dpup','hat',1,'u')
+    love.joystick.setGamepadMapping(joyguid,'leftx','axis',1)
+    love.joystick.setGamepadMapping(joyguid,'lefty','axis',2)
+    --love.joystick.setGamepadMapping(joyguid,'lefty','axis',1)
+  end
   min_dt = 1/params.maxfps
   next_time = love.timer.getTime()
   require('requirement')
