@@ -14,6 +14,7 @@ function C_effect:new(owner,id,a)
   c_effect.shader = love.graphics.newShader(a.shader)
   c_effect.fadein = a.fadein
   c_effect.fadeout = a.fadeout
+
   c_effect.duration = a.duration
   c_effect.amount = 0
   c_effect.counter = 0
@@ -27,11 +28,14 @@ function C_effect:new(owner,id,a)
         self.phase = 2
         self.counter = 0
       end
-    elseif self.phase == 2 then
-      self.amount = 1
-      if self.counter > self.duration then
-        self.phase = 3
-        self.counter = 0
+    elseif self.phase == 2  then
+      --if duration is negative, then effect is permanent
+      if self.duration >= 0 then
+        self.amount = 1
+        if self.counter > self.duration then
+          self.phase = 3
+          self.counter = 0
+        end
       end
     elseif self.phase == 3 then
       self.amount = 1-self.counter / self.fadeout
@@ -44,7 +48,6 @@ function C_effect:new(owner,id,a)
       self.amount = 0
       self.counter = 0
     end
-    print(self.counter)
   end
 
   function c_effect:draw()
