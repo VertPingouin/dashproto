@@ -341,6 +341,8 @@ function Player:new(parent,a)
   end
 
   function player:whileHitting(dt)
+    --deccelerate
+    self.speed = 0
     --animate player
     self.mainSprite:setAnimation('player_hit_'..cardinalDirSimple(self.direction))
   end
