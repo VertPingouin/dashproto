@@ -19,9 +19,18 @@ function Camera:new(parent,a)
   camera.target = a.target
   camera.boundaries = a.boundaries
   camera.position = vec2(0,0)
+  camera.shaketime = 0
+  camera.shakeamp = 1
   camera:add(c_body:new(camera,'viewport',{x=0,y=0,w=a.w,h=a.h,color=color:new(0,0,255,0),family='viewport',layer=params.minlayer}),'viewport')
 
   function camera:setTarget(target)
+    camera.target = target
+  end
+
+
+  function camera:shake(time,amp)
+    self.shaketime = time
+    self.shakeamp = amp
   end
 
   function camera:oTick(dt)
@@ -45,7 +54,16 @@ function Camera:new(parent,a)
 
     self.position.x = self.viewport.left
     self.position.y = self.viewport.top
+
+    if self.shaketime <= 0 then
+      self.shaketime = 0
+    else
+      self.shaketime = self.shaketime - dt
+      self.position.x = self.position.x + math.random(-self.shakeamp,self.shakeamp)
+      self.position.y = self.position.y + math.random(-self.shakeamp,self.shakeamp)
+    end
   end
+
   function camera:oDraw()
     love.graphics.push()
     love.graphics.translate(-self.position.x,-self.position.y)
