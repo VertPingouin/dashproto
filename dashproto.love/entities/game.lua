@@ -9,13 +9,12 @@ function Game:new()
     order=2
   })
 
-  --TODO see if one axis is possible
   local controls = {
     left = {'axis:leftx-', 'button:dpleft','key:left'},
     right = {'axis:leftx+', 'button:dpright','key:right'},
     up = {'axis:lefty-', 'button:dpup','key:up'},
     down = {'axis:lefty+', 'button:dpdown','key:down'},
-    hit = {'button:rightshoulder','key:space'}
+    hit = {'button:5','key:space'}
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
