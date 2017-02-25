@@ -133,6 +133,13 @@ function C_body:new(owner,id,a)
     return self.contactsFamily[family]
   end
 
+  function c_body:getCollideFamily(family)
+    local items, len = self.world:queryRect(self.left,self.top,self.w,self.h)
+    for i,item in ipairs(items) do
+      if item.family == family then return item end
+    end
+  end
+
   function c_body:tick(dt)
     --check entering or leaving collsion
     --local actualX, actualY, cols, len = self.world:check(self,self.position.x,self.position.y,self.filter)
