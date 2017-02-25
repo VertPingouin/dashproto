@@ -63,10 +63,10 @@ function EVM:tick(dt)
     if evt[1].type == 't' then
       obm:callByTags(evt[1].target,evt[1].callback,evt[1].args)
     else
-      obm:callById(evt[1].target,evt[1].callback,evt[1].args)
+      obm:callById(evt[1].target,evt[1].callback,false,evt[1].args)
     end
     remove(self.queue,i)
-    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target..' with params '..strTable(evt[1].args))
+    log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target)
   end
 end
 
