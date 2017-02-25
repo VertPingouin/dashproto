@@ -8,6 +8,11 @@ function Scene:new(parent,name)
 
   scene.world = bump.newWorld(tilesize,name)
 
+  function scene:unload()
+    obm:remove('bumpWorld')
+    self:destroy()
+  end
+
   function scene:tick(dt)
   end
 
