@@ -1,8 +1,9 @@
+--read the objects layers from a tlm. Has bodies for triggerzones and colliders
 local insert = table.insert
 
 Map = {}
 
-function Map:new(parent,name,a)
+function Map:new(parent,a)
   local check = acheck:new()
   check:add({
     {'luamap','mandatory','table'},
@@ -11,7 +12,7 @@ function Map:new(parent,name,a)
   a=check:check(a)
 
   local map = entity:new({
-    name=name,
+    name=parent..'.map',
     parent=parent,
     tags={'ticking','visible'},
     layer = params.maxlayer-2
@@ -25,7 +26,9 @@ function Map:new(parent,name,a)
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
     if layer.type == 'objectgroup' then
+      --special layers
       if string.sub(layer.name,1,2) == 's_' then
+        --special layer collidrs, create bodies from family collider
         if layer.name == 's_colliders' then
           for j,object in ipairs(layer.objects) do
             assert(object.shape == 'rectangle','ERROR::map::new::layer colliders should only have rectangles in it')
@@ -38,6 +41,7 @@ function Map:new(parent,name,a)
               family='collider'
             }),'collider'..j)
           end
+        --special layer spawn, create a list of position on the map where objects can spawn
         elseif layer.name == 's_spawn' then
           for j,object in ipairs(layer.objects) do
             assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
@@ -46,20 +50,26 @@ function Map:new(parent,name,a)
             table.insert(map.spawn[object.name],vec2(object.x,object.y))
           end
         end
+      --trigger zone, create bodies from family t_family
       elseif string.sub(layer.name,1,2) == 't_' then
         local family = string.sub(layer.name,3)
         for j,object in ipairs(layer.objects) do
           assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
           assert(object.name,'ERROR::map::new::all rectangles must be named in layer trigger')
           --TODO check trigger layer name unicity
-          map:add(c_body:new(map,object.name,{
+          local body = c_body:new(map,object.name,{
             x=object.x+map.position.x,
             y=object.y+map.position.y,
             w=object.width,
             h=object.height,
             color=color:new(200,0,0,150),
             family=family
-          }),object.name)
+          })
+          --if triggerzone has special properties, we add them to the body
+          for key,property in pairs(object.properties) do
+            body[key] = property
+          end
+          map:add(body,object.name)
         end
       end
     end
@@ -67,7 +77,6 @@ function Map:new(parent,name,a)
 
   --gets a spawn point
   function map:getSpawn(name)
-    assert(self.spawn[name],'ERROR::map::getSpawn::No spawn point for '..name)
     return self.spawn[name]
   end
 
