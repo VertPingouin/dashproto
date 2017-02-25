@@ -6,7 +6,7 @@ function Game:new()
   local game = entity:new({
     name='game',
     tags={'ticking'},
-    order=2
+    order=1
   })
 
   local controls = {
@@ -18,12 +18,26 @@ function Game:new()
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
+  game.playerHp = 10
+  game.currentScene = nil
 
-  function game:setScene(scene)
-    self.currentScene = scene
+  --unload current scene and load a new, optionally spawn the player on a certain spawnpoint
+  function game:setScene(scene, playerSpawn)
+    if self.currentScene then
+      self.currentScene:unload()
+      self.currentScene = nil
+    end
+    self.currentScene = require('scenes/'..scene):load('game',playerSpawn)
   end
 
   function game:oTick(dt)
+    --if player collides a passage, goto the proper scene with proper position
+    local passage = obm:get('player').mainBody:getCollideFamily('passage')
+    if passage then
+      self:setScene(passage.destination,passage.spawn)
+    end
+
+    --display debug infos
     function love.keypressed(key,unicode)
       if key == 'f1' then
         obm:printChildren('root')
