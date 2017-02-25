@@ -29,8 +29,8 @@ function love.load(arg)
       parent='root',
       name='info console',
       regexpfilter='.*',
-      nblines=15,
-      position=vec2(10,400)
+      nblines=40,
+      position=vec2(10,10)
     })
 
     log = log:new({c1})
@@ -47,14 +47,17 @@ function love.load(arg)
 
   require('ressources')
 
+  --TODO move this in a separated file
   --collision responses definition
   colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})
   colm:addCollisionResponse({obf1='ennemy',obf2='collider',coltype='slide'})
+  colm:addCollisionResponse({obf1='ennemy',obf2='passage',coltype='slide'})
   --colm:addCollisionResponse({obf1='ennemy',obf2='ennemy',coltype='slide'})
   colm:addCollisionResponse({obf1='player',obf2='doors',coltype='cross'})
-  --game entity with default scene
+
+--game entity with default scene
   game = game:new()
-  game:setScene(require('scenes/mainScene'):new('game'))
+  game:setScene('room1','player')
 
 end
 
