@@ -8,7 +8,7 @@ return {
   height = 24,
   tilewidth = 16,
   tileheight = 16,
-  nextobjectid = 165,
+  nextobjectid = 183,
   properties = {},
   tilesets = {
     {
@@ -789,8 +789,8 @@ return {
           name = "player",
           type = "",
           shape = "rectangle",
-          x = 64,
-          y = 144,
+          x = 57.0538,
+          y = 157.396,
           width = 16,
           height = 16,
           rotation = 0,
@@ -906,8 +906,8 @@ return {
           name = "skeleton",
           type = "",
           shape = "rectangle",
-          x = 420.558,
-          y = 214.906,
+          x = 384.836,
+          y = 259.311,
           width = 16,
           height = 16,
           rotation = 0,
@@ -939,6 +939,50 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 181,
+          name = "fromRoom2",
+          type = "",
+          shape = "rectangle",
+          x = 494.344,
+          y = 185.495,
+          width = 16,
+          height = 16,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      name = "t_passage",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {
+        ["destination"] = "room2",
+        ["spawn"] = "fromRoom1"
+      },
+      objects = {
+        {
+          id = 182,
+          name = "room2",
+          type = "",
+          shape = "rectangle",
+          x = 512,
+          y = 176,
+          width = 16,
+          height = 32,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["destination"] = "room2",
+            ["spawn"] = "fromRoom1"
+          }
         }
       }
     }
