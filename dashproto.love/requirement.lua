@@ -25,6 +25,7 @@ triggerzone = require('entities/triggerzone')
 map = require('entities/map')
 tilemap = require('entities/tilemap')
 camera = require('entities/camera')
+tlm = require('entities/tlm')
 
 --components
 component = require('components/_component')
