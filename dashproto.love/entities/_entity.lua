@@ -31,6 +31,7 @@ function Entity:new(a)
   --overrideable function shouldn't be user to draw things but to control what happen when drawing
   --use components to draw instead
   function entity:oDraw() end
+  function entity:oDestroy() end
 
   --add a component
   function entity:add(component)
@@ -70,6 +71,7 @@ function Entity:new(a)
 
   --when entity is destroyed, we destroy its component and we remove if from obm (will remove children too)
   function entity:destroy()
+    self:oDestroy()
     for k,component in pairs(self.componentsSorted) do
       component:destroy()
     end
