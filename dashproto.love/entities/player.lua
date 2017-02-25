@@ -20,7 +20,6 @@ function Player:new(parent,a)
   player.move = false
   player.speed = 1
   player.flicker = true
-  player.hp = 3
 
   --we get the joy1 (child of game) to be able to read the input
   player.joystick = obm:get('joy1')
@@ -341,6 +340,7 @@ function Player:new(parent,a)
   end
 
   function player:whileHitting(dt)
+    self:checkEnnemyCollision()
     --deccelerate
     self.speed = 0
     --animate player
