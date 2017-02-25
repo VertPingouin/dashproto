@@ -15,10 +15,10 @@ function love.conf(t)
 	minorder = 1,
 	debug = {
 		boxes = false,
-		fps = false,
+		fps = true,
 		console = false,
 		look = false,
-		log = false
+		log = true
 		}
 	}
 
