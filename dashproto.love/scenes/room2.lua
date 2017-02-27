@@ -1,5 +1,5 @@
 Room2 = {}
---TODO subobject map
+
 function Room2:load(parent,playerSpawn)
 
   local room2 = scene:new(parent,'room2')
