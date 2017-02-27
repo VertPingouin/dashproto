@@ -1,5 +1,4 @@
 --TODO wrap ext libs in entity or components without altering them
---TODO make transition between maps
 --TODO make lifebar
 --TODO make spawning skeletons with trigger zone
 --TODO make red skeletons that throw bones
