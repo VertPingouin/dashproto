@@ -60,10 +60,16 @@ function C_sprite:new(owner,id,a)
 
   function c_sprite:draw()
     if self.visible then
-      self.currentAnimation:draw(
-        self.image,self.owner.position.x +
-        self.offset.x,self.owner.position.y + self.offset.y
-      )
+      if self.owner.position then
+        self.currentAnimation:draw(
+          self.image,self.owner.position.x +
+          self.offset.x,self.owner.position.y + self.offset.y
+        )
+      else
+        self.currentAnimation:draw(
+          self.image,self.offset.x,self.offset.y
+        )
+      end
     end
   end
 
