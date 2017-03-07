@@ -11,8 +11,10 @@ function love.conf(t)
 	maxorder = 5,
 	minorder = 1,
 	limitfps = true,
+	vsync = true,
+	fullscreen = true,
 	debug = {
-		boxes = true,
+		boxes = false,
 		fps = true,
 		console = true,
 		look = false,
