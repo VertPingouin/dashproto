@@ -29,7 +29,7 @@ function love.load(arg)
       name='info console',
       regexpfilter='.*',
       nblines=40,
-      position=vec2(10,10)
+      position=vec2(10,50)
     })
 
     log = log:new({c1})
@@ -56,7 +56,7 @@ function love.load(arg)
 
 --game entity with default scene
   game = game:new()
-  game:setScene('room1','player')
+  game:setScene('titlescreen')
 
 end
 
@@ -75,11 +75,13 @@ function love.draw()
     love.graphics.print("Current update rate: "..tostring(math.floor(1/love.timer.getAverageDelta())), 10, 20)
   end
 
-  --wait a certain time to comply FPS cap
-  local cur_time = love.timer.getTime()
-  if next_time <= cur_time then
-     next_time = cur_time
-     return
+  if params.limitfps then
+    --wait a certain time to comply FPS cap
+    local cur_time = love.timer.getTime()
+    if next_time <= cur_time then
+       next_time = cur_time
+       return
+    end
+    love.timer.sleep(next_time - cur_time)
   end
-  love.timer.sleep(next_time - cur_time)
 end
