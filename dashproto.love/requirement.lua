@@ -27,8 +27,8 @@ tilemap = require('entities/tilemap')
 camera = require('entities/camera')
 tlm = require('entities/tlm')
 black = require('entities/black')
-sprite = require('entities/sprite')
 nullcam = require('entities/nullcam')
+nullentity = require('entities/nullentity')
 
 --components
 component = require('components/_component')
@@ -39,6 +39,7 @@ c_look = require('components/c_look')
 c_effect = require('components/c_effect')
 c_rectangle = require('components/c_rectangle')
 c_counter = require('components/c_counter')
+
 --scenes
 scene = require('scenes/_scene')
 
