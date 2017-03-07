@@ -15,6 +15,7 @@ function Player:new(parent,a)
     layer=2
   })
 
+  player.game = obm:get('game')
   player.position = a.position
   player.direction = vec2(0,1)
   player.move = false
@@ -356,6 +357,8 @@ function Player:new(parent,a)
 
   --hurting state
   function player:onEnterHurting()
+    self.game.playerHp = self.game.playerHp -1
+    log:post('RAW','player','hp='..tostring(self.game.playerHp))
     --effect red flash
     self.redflash:play()
     --shake camera
