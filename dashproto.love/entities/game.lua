@@ -23,7 +23,6 @@ function Game:new()
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
-  game.playerHp = 10
   game.currentScene = nil
   game.paused = false
   game.black = black:new('game',{name='black'})
@@ -32,13 +31,16 @@ function Game:new()
 
   game.state:addState('Title',{step='whileTitle',enter='onEnterTitle'})
   game.state:addState('Game',{step='whileGame',enter='onEnterGame'})
+  game.state:addState('Gameover',{enter='onEnterGameover'})
   game.state:addTransition('Title','Game')
   game.state:addTransition('Game','Title')
+  game.state:addTransition('Game','Gameover')
+  game.state:addTransition('Gameover','Title',{preferred=true,ttl=2})
 
   game.state:setInitialState('Title')
 
   function game:onEnterTitle()
-    self:setScene(require('scenes/titlescreen'))
+    self:setScene('titlescreen')
   end
 
   function game:whileTitle(dt)
@@ -47,8 +49,12 @@ function Game:new()
       self.state:transition('Game')
     end
   end
+  function game:onEnterGameover()
+    self:setScene('gameoverscreen')
+  end
 
   function game:onEnterGame()
+    self.playerHp = 3
   end
 
   function game:whileGame(dt)
@@ -62,10 +68,13 @@ function Game:new()
       self.paused = not self.paused
       obm:callByTag('pauseable','setPause',{self.paused})
     end
+    if self.playerHp == 0 then
+      self.state:transition('Gameover')
+    end
+
   end
 
   --unload current scene and load a new, optionally spawn the player on a certain spawnpoint
-  --TODO intermediate scene to help load unload on the pi
   function game:setScene(scene, playerSpawn)
     self.black:on(.5)
     if self.currentScene then
@@ -74,6 +83,8 @@ function Game:new()
     end
     self.currentScene = require('scenes/'..scene):new('game',playerSpawn)
     self.currentScene:load()
+    --we need to pause every obkect because transition makes a huge framedrop on the pi
+    --se we can't just pause then unpause when loaded
     obm:callByTag('pauseable','freeze',{.5})
   end
 
