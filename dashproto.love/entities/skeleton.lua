@@ -12,7 +12,7 @@ function Skeleton:new(parent,a)
 
   local skeleton = entity:new({
     name=a.name,
-    tags={'ticking','visible','skeleton','ennemy'},
+    tags={'ticking','visible','skeleton','ennemy','pauseable'},
     parent=parent,
     layer=2
   })
