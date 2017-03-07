@@ -8,14 +8,14 @@ function TLM:new(parent, a)
     {'luamap','mandatory','string'},
     {'asset','mandatory','string'},
     {'position','defaultValue','table',vec2(0,0)},
-    {'playerSpawn','mandatory','string'}
+    {'playerSpawn','mandatory','string'},
   })
   a = check:check(a)
 
   local tlm = entity:new({
     name = a.luamap,
     tags={'map'},
-    parent=parent
+    parent=parent,
   })
 
   tlm.basepath = 'maps/'
@@ -25,13 +25,15 @@ function TLM:new(parent, a)
   tlm.bg = tilemap:new(a.luamap,{luamap=require(tlm.basepath..a.luamap),layername = 'bg',asset=a.asset,position=a.position,layer=params.minlayer})
 
   if tlm.map:getSpawn(a.playerSpawn) then
-    tlm.player = player:new(a.luamap,{position=tlm.map:getSpawn(a.playerSpawn)[1]})
+    tlm.player = player:new(a.luamap,{position=tlm.map:getSpawn(a.playerSpawn)[1],paused=a.paused})
+    tlm.player:setPause(true)
   end
 
   local skellyspawn = tlm.map:getSpawn('skeleton')
   for i,pos in ipairs(skellyspawn) do
     local name = a.luamap..'.skeleton'..i
-    tlm[name] = skeleton:new(a.luamap,{position=pos+a.position,name=name})
+    tlm[name] = skeleton:new(a.luamap,{position=pos+a.position,name=name,paused=a.paused})
+    tlm[name]:setPause(true)
   end
   return tlm
 end
