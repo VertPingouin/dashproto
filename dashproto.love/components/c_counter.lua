@@ -1,3 +1,4 @@
+--TODO rename thi to clock to avoid duplicates names
 C_counter = {}
 
 function C_counter:new(owner,id,a)
