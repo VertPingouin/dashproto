@@ -1,3 +1,4 @@
+--TODO include camera in parent
 Scene = {}
 function Scene:new(parent,name)
   local scene = entity:new({
@@ -7,10 +8,19 @@ function Scene:new(parent,name)
   })
 
   scene.world = bump.newWorld(tilesize,name)
+  scene.loaded = false
+
+  function scene:oLoad() end
+  
+  function scene:load()
+    self.oLoad() --load the scene
+    scene.loaded = true --scene is loaded
+    obm:callByTag('pauseable','setPause',{false}) --unpause scene
+  end
 
   function scene:unload()
-    obm:remove('bumpWorld')
-    self:destroy()
+    obm:callByTag('pauseable','setPause',{true}) --pause scene
+    self:destroy() --we destroy scene
   end
 
   function scene:tick(dt)
