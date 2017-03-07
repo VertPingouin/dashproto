@@ -10,7 +10,7 @@ function Player:new(parent,a)
 
   local player = entity:new({
     name='player',
-    tags={'ticking','visible','player'},
+    tags={'ticking','visible','player','pauseable'},
     parent=parent,
     layer=2
   })
