@@ -12,7 +12,7 @@ function Renderer:load()
   params.multy = params.resy/params.nativeresy
   params.offsetx = (params.resx-params.nativeresx*params.multx)/2
 
-  love.window.setMode(params.resx,params.resy,{vsync=true})--,fullscreen=true,fullscreentype ="desktop"})
+  love.window.setMode(params.resx,params.resy,{vsync=params.vsync,fullscreen=params.fullscreen,fullscreentype ="desktop"})
   love.graphics.setLineStyle('rough')
   Renderer.canvas = love.graphics.newCanvas(params.nativeresx,params.nativeresy)
 end
