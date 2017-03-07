@@ -43,7 +43,6 @@ function Entity:new(a)
 
   function entity:setPause(isPaused)
     self.pause = isPaused
-    print(self.pause,self.counter)
   end
 
   function entity:freeze(freezetime)
