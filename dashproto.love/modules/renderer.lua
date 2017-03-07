@@ -4,7 +4,15 @@ local remove = table.remove
 
 function Renderer:load()
   love.graphics.setDefaultFilter("nearest", "nearest")
-  love.window.setMode(params.resx,params.resy,{vsync=true})
+
+  local width, height = love.window.getDesktopDimensions(1)
+  params.resx = width
+  params.resy = height
+  params.multx = params.resy/params.nativeresy
+  params.multy = params.resy/params.nativeresy
+  params.offsetx = (params.resx-params.nativeresx*params.multx)/2
+
+  love.window.setMode(params.resx,params.resy,{vsync=true})--,fullscreen=true,fullscreentype ="desktop"})
   love.graphics.setLineStyle('rough')
   Renderer.canvas = love.graphics.newCanvas(params.nativeresx,params.nativeresy)
 end
@@ -27,7 +35,7 @@ function Renderer:draw()
     --wi insert visible in subtables with ypos as key
     for j,v in ipairs(visible) do
       local vpos=0
-      if v.position.y then
+      if v.position then
         vpos = v.position.y
       end
       if not visibleSorted[vpos] then visibleSorted[vpos] = {} end
@@ -44,7 +52,7 @@ function Renderer:draw()
 
     if i == params.maxlayer-1 then --all layer but the last are scaled on canvas
       love.graphics.setCanvas()
-      love.graphics.draw(Renderer.canvas,0,0,0,params.multx,params.multy)
+      love.graphics.draw(Renderer.canvas,params.offsetx,0,0,params.multx,params.multy)
     elseif i == params.maxlayer-2 then --all layers but the two lasts are influenced by camera
       love.graphics.pop()
     end
