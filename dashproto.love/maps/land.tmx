@@ -138,10 +138,10 @@
   <object id="232" name="skeleton" x="328.578" y="278.121" width="16" height="16"/>
   <object id="233" name="skeleton" x="29.3976" y="342.825" width="16" height="16"/>
   <object id="234" name="skeleton" x="137.435" y="26.4295" width="16" height="16"/>
-  <object id="235" name="fromRoom1" x="2.18306" y="183.978" width="16" height="16"/>
+  <object id="235" name="fromRoom1" x="-4.67831" y="183.978" width="16" height="16"/>
  </objectgroup>
  <objectgroup color="#ffff00" name="t_passage">
-  <object id="240" name="room1" x="-16" y="176" width="16" height="32">
+  <object id="240" name="room1" x="-16" y="176" width="10.3319" height="32">
    <properties>
     <property name="destination" value="room1"/>
     <property name="spawn" value="fromRoom2"/>
