@@ -18,6 +18,7 @@ function Entity:new(a)
   --needed to preserve component order
   entity.componentsSorted = {}
   entity.componentCount = 0
+  entity.counter=0
 
   --we add our entity to object manager
   obm:add(entity,entity.name,a)
@@ -42,6 +43,13 @@ function Entity:new(a)
 
   function entity:setPause(isPaused)
     self.pause = isPaused
+    print(self.pause,self.counter)
+  end
+
+  function entity:freeze(freezetime)
+    self.counter = freezetime
+    self:setPause(true)
+    self.pause = true
   end
 
   function entity:setVisible(isVisible)
@@ -50,6 +58,14 @@ function Entity:new(a)
 
   --the entity ticking method, make every component tick
   function entity:tick(dt)
+    if self.counter > 0 then
+      self.counter = self.counter - dt
+      if self.counter < 0 then
+        self:setPause(false)
+        self.pause=false
+      end
+    end
+
     if not self.pause then
       for k,component in pairs(self.componentsSorted) do
         component:tick(dt)
