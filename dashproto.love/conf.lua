@@ -2,7 +2,7 @@
 function love.conf(t)
 
 	params = {
-	maxfps = 30,
+	maxfps = 60,
 	nativeresx = 256,
 	nativeresy = 240,
 	tilesize = 16,
@@ -15,7 +15,7 @@ function love.conf(t)
 	fullscreen = true,
 	debug = {
 		boxes = false,
-		fps = true,
+		fps = false,
 		console = true,
 		look = false,
 		log = true,
