@@ -13,6 +13,7 @@ function love.load(arg)
     love.joystick.setGamepadMapping(joyguid,'dpup','hat',1,'u')
     love.joystick.setGamepadMapping(joyguid,'leftx','axis',1)
     love.joystick.setGamepadMapping(joyguid,'lefty','axis',2)
+    love.joystick.setGamepadMapping(joyguid,'start','button',12)
     --love.joystick.setGamepadMapping(joyguid,'lefty','axis',1)
   end
   min_dt = 1/params.maxfps
