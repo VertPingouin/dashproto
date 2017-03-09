@@ -23,6 +23,9 @@ function Game:new()
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
+  game.lifebar = lifebar:new('game',{posx=3,posy=3,lifemax=10})
+  game.lifebar:setVisible(false)
+
   game.currentScene = nil
   game.paused = false
   game.black = black:new('game',{name='black'})
@@ -40,6 +43,7 @@ function Game:new()
   game.state:setInitialState('Title')
 
   function game:onEnterTitle()
+    self.lifebar:setVisible(false)
     self:setScene('titlescreen')
   end
 
@@ -50,14 +54,18 @@ function Game:new()
     end
   end
   function game:onEnterGameover()
+    self.lifebar:setVisible(false)
     self:setScene('gameoverscreen')
   end
 
   function game:onEnterGame()
+    self.lifebar:setVisible(true)
     self.playerHp = 3
   end
 
   function game:whileGame(dt)
+    self.lifebar:setLife(self.playerHp)
+
     --if player collides a passage, goto the proper scene with proper position
     local passage = obm:get('player').mainBody:getCollideFamily('passage')
     if passage then
