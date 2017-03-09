@@ -27,6 +27,7 @@ tilemap = require('entities/tilemap')
 camera = require('entities/camera')
 tlm = require('entities/tlm')
 black = require('entities/black')
+lifebar = require('entities/lifebar')
 nullcam = require('entities/nullcam')
 nullentity = require('entities/nullentity')
 
