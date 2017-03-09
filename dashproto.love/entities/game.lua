@@ -23,7 +23,7 @@ function Game:new()
   }
 
   game.joy1 = baton.new('joy1','game',controls,love.joystick.getJoysticks()[1])
-  game.lifebar = lifebar:new('game',{posx=3,posy=3,lifemax=10})
+  game.lifebar = lifebar:new('game',{posx=3,posy=3,lifemax=3})
   game.lifebar:setVisible(false)
 
   game.currentScene = nil
