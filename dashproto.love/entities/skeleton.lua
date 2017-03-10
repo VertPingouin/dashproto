@@ -80,46 +80,11 @@ function Skeleton:new(parent,a)
   ]]})
 
   skeleton:add(c_sprite,'mainSprite')
-  skeleton.mainSprite:add({
-    name = 'skeleton_walk_down',
-    pic = asm:get('skeleton'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'2-3',1,'2-1',1},
-    durations = .1
-  })
-  skeleton.mainSprite:add({
-    name = 'skeleton_walk_up',
-    pic = asm:get('skeleton'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'5-6',1,'5-4',1},
-    durations = .1
-  })
-  skeleton.mainSprite:add({
-    name = 'skeleton_walk_right',
-    pic = asm:get('skeleton'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'8-9',1,'8-7',1},
-    durations = .1
-  })
-  skeleton.mainSprite:add({
-    name = 'skeleton_walk_left',
-    pic = asm:get('skeleton'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'11-12',1,'11-10',1},
-    durations = .1
-  })
-  skeleton.mainSprite:add({
-    name = 'skeleton_die',
-    pic = asm:get('skeleton'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {3,1,'13-14',1},
-    durations = .3
-  })
+  skeleton.mainSprite:add(require('assets/animations/a_skeleton_walk_right'))
+  skeleton.mainSprite:add(require('assets/animations/a_skeleton_walk_left'))
+  skeleton.mainSprite:add(require('assets/animations/a_skeleton_walk_up'))
+  skeleton.mainSprite:add(require('assets/animations/a_skeleton_walk_down'))
+  skeleton.mainSprite:add(require('assets/animations/a_skeleton_die'))
   skeleton.mainSprite:setAnimation('skeleton_walk_down')
 
   function skeleton:onEnterWandering()
