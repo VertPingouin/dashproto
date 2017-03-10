@@ -35,9 +35,10 @@ function Entity:new(a)
   function entity:oDestroy() end
 
   --add a component
-  function entity:add(component)
-    self.components[component.id] = component
-    self.componentsSorted[self.componentCount] = component
+  function entity:add(component,id,args)
+    local c = component.new(component,self,id,args)
+    self.components[id] = c
+    self.componentsSorted[self.componentCount] = c
     self.componentCount = self.componentCount + 1
   end
 

@@ -20,13 +20,13 @@ function Collider:new(parent,a)
   collider.position = vec2(a.x,a.y)
 
   --a collider has only one body
-  collider:add(c_body:new(collider,'mainBody',{
+  collider:add(c_body,'mainBody',{
     x=a.x,
     y=a.y,
     w=a.w,
     h=a.h,
     color=color:new(0,255,0,255)
-  }),'mainBody')
+  })
 
   return collider
 end

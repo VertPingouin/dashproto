@@ -21,7 +21,7 @@ function Camera:new(parent,a)
   camera.position = vec2(0,0)
   camera.shaketime = 0
   camera.shakeamp = 1
-  camera:add(c_body:new(camera,'viewport',{x=0,y=0,w=a.w,h=a.h,color=color:new(0,0,255,0),family='viewport',layer=params.minlayer}),'viewport')
+  camera:add(c_body,'viewport',{x=0,y=0,w=a.w,h=a.h,color=color:new(0,0,255,0),family='viewport',layer=params.minlayer})
 
   function camera:setTarget(target)
     camera.target = target

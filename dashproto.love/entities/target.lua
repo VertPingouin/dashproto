@@ -7,7 +7,7 @@ function Target:new(parent)
     parent=parent,
     layer=6
   })
-  
+
   target.position = vec2(0,0)
   target.parent = obm:get(parent)
 
@@ -15,7 +15,7 @@ function Target:new(parent)
   target.joystick = obm:get('joy1')
 
   --target state machine
-  target:add(c_statemachine:new(target,'mainFSM'),'mainFSM')
+  target:add(c_statemachine,'mainFSM')
   target.components.mainFSM:addState('invisible')
   target.components.mainFSM:addState('visible')
 

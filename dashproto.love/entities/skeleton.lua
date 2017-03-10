@@ -23,7 +23,7 @@ function Skeleton:new(parent,a)
   skeleton.hp = 3
 
   --a statemachine
-  skeleton:add(c_statemachine:new(skeleton,'behavior'),'behavior')
+  skeleton:add(c_statemachine,'behavior')
   skeleton.behavior:addState('Agressive',{enter='onEnterAgressive',step='whileAgressive'})
   skeleton.behavior:addState('Wandering',{enter='onEnterWandering',step='whileWandering'})
   skeleton.behavior:addState('Retreating',{enter='onEnterRetreating',step='whileRetreating'})
@@ -37,7 +37,7 @@ function Skeleton:new(parent,a)
   skeleton.behavior:addTransition('Dying','Dead',{preferred=true,ttl=.9})
   skeleton.behavior:setInitialState('Wandering')
 
-  skeleton:add(c_body:new(skeleton,'mainBody',{
+  skeleton:add(c_body,'mainBody',{
     x=skeleton.position.x,
     y=skeleton.position.y,
     w=10,
@@ -45,9 +45,9 @@ function Skeleton:new(parent,a)
     color=color:new(0,255,0,50),
     family='ennemy',
     offset=vec2(3,10)
-  }),'mainBody')
+  })
 
-  skeleton:add(c_body:new(skeleton,'hurtBody',{
+  skeleton:add(c_body,'hurtBody',{
     x=skeleton.position.x,
     y=skeleton.position.y,
     w=12,
@@ -55,16 +55,16 @@ function Skeleton:new(parent,a)
     color=color:new(255,0,0,50),
     family='hurt',
     offset=vec2(2,4)
-  }),'hurtBody')
+  })
 
-  skeleton:add(c_look:new(skeleton,'evilLook',{
+  skeleton:add(c_look,'evilLook',{
     target=obm:get('player'),
     offset = vec2(8,24),
     targetOffset = vec2(8,24),
     distance = 100}
-  ))
+  )
 
-  skeleton:add(c_effect:new(skeleton,'whiteflash',{
+  skeleton:add(c_effect,'whiteflash',{
   duration = .1,
   fadein = 0,
   fadeout = .2,
@@ -77,9 +77,9 @@ function Skeleton:new(parent,a)
     pixel.b = pixel.b + amount;
     return pixel;
   }
-  ]]}))
+  ]]})
 
-  skeleton:add(c_sprite:new(skeleton,'mainSprite'))
+  skeleton:add(c_sprite,'mainSprite')
   skeleton.mainSprite:add({
     name = 'skeleton_walk_down',
     pic = asm:get('skeleton'),

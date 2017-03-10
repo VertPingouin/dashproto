@@ -22,7 +22,7 @@ function Map:new(parent,a)
   map.position = a.position
 
   --a rectangle representing map boundaries
-  map:add(c_body:new(map,'boundaries',{x=map.position.x,y=map.position.y,w=a.luamap.tilewidth * a.luamap.width,h=a.luamap.tileheight * a.luamap.height,color=color:new(0,255,0,0),family='boundaries'}),'boundaries')
+  map:add(c_body,'boundaries',{x=map.position.x,y=map.position.y,w=a.luamap.tilewidth * a.luamap.width,h=a.luamap.tileheight * a.luamap.height,color=color:new(0,255,0,0),family='boundaries'})
   --go through all layers and do things
   for i,layer in ipairs(a.luamap.layers) do
     if layer.type == 'objectgroup' then
@@ -32,14 +32,14 @@ function Map:new(parent,a)
         if layer.name == 's_colliders' then
           for j,object in ipairs(layer.objects) do
             assert(object.shape == 'rectangle','ERROR::map::new::layer colliders should only have rectangles in it')
-            map:add(c_body:new(map,'collider'..j,{
+            map:add(c_body,'collider'..j,{
               x=object.x+map.position.x,
               y=object.y+map.position.y,
               w=object.width,
               h=object.height,
               color=color:new(200,100,200,150),
               family='collider'
-            }),'collider'..j)
+            })
           end
         --special layer spawn, create a list of position on the map where objects can spawn
         elseif layer.name == 's_spawn' then
@@ -57,7 +57,7 @@ function Map:new(parent,a)
           assert(object.shape == 'rectangle','ERROR::map::new::layer trigger should only have rectangles in it')
           assert(object.name,'ERROR::map::new::all rectangles must be named in layer trigger')
           --TODO check trigger layer name unicity
-          local body = c_body:new(map,object.name,{
+          map:add(c_body,object.name,{
             x=object.x+map.position.x,
             y=object.y+map.position.y,
             w=object.width,
@@ -67,9 +67,8 @@ function Map:new(parent,a)
           })
           --if triggerzone has special properties, we add them to the body
           for key,property in pairs(object.properties) do
-            body[key] = property
+            map[object.name][key] = property
           end
-          map:add(body,object.name)
         end
       end
     end

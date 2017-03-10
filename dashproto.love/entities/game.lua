@@ -30,7 +30,7 @@ function Game:new()
   game.paused = false
   game.black = black:new('game',{name='black'})
 
-  game:add(c_statemachine:new(game,'state'),'state')
+  game:add(c_statemachine,'state')
 
   game.state:addState('Title',{step='whileTitle',enter='onEnterTitle'})
   game.state:addState('Game',{step='whileGame',enter='onEnterGame'})

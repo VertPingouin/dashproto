@@ -14,17 +14,13 @@ function Black:new(parent,a)
   })
 
   black:add(
-    c_rectangle:new(black,'black',
-    {
+    c_rectangle,'black',{
     position = vec2(-1000,-1000),
     size = vec2(3000,3000),
-    color = color:new(0,0,0,255)}),
-    'black'
+    color = color:new(0,0,0,255)}
   )
 
-  black:add(
-    c_counter:new(black,'timer',{time = .6}),'timer'
-  )
+  black:add(c_counter,'timer',{time = .6})
   black:setVisible(false)
 
   function black:on(time)

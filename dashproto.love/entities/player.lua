@@ -26,7 +26,7 @@ function Player:new(parent,a)
   player.joystick = obm:get('joy1')
 
   --a statemachine
-  player:add(c_statemachine:new(player,'action'),'action')
+  player:add(c_statemachine,'action')
 
   player.action:addState('Idle',{enter='onEnterIdle',step='whileIdle'})
   player.action:addState('Moving',{enter='onEnterMoving',step='whileMoving'})
@@ -48,14 +48,14 @@ function Player:new(parent,a)
   player.action:setInitialState('Idle')
 
   --another state machine for invulnerability when hit
-  player:add(c_statemachine:new(player,'state'),'state')
+  player:add(c_statemachine,'state')
   player.state:addState('Vulnerable')
   player.state:addState('Invulnerable')
   player.state:addTransition('Vulnerable','Invulnerable',{preferred=true})
   player.state:addTransition('Invulnerable','Vulnerable',{preferred=true,ttl=1})
 
   --adding a body for colliding with scene
-  player:add(c_body:new(player,'mainBody',{
+  player:add(c_body,'mainBody',{
     x=player.position.x,
     y=player.position.y,
     w=10,
@@ -63,10 +63,10 @@ function Player:new(parent,a)
     color=color:new(0,255,0,100),
     family='player',
     offset=vec2(3,10)
-  }),'mainBody')
+  })
 
   --adding a body to detect collisions between whip and ennemies
-  player:add(c_body:new(player,'hitBox',{
+  player:add(c_body,'hitBox',{
     x=player.position.x,
     y=player.position.y,
     w=16,
@@ -74,13 +74,13 @@ function Player:new(parent,a)
     color=color:new(255,0,0,100),
     family='hitBox',
     offset=vec2(0,0)
-  }),'hitBox')
+  })
 
   --don't activate whip hitbox now
   player.hitBox:setActive(false)
 
   --create a redflash effect when player is hurt
-  player:add(c_effect:new(player,'redflash',{
+  player:add(c_effect,'redflash',{
   duration = 0,
   fadein = 0,
   fadeout = .1,
@@ -93,11 +93,11 @@ function Player:new(parent,a)
     pixel.b = pixel.b;
     return pixel;
   }
-  ]]}))
+  ]]})
 
   --create a sprite for the whip
   --whip is not visible now
-  player:add(c_sprite:new(player,'whip'))
+  player:add(c_sprite,'whip')
   player.whip.visible = false
 
   --add animations for the whip
@@ -138,7 +138,7 @@ function Player:new(parent,a)
   })
 
   --create sprite for the player
-  player:add(c_sprite:new(player,'mainSprite'))
+  player:add(c_sprite,'mainSprite')
 
   --create animations for main sprite
   player.mainSprite:add({
