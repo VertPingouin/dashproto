@@ -5,14 +5,7 @@ function GameOverScreen:new(parent)
 
   gameoverscreen.camera=nullcam:new('gameoverscreen')
   gameoverscreen:add(c_sprite,'pic')
-  gameoverscreen.pic:add({
-    name = 'pic',
-    pic = asm:get('gameover'),
-    cellsizex = 256,
-    cellsizey = 240,
-    frames = {1,1},
-    durations = 1
-  })
+  gameoverscreen.pic:add(require('assets/animations/a_gameoverscreen'))
   gameoverscreen.pic:setAnimation('pic')
 
   return gameoverscreen
