@@ -101,143 +101,29 @@ function Player:new(parent,a)
   player.whip.visible = false
 
   --add animations for the whip
-  player.whip:add({
-    name = 'whip_down',
-    pic = asm:get('whip'),
-    cellsizex = 16,
-    cellsizey = 16,
-    frames = {'1-2',1},
-    durations = .1
-  })
-
-  player.whip:add({
-    name = 'whip_up',
-    pic = asm:get('whip'),
-    cellsizex = 16,
-    cellsizey = 16,
-    frames = {'3-4',1},
-    durations = .1
-  })
-
-  player.whip:add({
-    name = 'whip_right',
-    pic = asm:get('whip'),
-    cellsizex = 16,
-    cellsizey = 16,
-    frames = {'5-6',1},
-    durations = .1
-  })
-
-  player.whip:add({
-    name = 'whip_left',
-    pic = asm:get('whip'),
-    cellsizex = 16,
-    cellsizey = 16,
-    frames = {'7-8',1},
-    durations = .1
-  })
+  player.whip:add(require('assets/animations/a_whip_right'))
+  player.whip:add(require('assets/animations/a_whip_left'))
+  player.whip:add(require('assets/animations/a_whip_down'))
+  player.whip:add(require('assets/animations/a_whip_up'))
 
   --create sprite for the player
   player:add(c_sprite,'mainSprite')
 
   --create animations for main sprite
-  player.mainSprite:add({
-    name = 'player_walk_down',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'2-3',1,'2-1',1},
-    durations = .1
-  })
+  player.mainSprite:add(require('assets/animations/a_player_walk_right'))
+  player.mainSprite:add(require('assets/animations/a_player_walk_left'))
+  player.mainSprite:add(require('assets/animations/a_player_walk_down'))
+  player.mainSprite:add(require('assets/animations/a_player_walk_up'))
 
-  player.mainSprite:add({
-    name = 'player_walk_up',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'5-6',1,'5-4',1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_walk_right',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'8-9',1,'8-7',1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_walk_left',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {'11-12',1,'11-10',1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hurt_down',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {13,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hurt_up',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {14,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hurt_right',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {15,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hurt_left',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {16,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hit_down',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {17,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hit_up',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {18,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hit_right',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {19,1},
-    durations = .1
-  })
-  player.mainSprite:add({
-    name = 'player_hit_left',
-    pic = asm:get('player'),
-    cellsizex = 16,
-    cellsizey = 24,
-    frames = {20,1},
-    durations = .1
-  })
+  player.mainSprite:add(require('assets/animations/a_player_hit_right'))
+  player.mainSprite:add(require('assets/animations/a_player_hit_left'))
+  player.mainSprite:add(require('assets/animations/a_player_hit_down'))
+  player.mainSprite:add(require('assets/animations/a_player_hit_up'))
+
+  player.mainSprite:add(require('assets/animations/a_player_hurt_right'))
+  player.mainSprite:add(require('assets/animations/a_player_hurt_left'))
+  player.mainSprite:add(require('assets/animations/a_player_hurt_down'))
+  player.mainSprite:add(require('assets/animations/a_player_hurt_up'))
 
   --initialize animations
   player.mainSprite:setAnimation('player_walk_down')
