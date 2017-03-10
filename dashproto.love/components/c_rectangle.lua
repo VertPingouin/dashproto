@@ -1,7 +1,6 @@
 C_rectangle = {}
 function C_rectangle:new(owner,id,a)
   local c_rectangle = component:new(owner,id,a)
-
   local check = acheck:new()
   check:add({
     {'position','mandatory','table'},

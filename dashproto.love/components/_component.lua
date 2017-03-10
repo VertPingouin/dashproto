@@ -1,7 +1,7 @@
 --basic component
 Component = {}
 
-function Component:new(owner,id,p)
+function Component:new(owner,id,a)
   local component = {owner=owner,id=id}
   component.type = 'undefined'
 
