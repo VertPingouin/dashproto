@@ -156,17 +156,11 @@
    <property name="layer" type="int" value="1"/>
   </properties>
   <object id="18" name="player" x="57.0538" y="157.396" width="16" height="16"/>
-  <object id="121" name="skeleton" x="120.241" y="297.913" width="16" height="16"/>
-  <object id="122" name="skeleton" x="393.977" y="178.532" width="16" height="16"/>
+  <object id="121" name="redskeleton" x="206.412" y="228.353" width="16" height="16"/>
+  <object id="122" name="redskeleton" x="393.977" y="178.532" width="16" height="16"/>
   <object id="123" name="skeleton" x="288.12" y="122.573" width="16" height="16"/>
-  <object id="143" name="skeleton" x="363.199" y="317.965" width="16" height="16"/>
-  <object id="158" name="skeleton" x="186.46" y="332.422" width="16" height="16"/>
-  <object id="159" name="skeleton" x="222.834" y="226.564" width="16" height="16"/>
-  <object id="160" name="skeleton" x="278.327" y="292.317" width="16" height="16"/>
-  <object id="161" name="skeleton" x="241.021" y="328.225" width="16" height="16"/>
-  <object id="162" name="skeleton" x="384.836" y="259.311" width="16" height="16"/>
-  <object id="163" name="skeleton" x="347.81" y="216.771" width="16" height="16"/>
-  <object id="164" name="skeleton" x="354.339" y="56.82" width="16" height="16"/>
+  <object id="143" name="skeleton" x="234.115" y="332.154" width="16" height="16"/>
+  <object id="164" name="skeleton" x="353.993" y="60.9728" width="16" height="16"/>
   <object id="181" name="fromRoom2" x="501.611" y="185.495" width="16" height="16"/>
  </objectgroup>
  <objectgroup color="#ffff66" name="t_passage">
