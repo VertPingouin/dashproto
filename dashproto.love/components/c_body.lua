@@ -172,7 +172,7 @@ function C_body:new(owner,id,a)
     for k,v in pairs(colFamilyTable) do
       if not self.contactsFamily[k] then
         self.contactsFamily[k] = v
-        evm:post(self.name..' startCollision '..k)
+        evm:post(self.family..' startCollision '..k)
       end
     end
 
