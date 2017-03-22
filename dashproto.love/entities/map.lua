@@ -76,7 +76,7 @@ function Map:new(parent,a)
 
   --gets a spawn point
   function map:getSpawn(name)
-    return self.spawn[name]
+    return self.spawn[name] or {}
   end
 
   return map
