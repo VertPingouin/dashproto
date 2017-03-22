@@ -102,6 +102,18 @@ function Skeleton:new(parent,a)
     local dice = math.random(0, 50)
     if dice == 1 then self:rerollDirection() end
     if self.evilLook:see() then self.behavior:transition('Agressive') end
+    if self.mainBody:collideName('player.mainBody') then
+      self.speed = 100
+      self.behavior:transition('Retreating')
+    elseif self.mainBody:collideName('player.hitBox') then
+      self.whiteflash:play()
+      self.hp = self.hp-1
+      evm:post('hitSound')
+      obm:get('camera'):shake(.1,1)
+      self.speed = 100
+      self.behavior:transition('Retreating')
+    end
+
   end
 
   function skeleton:whileAgressive(dt)
@@ -117,6 +129,7 @@ function Skeleton:new(parent,a)
       elseif self.mainBody:collideName('player.hitBox') then
         self.whiteflash:play()
         self.hp = self.hp-1
+        evm:post('hitSound')
         obm:get('camera'):shake(.1,1)
         self.speed = 100
         self.behavior:transition('Retreating')
@@ -127,6 +140,7 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:onEnterDying()
+    evm:post('dieSound')
   end
 
   function skeleton:onEnterDead()
