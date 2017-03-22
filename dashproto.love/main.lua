@@ -44,6 +44,7 @@ function love.load(arg)
   colm:load()
   evm:load()
   asm:load()
+  soundm:load()
 
   require('ressources')
 
@@ -52,10 +53,21 @@ function love.load(arg)
   colm:addCollisionResponse({obf1='player',obf2='collider',coltype='slide'})
   colm:addCollisionResponse({obf1='ennemy',obf2='collider',coltype='slide'})
   colm:addCollisionResponse({obf1='ennemy',obf2='passage',coltype='slide'})
-  --colm:addCollisionResponse({obf1='ennemy',obf2='ennemy',coltype='slide'})
   colm:addCollisionResponse({obf1='player',obf2='doors',coltype='cross'})
 
---game entity with default scene
+  evm:addEntityEvent({
+    eventstring='ennemyProjectile startCollision player',
+    entity='player',
+    callback='hurt'
+  })
+
+  evm:addEntityEvent({eventstring='whipSound',entity='soundm',callback='play',args={'whip'}})
+  evm:addEntityEvent({eventstring='dieSound',entity='soundm',callback='play',args={'die'}})
+  evm:addEntityEvent({eventstring='startSound',entity='soundm',callback='play',args={'start'}})
+  evm:addEntityEvent({eventstring='hurtSound',entity='soundm',callback='play',args={'hurt'}})
+  evm:addEntityEvent({eventstring='hitSound',entity='soundm',callback='play',args={'hit'}})
+
+  --game entity with default scene
   game = game:new()
   game:setScene('titlescreen')
 
