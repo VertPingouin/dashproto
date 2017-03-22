@@ -101,33 +101,42 @@ function Player:new(parent,a)
   player.whip.visible = false
 
   --add animations for the whip
-  player.whip:add(require('assets/animations/a_whip_right'))
-  player.whip:add(require('assets/animations/a_whip_left'))
-  player.whip:add(require('assets/animations/a_whip_down'))
-  player.whip:add(require('assets/animations/a_whip_up'))
+  local a_whip = require('assets/animations/a_whip')
+  player.whip:add(a_whip.right)
+  player.whip:add(a_whip.left)
+  player.whip:add(a_whip.down)
+  player.whip:add(a_whip.up)
 
   --create sprite for the player
   player:add(c_sprite,'mainSprite')
 
   --create animations for main sprite
-  player.mainSprite:add(require('assets/animations/a_player_walk_right'))
-  player.mainSprite:add(require('assets/animations/a_player_walk_left'))
-  player.mainSprite:add(require('assets/animations/a_player_walk_down'))
-  player.mainSprite:add(require('assets/animations/a_player_walk_up'))
+  local a_player = require('assets/animations/a_player')
 
-  player.mainSprite:add(require('assets/animations/a_player_hit_right'))
-  player.mainSprite:add(require('assets/animations/a_player_hit_left'))
-  player.mainSprite:add(require('assets/animations/a_player_hit_down'))
-  player.mainSprite:add(require('assets/animations/a_player_hit_up'))
+  player.mainSprite:add(a_player.walk_right)
+  player.mainSprite:add(a_player.walk_left)
+  player.mainSprite:add(a_player.walk_down)
+  player.mainSprite:add(a_player.walk_up)
 
-  player.mainSprite:add(require('assets/animations/a_player_hurt_right'))
-  player.mainSprite:add(require('assets/animations/a_player_hurt_left'))
-  player.mainSprite:add(require('assets/animations/a_player_hurt_down'))
-  player.mainSprite:add(require('assets/animations/a_player_hurt_up'))
+  player.mainSprite:add(a_player.hit_right)
+  player.mainSprite:add(a_player.hit_left)
+  player.mainSprite:add(a_player.hit_down)
+  player.mainSprite:add(a_player.hit_up)
+
+  player.mainSprite:add(a_player.hurt_right)
+  player.mainSprite:add(a_player.hurt_left)
+  player.mainSprite:add(a_player.hurt_down)
+  player.mainSprite:add(a_player.hurt_up)
 
   --initialize animations
-  player.mainSprite:setAnimation('player_walk_down')
-  player.whip:setAnimation('whip_down')
+  player.mainSprite:setAnimation('walk_down')
+  player.whip:setAnimation('down')
+
+
+  function player:hurt()
+    self.hurtdir = vec2(0,0)
+    self.action:transition('Hurting')
+  end
 
   --get direction from controls, direction set is never 0,0 to get the last direction faced
   function player:setDirection()
@@ -158,7 +167,7 @@ function Player:new(parent,a)
   --idle state
   function player:onEnterIdle()
     --set fixed sprite
-    self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction))
+    self.mainSprite:setAnimation('walk_'..cardinalDirSimple(self.direction))
     self.mainSprite:gotoFrame(1)
     self.mainSprite:pause()
   end
@@ -196,11 +205,13 @@ function Player:new(parent,a)
     self:checkEnnemyCollision()
     if self.joystick:pressed('hit') then self.action:transition('Hitting') end
     if not self.move then self.action:transition('Idle')
-    else self.mainSprite:setAnimation('player_walk_'..cardinalDirSimple(self.direction)) end
+    else self.mainSprite:setAnimation('walk_'..cardinalDirSimple(self.direction)) end
   end
 
   --hitting state
   function player:onEnterHitting()
+    evm:post('whipSound')
+
     --move and active the hitbox and whip sprite
     self.hitBox.position = self.position + self.hitBox.offset
     self.whip:gotoFrame(1)
@@ -210,7 +221,7 @@ function Player:new(parent,a)
 
     --set whip animation and whip hitbox offset related to player's direction
     local direction = cardinalDirSimple(self.direction)
-    self.whip:setAnimation('whip_'..direction)
+    self.whip:setAnimation(direction)
     if direction == 'down' then
       self.whip.offset = vec2(0,24)
       self.hitBox:tpCollide(self.position + vec2(0,24))
@@ -231,7 +242,7 @@ function Player:new(parent,a)
     --deccelerate
     self.speed = 0
     --animate player
-    self.mainSprite:setAnimation('player_hit_'..cardinalDirSimple(self.direction))
+    self.mainSprite:setAnimation('hit_'..cardinalDirSimple(self.direction))
   end
 
   function player:onExitHitting()
@@ -243,6 +254,7 @@ function Player:new(parent,a)
 
   --hurting state
   function player:onEnterHurting()
+    evm:post('hurtSound')
     self.game.playerHp = self.game.playerHp -1
     log:post('RAW','player','hp='..tostring(self.game.playerHp))
     --effect red flash
@@ -255,7 +267,7 @@ function Player:new(parent,a)
 
   function player:whileHurting(dt)
     --whange animation
-    self.mainSprite:setAnimation('player_hurt_'..cardinalDirSimple(self.direction))
+    self.mainSprite:setAnimation('hurt_'..cardinalDirSimple(self.direction))
     --eject player until it doesn't collide with ennemy anymore
     self:moveCollide(-self.hurtdir:normalizeInplace() *30* dt,self.mainBody)
     if not self.mainBody:collideFamily('ennemy') then
