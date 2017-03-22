@@ -49,6 +49,7 @@ function Game:new()
 
   function game:whileTitle(dt)
     if self.joy1:pressed('pause') then
+      evm:post('startSound')
       self:setScene('room1','player')
       self.state:transition('Game')
     end
