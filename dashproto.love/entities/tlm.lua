@@ -35,6 +35,13 @@ function TLM:new(parent, a)
     tlm[name] = skeleton:new(a.luamap,{position=pos+a.position,name=name,paused=a.paused})
     tlm[name]:setPause(true)
   end
+
+  local redskellyspawn = tlm.map:getSpawn('redskeleton')
+  for i,pos in ipairs(redskellyspawn) do
+    local name = a.luamap..'.redskeleton'..i
+    tlm[name] = redskeleton:new(a.luamap,{position=pos+a.position,name=name,paused=a.paused})
+    tlm[name]:setPause(true)
+  end
   return tlm
 end
 
