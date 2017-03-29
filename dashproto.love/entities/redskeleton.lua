@@ -150,7 +150,7 @@ function RedSkeleton:new(parent,a)
   end
 
   function redskeleton:onEnterDying()
-    evm:post('dieSound')
+    evm:post('sound',{'die'})
     self.whiteflash:play()
     obm:get('camera'):shake(.1,1)
     self.movement = vec2(0,0)
