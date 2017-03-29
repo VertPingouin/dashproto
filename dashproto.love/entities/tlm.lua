@@ -25,21 +25,30 @@ function TLM:new(parent, a)
   tlm.bg = tilemap:new(a.luamap,{luamap=require(tlm.basepath..a.luamap),layername = 'bg',asset=a.asset,position=a.position,layer=params.minlayer})
 
   if tlm.map:getSpawn(a.playerSpawn) then
-    tlm.player = player:new(a.luamap,{position=tlm.map:getSpawn(a.playerSpawn)[1],paused=a.paused})
+    tlm.player = player:new(a.luamap,{position=tlm.map:getSpawn(a.playerSpawn)[1].pos,paused=a.paused})
     tlm.player:setPause(true)
   end
 
+  --TODO something wrong here when checking name
   local skellyspawn = tlm.map:getSpawn('skeleton')
   for i,pos in ipairs(skellyspawn) do
-    local name = a.luamap..'.skeleton'..i
-    tlm[name] = skeleton:new(a.luamap,{position=pos+a.position,name=name,paused=a.paused})
+    local name = ''
+    if pos.name == '' then
+      name = a.luamap..'.skeleton'..i
+    else name = pos.name end
+
+    tlm[name] = skeleton:new(a.luamap,{position=pos.pos+a.position,name=name,paused=a.paused})
     tlm[name]:setPause(true)
   end
 
   local redskellyspawn = tlm.map:getSpawn('redskeleton')
   for i,pos in ipairs(redskellyspawn) do
-    local name = a.luamap..'.redskeleton'..i
-    tlm[name] = redskeleton:new(a.luamap,{position=pos+a.position,name=name,paused=a.paused})
+    local name = ''
+    if pos.name =='' then
+      name = a.luamap..'.redskeleton'..i
+    else name = pos.name end
+
+    tlm[name] = redskeleton:new(a.luamap,{position=pos.pos+a.position,name=name,paused=a.paused})
     tlm[name]:setPause(true)
   end
   return tlm
