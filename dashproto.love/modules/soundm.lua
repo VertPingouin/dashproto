@@ -18,7 +18,6 @@ function SoundM:play(id,p)
   self.sounds[id]:setPitch(math.random(pitchmin,pitchmax)/100)
   self.sounds[id]:setVolume(volume)
   self.sounds[id]:play()
-
 end
 
 return SoundM
