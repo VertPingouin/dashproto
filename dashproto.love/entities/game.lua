@@ -49,7 +49,7 @@ function Game:new()
 
   function game:whileTitle(dt)
     if self.joy1:pressed('pause') then
-      evm:post('startSound')
+      evm:post('sound',{'start'})
       self:setScene('room1','player')
       self.state:transition('Game')
     end
@@ -65,6 +65,8 @@ function Game:new()
   end
 
   function game:whileGame(dt)
+--TODO add a proper way to include music
+
     self.lifebar:setLife(self.playerHp)
 
     --if player collides a passage, goto the proper scene with proper position
