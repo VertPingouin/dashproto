@@ -76,6 +76,12 @@ function Entity:new(a)
 
   --the entity drawing method, make every component draw
   function entity:draw()
+    if self.position and params.debug.names then
+      --local canvas = love.graphics.getCanvas()
+      --love.graphics.setCanvas()
+      love.graphics.print(self.name,self.position.x,self.position.y-8)
+      --love.graphics.setCanvas(canvas)
+    end
     self:oDraw()
     if self.visible then
       for k,component in pairs(self.componentsSorted) do
