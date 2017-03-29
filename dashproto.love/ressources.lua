@@ -14,6 +14,5 @@ for i,sound in ipairs(sounds) do
   sound = split(sound,'.')
   if sound[2] and sound[2] == 'wav' then
     soundm:add('sounds/'..sound[1]..'.'..sound[2],sound[1])
-    --log:post('resload','sound loaded : '..'sounds/'..sound[1]..'.'..sound[2])
   end
 end
