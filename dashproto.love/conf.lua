@@ -15,6 +15,7 @@ function love.conf(t)
 	fullscreen = true,
 	debug = {
 		boxes = false,
+		names = true,
 		fps = false,
 		console = true,
 		look = false,
