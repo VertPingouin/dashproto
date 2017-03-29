@@ -61,11 +61,7 @@ function love.load(arg)
     callback='hurt'
   })
 
-  evm:addEntityEvent({eventstring='whipSound',entity='soundm',callback='play',args={'whip'}})
-  evm:addEntityEvent({eventstring='dieSound',entity='soundm',callback='play',args={'die'}})
-  evm:addEntityEvent({eventstring='startSound',entity='soundm',callback='play',args={'start'}})
-  evm:addEntityEvent({eventstring='hurtSound',entity='soundm',callback='play',args={'hurt'}})
-  evm:addEntityEvent({eventstring='hitSound',entity='soundm',callback='play',args={'hit'}})
+  evm:addEntityEvent({eventstring='sound',entity='soundm',callback='play'})
 
   --game entity with default scene
   game = game:new()
