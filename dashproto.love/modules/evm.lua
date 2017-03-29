@@ -61,9 +61,9 @@ function EVM:tick(dt)
   --empty the queue and call callback function
   for i,evt in ipairs(self.queue) do
     if evt[1].type == 't' then
-      obm:callByTags(evt[1].target,evt[1].callback,evt[1].args)
+      obm:callByTags(evt[1].target,evt[1].callback,tcon(evt[1].args,evt[2]))
     else
-      obm:callById(evt[1].target,evt[1].callback,false,evt[1].args)
+      obm:callById(evt[1].target,evt[1].callback,false,tcon(evt[1].args,evt[2]))
     end
     remove(self.queue,i)
     log:post('DEBUG','evm','evm calls '..evt[1].callback..' on '..evt[1].target)
