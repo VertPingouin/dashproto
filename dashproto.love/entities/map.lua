@@ -46,8 +46,8 @@ function Map:new(parent,a)
           for j,object in ipairs(layer.objects) do
             assert(object.shape == 'rectangle','ERROR::map::new::layer spawn should only have rectangles in it')
             assert(object.name,'ERROR::map::new::all rectangles must be named in layer spawn')
-            if not map.spawn[object.name] then map.spawn[object.name] = {} end
-            table.insert(map.spawn[object.name],vec2(object.x,object.y))
+            if not map.spawn[object.properties.type] then map.spawn[object.properties.type] = {} end
+            table.insert(map.spawn[object.properties.type],{pos=vec2(object.x,object.y),name=object.name})
           end
         end
       --trigger zone, create bodies from family t_family
