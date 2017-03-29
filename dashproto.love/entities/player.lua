@@ -210,7 +210,7 @@ function Player:new(parent,a)
 
   --hitting state
   function player:onEnterHitting()
-    evm:post('whipSound')
+    evm:post('sound',{'whip'})
 
     --move and active the hitbox and whip sprite
     self.hitBox.position = self.position + self.hitBox.offset
@@ -254,7 +254,7 @@ function Player:new(parent,a)
 
   --hurting state
   function player:onEnterHurting()
-    evm:post('hurtSound')
+    evm:post('sound',{'hurt'})
     self.game.playerHp = self.game.playerHp -1
     log:post('RAW','player','hp='..tostring(self.game.playerHp))
     --effect red flash
