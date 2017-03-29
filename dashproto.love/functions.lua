@@ -1,5 +1,18 @@
 local pi = math.pi
 
+--concatenate two tables
+tcon = function(t1, t2)
+  local result = {}
+  for _,v in ipairs(t1) do
+      table.insert(result, v)
+  end
+  for _,v in ipairs(t2) do
+      table.insert(result, v)
+  end
+
+  return result
+end
+
 --copy a table (not deep copy)
 function tcopy(orig)
     local orig_type = type(orig)
