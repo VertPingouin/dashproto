@@ -16,7 +16,7 @@ function Skeleton:new(parent,a)
     parent=parent,
     layer=2
   })
-
+  --TODO skeletons die one hit while wandering
   skeleton.position = a.position
   skeleton.speed = 20
   skeleton.movement = vec2(1,1)
@@ -32,6 +32,7 @@ function Skeleton:new(parent,a)
   skeleton.behavior:addTransition('Agressive','Wandering')
   skeleton.behavior:addTransition('Wandering','Agressive')
   skeleton.behavior:addTransition('Agressive','Retreating')
+  skeleton.behavior:addTransition('Wandering','Retreating')
   skeleton.behavior:addTransition('Retreating','Wandering',{preferred=true,ttl=.2})
   skeleton.behavior:addTransition('Retreating','Dying')
   skeleton.behavior:addTransition('Dying','Dead',{preferred=true,ttl=.9})
@@ -108,7 +109,7 @@ function Skeleton:new(parent,a)
     elseif self.mainBody:collideName('player.hitBox') then
       self.whiteflash:play()
       self.hp = self.hp-1
-      evm:post('hitSound')
+      evm:post('sound',{'hit'})
       obm:get('camera'):shake(.1,1)
       self.speed = 100
       self.behavior:transition('Retreating')
@@ -129,7 +130,7 @@ function Skeleton:new(parent,a)
       elseif self.mainBody:collideName('player.hitBox') then
         self.whiteflash:play()
         self.hp = self.hp-1
-        evm:post('hitSound')
+        evm:post('sound',{'hit'})
         obm:get('camera'):shake(.1,1)
         self.speed = 100
         self.behavior:transition('Retreating')
@@ -140,7 +141,7 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:onEnterDying()
-    evm:post('dieSound')
+    evm:post('sound',{'die'})
   end
 
   function skeleton:onEnterDead()
