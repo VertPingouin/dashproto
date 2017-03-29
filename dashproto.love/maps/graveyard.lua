@@ -795,24 +795,13 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        {
-          id = 121,
-          name = "redskeleton",
-          type = "",
-          shape = "rectangle",
-          x = 206.412,
-          y = 228.353,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "player"
+          }
         },
         {
           id = 122,
-          name = "redskeleton",
+          name = "Roy",
           type = "",
           shape = "rectangle",
           x = 393.977,
@@ -821,37 +810,13 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        {
-          id = 123,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 288.12,
-          y = 122.573,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 143,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 234.115,
-          y = 332.154,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "redskeleton"
+          }
         },
         {
           id = 164,
-          name = "skeleton",
+          name = "Lenny",
           type = "",
           shape = "rectangle",
           x = 353.993,
@@ -860,7 +825,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "skeleton"
+          }
         },
         {
           id = 181,
@@ -873,7 +840,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "fromRoom2"
+          }
         }
       }
     },

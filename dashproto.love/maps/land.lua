@@ -486,7 +486,7 @@ return {
       objects = {
         {
           id = 203,
-          name = "skeleton",
+          name = "Triceps",
           type = "",
           shape = "rectangle",
           x = 60.2655,
@@ -495,11 +495,13 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "skeleton"
+          }
         },
         {
           id = 230,
-          name = "skeleton",
+          name = "Michel",
           type = "",
           shape = "rectangle",
           x = 159.992,
@@ -508,59 +510,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
-        },
-        {
-          id = 231,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 249.034,
-          y = 119.033,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 232,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 328.578,
-          y = 278.121,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 233,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 29.3976,
-          y = 342.825,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 234,
-          name = "skeleton",
-          type = "",
-          shape = "rectangle",
-          x = 137.435,
-          y = 26.4295,
-          width = 16,
-          height = 16,
-          rotation = 0,
-          visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "skeleton"
+          }
         },
         {
           id = 235,
@@ -573,7 +525,9 @@ return {
           height = 16,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["type"] = "fromRoom1"
+          }
         }
       }
     },

@@ -155,13 +155,26 @@
   <properties>
    <property name="layer" type="int" value="1"/>
   </properties>
-  <object id="18" name="player" x="57.0538" y="157.396" width="16" height="16"/>
-  <object id="121" name="redskeleton" x="206.412" y="228.353" width="16" height="16"/>
-  <object id="122" name="redskeleton" x="393.977" y="178.532" width="16" height="16"/>
-  <object id="123" name="skeleton" x="288.12" y="122.573" width="16" height="16"/>
-  <object id="143" name="skeleton" x="234.115" y="332.154" width="16" height="16"/>
-  <object id="164" name="skeleton" x="353.993" y="60.9728" width="16" height="16"/>
-  <object id="181" name="fromRoom2" x="501.611" y="185.495" width="16" height="16"/>
+  <object id="18" name="player" x="57.0538" y="157.396" width="16" height="16">
+   <properties>
+    <property name="type" value="player"/>
+   </properties>
+  </object>
+  <object id="122" name="Roy" x="393.977" y="178.532" width="16" height="16">
+   <properties>
+    <property name="type" value="redskeleton"/>
+   </properties>
+  </object>
+  <object id="164" name="Lenny" x="353.993" y="60.9728" width="16" height="16">
+   <properties>
+    <property name="type" value="skeleton"/>
+   </properties>
+  </object>
+  <object id="181" name="fromRoom2" x="501.611" y="185.495" width="16" height="16">
+   <properties>
+    <property name="type" value="fromRoom2"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup color="#ffff66" name="t_passage">
   <properties>
