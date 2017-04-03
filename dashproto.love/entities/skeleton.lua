@@ -97,32 +97,57 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:whileWandering(dt)
+    --move skeleton along his direction
     local vec,col = self:moveCollide(self.movement:normalizeInplace() * self.speed * dt,self.mainBody)
+
+    --go perpendicular if obstacle
     if col>0 then self.movement = self.movement:perpendicular() end
+
+    --set sprite according to direction
     self.mainSprite:setAnimation('skeleton_walk_'..cardinalDir(self.movement:normalizeInplace()))
+
+    --reroll direction
     local dice = math.random(0, 50)
     if dice == 1 then self:rerollDirection() end
+
+    --check if skeleton is hit
+    self:checkHit()
+
+    --become agressive if player seen
     if self.evilLook:see() then self.behavior:transition('Agressive') end
+
+    --if player is hurt then retreat
     if self.mainBody:collideName('player.mainBody') then
       self.speed = 100
       self.behavior:transition('Retreating')
     end
-    self:checkHit()
+
   end
 
   function skeleton:whileAgressive(dt)
+    --move skeleton along his direction
     local vec,col = self:moveCollide(self.movement:normalizeInplace() * self.speed * dt,self.mainBody)
+
+    --go perpendicular if obstacle
     if col>0 then self.movement = self.movement:perpendicular() end
+
+    --set sprite according to direction
     self.mainSprite:setAnimation('skeleton_walk_'..cardinalDir(self.movement:normalizeInplace()))
+
+    --check if skeleton is hit
+    self:checkHit()
+
     local look = self.evilLook:see()
+    --if player seen then move toward him
     if look then
       self.movement = look:normalizeInplace()
+      --retreat if collision with player
       if self.mainBody:collideName('player.mainBody') then
         self.speed = 100
         self.behavior:transition('Retreating')
       end
-      self:checkHit()
     else
+      --if player is not seen then return to wandering state
       self.behavior:transition('Wandering')
     end
   end
@@ -153,8 +178,6 @@ function Skeleton:new(parent,a)
     local look = self.evilLook:see()
     if look then
       self.movement = -look:normalizeInplace()
-    else
-      self.behavior:transition('Wandering')
     end
   end
 
