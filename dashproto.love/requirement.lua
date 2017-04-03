@@ -42,7 +42,7 @@ c_sprite = require('components/c_sprite')
 c_look = require('components/c_look')
 c_effect = require('components/c_effect')
 c_rectangle = require('components/c_rectangle')
-c_counter = require('components/c_counter')
+c_clock = require('components/c_clock')
 
 --scenes
 scene = require('scenes/_scene')
