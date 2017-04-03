@@ -9,6 +9,16 @@ function SoundM:add(sound,id)
   self.sounds[id] = love.audio.newSource(sound,"static")
 end
 
+function SoundM:addLoop(sound,id)
+  local loop = love.audio.newSource(sound,"static")
+  loop:setLooping(true)
+  self.sounds[id] = loop
+end
+
+function SoundM:stop(id)
+  self.sounds[id]:stop()
+end
+
 function SoundM:play(id,p)
   p = p or {}
   local volume = p.volume or 100
