@@ -62,6 +62,7 @@ function love.load(arg)
   })
 
   evm:addEntityEvent({eventstring='sound',entity='soundm',callback='play'})
+  evm:addEntityEvent({eventstring='soundStop',entity='soundm',callback='stop'})
 
   --game entity with default scene
   game = game:new()
