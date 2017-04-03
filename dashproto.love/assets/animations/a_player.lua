@@ -72,7 +72,6 @@ return {
     durations = .1
   },
   walk_left = {
-    --TODO animation seems strange
     name = 'walk_left',
     pic = asm:get('player'),
     cellsizex = 16,
