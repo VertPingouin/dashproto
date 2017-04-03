@@ -15,16 +15,16 @@ function love.conf(t)
 	fullscreen = true,
 	debug = {
 		boxes = false,
-		names = true,
+		names = false,
 		fps = false,
-		console = true,
+		console = false,
 		look = false,
-		log = true,
+		log = false,
 		}
 	}
 
 
-	t.title = "Dash proto" -- The title of the window the game is in (string)
+	t.title = "SkellySpawn" -- The title of the window the game is in (string)
 	t.version = "0.10.0"         -- The LoVE version this game was made for (string)
 	t.window.borderless = true
 	--t.window.width = 768
