@@ -20,7 +20,7 @@ function Black:new(parent,a)
     color = color:new(0,0,0,255)}
   )
 
-  black:add(c_counter,'timer',{time = .6})
+  black:add(c_clock,'timer',{time = .6})
   black:setVisible(false)
 
   function black:on(time)
