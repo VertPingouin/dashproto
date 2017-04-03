@@ -106,15 +106,8 @@ function Skeleton:new(parent,a)
     if self.mainBody:collideName('player.mainBody') then
       self.speed = 100
       self.behavior:transition('Retreating')
-    elseif self.mainBody:collideName('player.hitBox') then
-      self.whiteflash:play()
-      self.hp = self.hp-1
-      evm:post('sound',{'hit'})
-      obm:get('camera'):shake(.1,1)
-      self.speed = 100
-      self.behavior:transition('Retreating')
     end
-
+    self:checkHit()
   end
 
   function skeleton:whileAgressive(dt)
@@ -127,14 +120,8 @@ function Skeleton:new(parent,a)
       if self.mainBody:collideName('player.mainBody') then
         self.speed = 100
         self.behavior:transition('Retreating')
-      elseif self.mainBody:collideName('player.hitBox') then
-        self.whiteflash:play()
-        self.hp = self.hp-1
-        evm:post('sound',{'hit'})
-        obm:get('camera'):shake(.1,1)
-        self.speed = 100
-        self.behavior:transition('Retreating')
       end
+      self:checkHit()
     else
       self.behavior:transition('Wandering')
     end
@@ -195,6 +182,17 @@ function Skeleton:new(parent,a)
   end
 
   function skeleton:oDraw()
+  end
+
+  function skeleton:checkHit()
+    if self.mainBody:collideName('player.hitBox') then
+      self.whiteflash:play()
+      self.hp = self.hp-1
+      evm:post('sound',{'hit'})
+      obm:get('camera'):shake(.1,1)
+      self.speed = 100
+      self.behavior:transition('Retreating')
+    end
   end
 
   skeleton:rerollDirection()
