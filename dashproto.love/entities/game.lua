@@ -55,18 +55,20 @@ function Game:new()
     end
   end
   function game:onEnterGameover()
+    evm:post('soundStop',{'graveyard'})
+
     self.lifebar:setVisible(false)
     self:setScene('gameoverscreen')
   end
 
   function game:onEnterGame()
+    evm:post('sound',{'graveyard'})
     self.lifebar:setVisible(true)
     self.playerHp = 3
+
   end
 
   function game:whileGame(dt)
---TODO add a proper way to include music
-
     self.lifebar:setLife(self.playerHp)
 
     --if player collides a passage, goto the proper scene with proper position
